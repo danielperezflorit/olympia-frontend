@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 import { View, TextInput, Button, Text, StyleSheet } from "react-native";
 import { addTeam, updateTeam } from "../services/teamService";
 import { fetchCompetitions } from "../services/competitionService";
-import { Picker } from '@react-native-picker/picker';
+import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 
 export default function TeamForm({ onTeamAdded, teamToEdit }) {
   const [name, setName] = useState("");
   const [availableCompetitions, setAvailableCompetitions] = useState([]); 
-  const [selectedCompetitions, setSelectedCompetitions] = useState(""); // ⬅️ Usar "" para inicializar el selector
+  const [selectedCompetitions, setSelectedCompetitions] = useState([]);
 
   useEffect(() => {
     async function loadCompetitions() {
@@ -15,7 +15,7 @@ export default function TeamForm({ onTeamAdded, teamToEdit }) {
         const competitions = await fetchCompetitions();
         setAvailableCompetitions(competitions);
         if (competitions.length > 0 && !teamToEdit) {
-          setSelectedCompetitions(""); // ⬅️ Asegura que el valor inicial sea ""
+          setSelectedCompetitions("");
         }
       } catch (e) {
          console.error("Error al cargar competiciones:", e);
@@ -37,6 +37,18 @@ export default function TeamForm({ onTeamAdded, teamToEdit }) {
     }
   }, [teamToEdit]);
 
+  const toggleCompetition = (competitionId) => {
+    setSelectedCompetitions(prevIds => {
+      if (prevIds.includes(competitionId)) {
+        // Si ya está seleccionado, lo quitamos (deseleccionar)
+        return prevIds.filter(id => id !== competitionId);
+      } else {
+        // Si no está seleccionado, lo añadimos (seleccionar)
+        return [...prevIds, competitionId];
+      }
+    });
+  };
+
   const handleSubmit = async () => {
     if (!name || !selectedCompetitions) {
         alert("Por favor, introduce un nombre y selecciona una competición.");
@@ -55,7 +67,7 @@ export default function TeamForm({ onTeamAdded, teamToEdit }) {
     } 
   }
 
-  return (
+  /*return (
     <View style={styles.form}>
       <Text style={styles.title}>{teamToEdit ? "Editar Equipo" : "Agregar Equipo"}</Text>
       <TextInput
@@ -65,13 +77,15 @@ export default function TeamForm({ onTeamAdded, teamToEdit }) {
         style={styles.input}
       />
 
+      
+
       <Text style={styles.label}>Seleccionar Competición:</Text>
       <View style={styles.pickerContainer}>
         <Picker
           selectedValue={selectedCompetitions}
           onValueChange={(itemValue) => setSelectedCompetitions(itemValue)}
         >
-          {/* ✅ AÑADIDO: Opción de "Seleccione..." con valor "" */}
+          {/* ✅ AÑADIDO: Opción de "Seleccione..." con valor "" }
           <Picker.Item label="--- Seleccione una Competición ---" value="" enabled={false} />
           
           {availableCompetitions.map(competitions => (
@@ -83,6 +97,48 @@ export default function TeamForm({ onTeamAdded, teamToEdit }) {
           ))}
         </Picker>
       </View>
+      
+      <Button title={teamToEdit ? "Guardar Cambios" : "Enviar"} onPress={handleSubmit} />
+    </View>
+  );*/
+
+  return (
+    <View style={styles.form}>
+      <Text style={styles.title}>{teamToEdit ? "Editar Equipo" : "Agregar Equipo"}</Text>
+      <TextInput
+        placeholder="Nombre"
+        value={name}
+        onChangeText={setName}
+        style={styles.input}
+      />
+
+      <Text style={styles.label}>Seleccionar Competiciones:</Text> 
+      
+      {/* 👈 CAMBIO CLAVE: Usamos ScrollView para la lista de selección */}
+      <ScrollView style={styles.multiSelectContainer}>
+        {availableCompetitions.map(competition => {
+            // Comprueba si la competición actual está seleccionada
+            const isSelected = selectedCompetitions.includes(competition._id);
+            
+            return (
+              <TouchableOpacity 
+                key={competition._id} 
+                onPress={() => toggleCompetition(competition._id)}
+                style={[
+                    styles.competitionItem,
+                    // Aplica un estilo diferente si está seleccionado
+                    isSelected && styles.competitionItemSelected 
+                ]}
+              >
+                <Text style={styles.competitionItemText}>
+                    {/* Indicador visual de selección */}
+                    {isSelected ? '✅ ' : '◻️ '}
+                    {competition.name}
+                </Text>
+              </TouchableOpacity>
+            );
+        })}
+      </ScrollView>
       
       <Button title={teamToEdit ? "Guardar Cambios" : "Enviar"} onPress={handleSubmit} />
     </View>
@@ -121,12 +177,22 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 20,
   },
-  pickerContainer: {
+  multiSelectContainer: {
+    maxHeight: 200, // Limita la altura para que sea scrollable
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: '#ccc',
     borderRadius: 5,
-    marginBottom: 10,
-    height: 50, 
-    justifyContent: 'center',
+    marginBottom: 20,
   },
+  competitionItem: {
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee',
+  },
+  competitionItemSelected: {
+        backgroundColor: '#e6f7ff', // Un color más claro para indicar selección
+    },
+    competitionItemText: {
+        fontSize: 16,
+    },
 });
