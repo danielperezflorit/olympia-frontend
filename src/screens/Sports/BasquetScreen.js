@@ -1,19 +1,19 @@
 import React, {useState} from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native'; // ScrollView eliminado
-import GlobalMenu from '../components/GlobalMenu';
+import GlobalMenu from '../../components/GlobalMenu';
 
 const FixedHeader = () => (
     <View style={headerStyles.headerContainer}>
         {/* LOGO */}
         <Image 
             style={headerStyles.logo} 
-            source={require('../../assets/unite!.png')}
+            source={require('../../../assets/unite!.png')}
         />
-        <Text style={headerStyles.title}>FÚTBOL</Text>
+        <Text style={headerStyles.title}>BASQUET</Text>
     </View>
 );
 
-export default function FutbolScreen({ navigation }) {
+export default function BasquetScreen({ navigation }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false); 
     
     const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
@@ -103,6 +103,7 @@ const headerStyles = StyleSheet.create({
       transform: 'translateX(-50%)', // Mueve el elemento hacia la izquierda el 50% de SU PROPIO ancho
   },
 });
+
 
 const styles = StyleSheet.create({
     

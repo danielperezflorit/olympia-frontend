@@ -1,98 +1,96 @@
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 import { View, StyleSheet, Text, TouchableOpacity, Modal, Image } from "react-native";
 import { useFocusEffect } from "@react-navigation/native"; 
-import TeamForm from "../components/TeamForm.jsx";
-import TeamList from "../components/TeamList.jsx";
-import { fetchTeams, deleteTeam } from "../services/teamService.js";
-import Team from "../models/teammodel.js";
-import GlobalMenu from "../components/GlobalMenu.jsx";
+import UserForm from "../../components/User/UserForm";
+import UserList from "../../components/User/UserList";
+import { fetchUsers, deleteUser } from "../../services/userService.js";
+import User from "../../models/usermodel.js";
+import GlobalMenu from "../../components/GlobalMenu.jsx";
 
 const FixedHeader = () => (
     <View style={headerStyles.headerContainer}>
-        {/* LOGO */}
         <Image 
             style={headerStyles.logo} 
-            source={require('../../assets/unite!.png')}
+            source={require('../../../assets/unite!.png')}
         />
-        <Text style={headerStyles.title}>Lista de Equipos</Text>
+        <Text style={headerStyles.title}>Lista de Usuarios</Text>
     </View>
 );
 
-export default function TeamsScreen({ navigation }) {
-  const [teams, setTeams] = useState([]);
+export default function UsersScreen({ navigation}) {
+  const [users, setUsers] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
-  const [teamToEdit, setTeamToEdit] = useState(null);
+  const [userToEdit, setUserToEdit] = useState(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
 
-
-  const loadTeams = async () => {
+  const loadUsers = async () => {
     try {
-      const [teamsData] = await Promise.all([
-        fetchTeams(),
+      const [usersData] = await Promise.all([
+        fetchUsers(),
       ]);
 
-      const teamInstances = teamsData.map(
-        (team) =>
-          new Team(
-            team._id,
-            team.name,
-            team.competitions,
-            team.players,
-            team.matches,
-            team.wins,
-            team.losses,
-            team.draws,
+      const userInstances = usersData.map(
+        (user) =>
+          new User(
+            user._id,
+            user.name,
+            user.mail,
+            user.password,
+            user.university,
+            user.team,
+            user.competitions,
           )
       );
 
-      setTeams(teamInstances);
+      setUsers(userInstances);
     } catch (error) {
-      console.error("Error al cargar equipos:", error);
+      console.error("Error al cargar usuarios:", error);
     }
   };
 
 
-  // Usamos useFocusEffect para recargar equipos cada vez que la pantalla se enfoca
+  // Usamos useFocusEffect para recargar usuarios cada vez que la pantalla se enfoca
   useFocusEffect(
     React.useCallback(() => {
-      loadTeams(); // Cargamos equipos
+      loadUsers(); // Cargamos usuarios
     }, [])
   );
 
-  const handleDeleteTeam = async (team_id) => {
+  const handleDeleteUser = async (user_id) => {
     try {
-      // Llamamos a la función deleteTeam para eliminar al equipo de la base de datos
-      await deleteTeam(team_id);
+      // Llamamos a la función deleteUser para eliminar al usuario de las experiencias y la base de datos
+      await deleteUser(user_id);
 
       // Actualizamos la lista de usuarios después de eliminar
-      setTeams((prevTeams) => prevTeams.filter((team) => team._id !== team_id));
+      setUsers((prevUsers) => prevUsers.filter((user) => user._id !== user_id));
 
-      // Actualizamos también las experiencias por si hay cambios en los participantes
-      loadTeams();
+      // Actualizamos también los usuarios por si hay cambios
+      loadUsers();
     } catch (error) {
       console.error("Error al eliminar usuario:", error);
     }
   };
 
-  const handleUpdateTeam = async (team_id) => {
-    setTeamToEdit(team_id);
+const handleUpdateUser = async (user_id) => {
+    setUserToEdit(user_id);
     setModalVisible(true);
   };
 
   const handleModalClose = () => {
     setModalVisible(false);
-    setTeamToEdit(null); // Limpia el equipo a editar
+    setUserToEdit(null); // Limpia el equipo a editar
   };
   
   // Función de callback después de agregar/editar
   const handleFormSubmitted = () => {
     handleModalClose();
-    loadTeams(); 
+    loadUsers(); 
   };
 
   return (
+  
     <View style={styles.container}>
       <FixedHeader />
       <TouchableOpacity 
@@ -114,38 +112,36 @@ export default function TeamsScreen({ navigation }) {
               onClose={() => setIsMenuOpen(false)}
             />
           )}
-      <TeamList
-        teams={teams}
-        onDeleteTeam={handleDeleteTeam}
-        onUpdateTeam={handleUpdateTeam}
+
+      
+      <UserList
+        users={users}
+        onDeleteUser={handleDeleteUser}
+        onUpdateUser={handleUpdateUser}
       />
-      <TouchableOpacity style={styles.openButton} onPress={() => {setTeamToEdit(null); setModalVisible(true);}} >
-        <Text style={styles.buttonText}>Agregar Equipo</Text>
+      <TouchableOpacity style={styles.openButton} onPress={() => {setUserToEdit(null); setModalVisible(true);}}>
+        <Text style={styles.buttonText}>Agregar Usuario</Text>
       </TouchableOpacity>
       <Modal
         animationType="slide"
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => setModalVisible(false)}
-       >
+      >
         <View style={styles.modalWrapper}>
-        <View style={styles.modalContainer}>
-          
-          {/* ⬅️ CAMBIO CLAVE: Pasar el objeto a editar y el callback de éxito */}
-          <TeamForm
-            teamToEdit={teamToEdit}        // Pasa el objeto del equipo si estamos editando (será null si es 'Agregar')
-            onTeamAdded={handleFormSubmitted} // Esta función se llama al CREAR o EDITAR
-          />
-          
-          <TouchableOpacity
-            style={styles.closeButton}
-            // Llama a la función que cierra el modal y limpia el estado teamToEdit
-            onPress={handleModalClose} 
-          >
-            <Text style={styles.closeButtonText}>Cerrar</Text>
-          </TouchableOpacity>
+          <View style={styles.modalContainer}>
+            <UserForm
+              userToEdit={userToEdit}
+              onUserAdded= {handleFormSubmitted}
+            />
+            <TouchableOpacity
+              style={styles.closeButton}
+              onPress={handleModalClose}
+            >
+              <Text style={styles.closeButtonText}>Cerrar</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
       </Modal>
     </View>
   );
@@ -206,8 +202,6 @@ const headerStyles = StyleSheet.create({
       transform: 'translateX(-50%)', // Mueve el elemento hacia la izquierda el 50% de SU PROPIO ancho
   },
 });
-
-
 
 const styles = StyleSheet.create({
   container: {

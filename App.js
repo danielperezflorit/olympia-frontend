@@ -2,13 +2,15 @@ import React from "react";
 import { Image } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import UsersScreen from "./src/screens/UsersScreen";
+import UsersScreen from "./src/screens/Gestion/UsersScreen";
 import HomeScreen from "./src/screens/HomeScreen";
-import TeamsScreen from "./src/screens/TeamsScreen";
-import FutbolScreen from "./src/screens/FutbolScreen";
-import PadelScreen from "./src/screens/PadelScreen";
-import BasquetScreen from "./src/screens/BasquetScreen";
-import BalonmanoScreen from "./src/screens/BalonmanoScreen";
+import UniversitiesScreen from "./src/screens/Gestion/UniversitiesScreen";
+import CompetitionsScreen from "./src/screens/Gestion/CompetitionsScreen";
+import TeamsScreen from "./src/screens/Gestion/TeamsScreen";
+import FutbolScreen from "./src/screens/Sports/FutbolScreen";
+import PadelScreen from "./src/screens/Sports/PadelScreen";
+import BasquetScreen from "./src/screens/Sports/BasquetScreen";
+import BalonmanoScreen from "./src/screens/Sports/BalonmanoScreen";
 
 const TeamIcon = require('./assets/icons/team.jpg');
 const UserIcon = require('./assets/icons/user.jpg');
@@ -21,8 +23,10 @@ const linking = {
   config: {
     screens: {
       Home: 'Home',           
-      Usuarios: 'Usuarios',   
+      Usuarios: 'Usuarios',
+      Universidades: 'Universidades',
       Teams: 'Teams',         
+      Competitions: 'Competitions',   
       Futbol: 'Futbol',       
       Padel: 'Padel',         
       Basquet: 'Basquet',     
@@ -76,6 +80,18 @@ export default function App() {
           }}
           />
         <Tab.Screen 
+          name="Universidades" 
+          component={UniversitiesScreen} 
+          options={{ // ⬅️ Usa la prop options
+            headerShown: false,
+            tabBarIcon: ({size }) => ( // ⬅️ Define la función tabBarIcon
+              <Image 
+                style={{ width: size, height: size, }} // ⬅️ Usa size y color
+              />
+            ),
+          }}
+        />
+        <Tab.Screen 
           name="Teams" 
           component={TeamsScreen}
           options ={{
@@ -86,6 +102,14 @@ export default function App() {
                 style={{ width: size, height: size, }} // ⬅️ Usa size y color
               />
             ),
+          }}
+          />
+        <Tab.Screen 
+          name="Competitions" 
+          component={CompetitionsScreen}
+          options ={{
+            headerShown: false,
+            tabBarButton: () => null, // Esto oculta el ícono en la barra inferior (Tab Bar)
           }}
           />
           <Tab.Screen 

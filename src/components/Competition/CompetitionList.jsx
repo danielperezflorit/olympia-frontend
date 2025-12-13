@@ -2,34 +2,30 @@ import React from "react";
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, Modal } from "react-native";
 
 
-export default function TeamList({
-    teams,
-    onDeleteTeam,
-    onUpdateTeam,
+export default function CompetitionList({
+    competitions,
+    onDeleteCompetition,
+    onUpdateCompetition,
   }) 
   
   {
   return (
     <FlatList
-      data={teams}
+      data={competitions}
       keyExtractor={(item) => item._id.toString()}
       renderItem={({ item }) => (
         <View style={styles.item}>
           <Text style={styles.label}>Nombre: {item.getFullName()}</Text> 
-          <Text style={styles.label}>Competiciones: {item.getCompetitions()}</Text>
-          <Text style={styles.label}>Jugadores: {item.getPlayers()}</Text>
-          <Text style={styles.label}>Partidos Jugados: {item.getMatches()}</Text> 
-          <Text style={styles.label}>Victorias: {item.getWins()}</Text>
-          <Text style={styles.label}>Derrotas: {item.getLosses()}</Text>
-          <Text style={styles.label}>Empates: {item.getDraws()}</Text>
-
+          <Text style={styles.label}>Equipos: {item.getTeams()}</Text>
+          <Text style={styles.label}>Deporte: {item.getSport()}</Text> 
+          
           {/* Botón Editar */}
-          <TouchableOpacity style={styles.updateButton} onPress={() => onUpdateTeam(item)} >
+          <TouchableOpacity style={styles.updateButton} onPress={() => onUpdateCompetition(item)} >
             <Text style={styles.updateButtonText}>Editar</Text>
           </TouchableOpacity>
 
           {/* Botón Eliminar */}
-          <TouchableOpacity style={styles.deleteButton} onPress={() => onDeleteTeam(item._id)} >
+          <TouchableOpacity style={styles.deleteButton} onPress={() => onDeleteCompetition(item._id)} >
           <Text style={styles.deleteButtonText}>Eliminar</Text>
           </TouchableOpacity>
         </View>

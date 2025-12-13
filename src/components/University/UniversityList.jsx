@@ -1,39 +1,37 @@
 import React from "react";
-import {
-  View,
-  Text,
-  FlatList,
-  TouchableOpacity,
-  StyleSheet,
-} from "react-native";
+import { View, Text, FlatList, TouchableOpacity, StyleSheet, Modal } from "react-native";
 
-export default function UserList({
-    users,
-    onDeleteUser,
-    onUpdateUser,
+
+export default function UniversityList({
+    universities,
+    onDeleteUniversity,
+    onUpdateUniversity,
   }) 
   
   {
   return (
     <FlatList
-      data={users}
+      data={universities}
       keyExtractor={(item) => item._id.toString()}
       renderItem={({ item }) => (
         <View style={styles.item}>
           <Text style={styles.label}>Nombre: {item.getFullName()}</Text> 
-          <Text style={styles.label}>Email: {item.getEmail()}</Text> 
-          <Text style={styles.label}>Equipo: {item.getTeamName()}</Text> 
+          <Text style={styles.label}>Deportes: {item.getSports()}</Text>
+          <Text style={styles.label}>Competiciones: {item.getCompetitions()}</Text>
+          <Text style={styles.label}>Equipos: {item.getTeams()}</Text>
+          <Text style={styles.label}>Jugadores: {item.getPlayers()}</Text>
+          <Text style={styles.label}>Partidos Jugados: {item.getMatches()}</Text> 
+          <Text style={styles.label}>Victorias: {item.getWins()}</Text>
+          <Text style={styles.label}>Derrotas: {item.getLosses()}</Text>
+          <Text style={styles.label}>Empates: {item.getDraws()}</Text>
 
           {/* Botón Editar */}
-          <TouchableOpacity style={styles.updateButton} onPress={() => onUpdateUser(item)} >
+          <TouchableOpacity style={styles.updateButton} onPress={() => onUpdateUniversity(item)} >
             <Text style={styles.updateButtonText}>Editar</Text>
           </TouchableOpacity>
 
           {/* Botón Eliminar */}
-          <TouchableOpacity
-            style={styles.deleteButton}
-            onPress={() => onDeleteUser(item._id)}
-          >
+          <TouchableOpacity style={styles.deleteButton} onPress={() => onDeleteUniversity(item._id)} >
           <Text style={styles.deleteButtonText}>Eliminar</Text>
           </TouchableOpacity>
         </View>

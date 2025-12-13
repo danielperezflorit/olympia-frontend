@@ -5,7 +5,9 @@ import { CommonActions } from '@react-navigation/native';
 const menuRoutes = [
     { name: 'Home', label: 'Inicio' },
     { name: 'Usuarios', label: 'Usuarios' },
+    { name: 'Universidades', label: 'Universidades' },
     { name: 'Teams', label: 'Equipos' },
+    {name: 'Competitions', label: 'Competiciones' },
     { name: 'Futbol', label: 'Fútbol' },
     { name: 'Padel', label: 'Pádel' }, 
     { name: 'Basquet', label: 'Básquet' }, 
@@ -16,7 +18,7 @@ const GlobalMenu = ({ navigation, onClose }) => {
     
     const handleNavigate = (routeName) => {
         onClose(); 
-        if (['Home', 'Usuarios', 'Teams', 'Futbol', 'Padel', 'Basquet', 'Handball'].includes(routeName)) {
+        if (['Home', 'Usuarios', 'Universidades', 'Teams', 'Competitions', 'Futbol', 'Padel', 'Basquet', 'Handball'].includes(routeName)) {
             navigation.dispatch(
                 CommonActions.reset({
                     index: 0,
