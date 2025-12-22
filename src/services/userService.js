@@ -1,6 +1,8 @@
 import axios from "axios";
 
-const API_URL_USER = "http://192.168.0.21:3000/user";
+//const API_URL_USER = "http://192.168.0.21:3000/user";
+//const API_URL_USER = "http://192.168.1.38:3000/user";
+const API_URL_USER = "http://10.5.59.106:3000/user";
 
 
 // Obtener un usuario por su ID
@@ -61,4 +63,5 @@ export const updateUser = async (userId, updatedUser) => {
     throw error;
   }
 }
+
 

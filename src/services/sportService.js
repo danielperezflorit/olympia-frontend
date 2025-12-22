@@ -1,6 +1,10 @@
 import axios from "axios";
 
-const API_URL_SPORT = "http://192.168.0.21:3000/sport"; 
+//const API_URL_SPORT = "http://192.168.0.21:3000/sport";
+//const API_URL_SPORT = "http://192.168.1.38:3000/sport";
+const API_URL_SPORT = "http://10.5.59.106:3000/sport";
+
+
 
 // Obtener un deporte por su ID
 export const fetchSportById = async (sportId) => {
@@ -9,6 +13,18 @@ export const fetchSportById = async (sportId) => {
     return response.data.name; 
   } catch (error) {
     console.error("Error al obtener el deporte", error);
+    throw error;
+  }
+};
+
+export const fetchSportIdByName = async (name) => {
+  try {
+    const response = await axios.get(`${API_URL_SPORT}/all`);
+    // Busca el deporte por nombre (ignorando mayúsculas/minúsculas)
+    const sport = response.data.find(s => s.name.toUpperCase() === name.toUpperCase());
+    return sport ? sport._id : null; 
+  } catch (error) {
+    console.error(`Error al obtener el ID del deporte ${name}:`, error);
     throw error;
   }
 };

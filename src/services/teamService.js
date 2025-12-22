@@ -1,6 +1,8 @@
 import axios from "axios";
 
-const API_URL_TEAM = "http://192.168.0.21:3000/team"; 
+//const API_URL_TEAM = "http://192.168.0.21:3000/team"; 
+//const API_URL_TEAM = "http://192.168.1.38:3000/team";
+const API_URL_TEAM = "http://10.5.59.106:3000/team";
 
 // Obtener un equipo por su ID
 export const fetchTeamById = async (teamId) => {
@@ -61,4 +63,15 @@ export const updateTeam = async (teamId, updatedTeam) => {
     throw error;
   }
 }
+
+export const fetchCompetitionRanking = async (competitionId) => {
+  try {
+    // Usa la ruta del backend: /team/ranking/:competitionId
+    const response = await axios.get(`${API_URL_TEAM}/ranking/${competitionId}`);
+    return response.data; // El backend ya lo devuelve ordenado
+  } catch (error) {
+    console.error("Error al obtener la clasificación:", error);
+    throw error;
+  }
+};
 

@@ -1,6 +1,11 @@
 import axios from "axios";
 
-const API_URL_COMPETITION = "http://192.168.0.21:3000/competition"; 
+//const API_URL_COMPETITION = "http://192.168.0.21:3000/competition"; 
+//const API_URL_COMPETITION = "http://192.168.1.38:3000/competition";
+const API_URL_COMPETITION = "http://10.5.59.106:3000/competition";
+
+
+
 
 // Obtener un competicion por su ID
 export const fetchCompetitionById = async (competitionId) => {
@@ -21,6 +26,18 @@ export const fetchCompetitions = async () => {
     return response.data;
   } catch (error) {
     console.error("Error al obtener las competiciones:", error);
+    throw error;
+  }
+};
+
+// Nueva función para obtener competiciones por ID de deporte
+export const fetchCompetitionsBySportId = async (sportId) => {
+  try {
+    // Usa el endpoint que debes implementar en el backend
+    const response = await axios.get(`${API_URL_COMPETITION}/sport/${sportId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error al obtener las competiciones por deporte:", error);
     throw error;
   }
 };
