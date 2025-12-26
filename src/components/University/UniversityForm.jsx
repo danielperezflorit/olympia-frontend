@@ -7,10 +7,8 @@ export default function UniversityForm({ onUniversityAdded, universityToEdit }) 
 
   useEffect(() => {
     if (universityToEdit) {
-      // MODO EDICIÓN: Carga los datos del objeto
       setName(universityToEdit.name);
     } else {
-      // MODO CREACIÓN (o modal cerrado): Limpia los campos
       setName("");
     }
   }, [universityToEdit]);
@@ -83,7 +81,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   multiSelectContainer: {
-    maxHeight: 200, // Limita la altura para que sea scrollable
+    maxHeight: 200, 
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 5,
@@ -95,7 +93,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#eee',
   },
   competitionItemSelected: {
-        backgroundColor: '#e6f7ff', // Un color más claro para indicar selección
+        backgroundColor: '#e6f7ff', 
     },
     competitionItemText: {
         fontSize: 16,

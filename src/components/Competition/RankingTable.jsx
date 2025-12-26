@@ -6,12 +6,9 @@ const RankingTable = ({ ranking }) => {
         return <Text style={styles.message}>No hay equipos registrados en esta clasificación.</Text>;
     }
 
-    // Los datos ya vienen calculados (puntos, PJ, PG, etc.) desde teamController.ts
-
     return (
         <ScrollView horizontal style={styles.scrollView}>
             <View>
-                {/* --- HEADER --- */}
                 <View style={[styles.row, styles.header]}>
                     <Text style={[styles.cell, styles.colPos]}>#</Text>
                     <Text style={[styles.cell, styles.colName]}>EQUIPO</Text>
@@ -22,7 +19,6 @@ const RankingTable = ({ ranking }) => {
                     <Text style={[styles.cell, styles.colPoints]}>PT</Text>
                 </View>
 
-                {/* --- FILAS DE DATOS --- */}
                 {ranking.map((team, index) => (
                     <View key={team._id} style={[styles.row, index % 2 === 0 ? styles.evenRow : styles.oddRow]}>
                         <Text style={[styles.cell, styles.colPos]}>{index + 1}</Text>
@@ -41,7 +37,7 @@ const RankingTable = ({ ranking }) => {
 
 const styles = StyleSheet.create({
     scrollView: {
-        maxHeight: 400, // Limita la altura para scroll vertical si hay muchos equipos
+        maxHeight: 400, 
     },
     row: {
         flexDirection: 'row',

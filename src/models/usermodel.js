@@ -1,5 +1,5 @@
 export default class User {
-  constructor(_id, name, mail, password, university, team, competitions) {
+  constructor(_id, name, mail, password, university, team, competitions, type) {
     this._id = _id;
     this.name = name;
     this.mail = mail;
@@ -7,6 +7,7 @@ export default class User {
     this.university = university;
     this.team = team;
     this.competitions = competitions;
+    this.type = type;
   }
 
   getFullName() {
@@ -18,28 +19,24 @@ export default class User {
   }
 
   getTeamName() {
-    // 1. Verificar si el campo 'team' existe y no es null
     if (this.team) {
-      // 2. Si es un OBJETO (poblado) Y tiene la propiedad 'name', devolver el nombre.
-      // // Los objetos poblados tienen la estructura { _id: ..., name: ... }
       if (typeof this.team === 'object' && this.team.name) {
         return this.team.name;
       } 
     }
-    // 4. Si el campo está vacío (null/undefined)
     return 'Sin equipo'; 
   }
   getUniversityName() {
-    // 1. Verificar si el campo 'university' existe y no es null
     if (this.university) {
-      // 2. Si es un OBJETO (poblado) Y tiene la propiedad 'name', devolver el nombre.
-      // // Los objetos poblados tienen la estructura { _id: ..., name: ... }
       if (typeof this.university === 'object' && this.university.name) {
         return this.university.name;
       } 
     }
-    // 4. Si el campo está vacío (null/undefined)
     return 'Sin universidad'; 
+  }
+
+  getRol() {
+    return this.type;
   }
 
 }

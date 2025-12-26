@@ -1,41 +1,21 @@
 import React from "react";
-import {
-  View,
-  Text,
-  FlatList,
-  TouchableOpacity,
-  StyleSheet,
-} from "react-native";
+import { View, Text, FlatList, TouchableOpacity, StyleSheet, Modal } from "react-native";
 
-export default function UserList({
-    users,
-    onDeleteUser,
-    onUpdateUser,
+
+export default function CompetitionList({
+    competitions,
   }) 
   
   {
   return (
     <FlatList
-      data={users}
+      data={competitions}
       keyExtractor={(item) => item._id.toString()}
       renderItem={({ item }) => (
         <View style={styles.item}>
           <Text style={styles.label}>Nombre: {item.getFullName()}</Text> 
-          <Text style={styles.label}>Email: {item.getEmail()}</Text> 
-          <Text style={styles.label}>Universidad: {item.getUniversityName()}</Text>
-          <Text style={styles.label}>Equipo: {item.getTeamName()}</Text> 
-          <Text style={styles.label}>Rol: {item.getRol()}</Text>
-
-          <TouchableOpacity style={styles.updateButton} onPress={() => onUpdateUser(item)} >
-            <Text style={styles.updateButtonText}>Editar</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.deleteButton}
-            onPress={() => onDeleteUser(item._id)}
-          >
-          <Text style={styles.deleteButtonText}>Eliminar</Text>
-          </TouchableOpacity>
+          <Text style={styles.label}>Equipos: {item.getTeams()}</Text>
+          <Text style={styles.label}>Deporte: {item.getSport()}</Text> 
         </View>
       )}
     />

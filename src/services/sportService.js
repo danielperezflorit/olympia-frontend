@@ -1,12 +1,9 @@
 import axios from "axios";
 
 //const API_URL_SPORT = "http://192.168.0.21:3000/sport";
-//const API_URL_SPORT = "http://192.168.1.38:3000/sport";
-const API_URL_SPORT = "http://10.5.59.106:3000/sport";
+const API_URL_SPORT = "http://192.168.1.41:3000/sport";
+//const API_URL_SPORT = "http://10.5.59.106:3000/sport";
 
-
-
-// Obtener un deporte por su ID
 export const fetchSportById = async (sportId) => {
   try {
     const response = await axios.get(`${API_URL_SPORT}/${sportId}`);
@@ -20,7 +17,6 @@ export const fetchSportById = async (sportId) => {
 export const fetchSportIdByName = async (name) => {
   try {
     const response = await axios.get(`${API_URL_SPORT}/all`);
-    // Busca el deporte por nombre (ignorando mayúsculas/minúsculas)
     const sport = response.data.find(s => s.name.toUpperCase() === name.toUpperCase());
     return sport ? sport._id : null; 
   } catch (error) {
@@ -29,7 +25,6 @@ export const fetchSportIdByName = async (name) => {
   }
 };
 
-// Obtener la lista de todos los deportes
 export const fetchSports = async () => {
   try {
     const response = await axios.get(`${API_URL_SPORT}/all`);
@@ -41,7 +36,6 @@ export const fetchSports = async () => {
   }
 };
 
-// Agregar un nuevo equipo
 export const addSport = async (newSport) => {
   try {
     await axios.post(API_URL_SPORT, newSport);
@@ -57,7 +51,6 @@ export const deleteSport = async (sportId) => {
       throw new Error("El ID de deporte es indefinido");
     }
 
-    // Finalmente eliminamos al usuario de la base de datos
     await axios.delete(`${API_URL_SPORT}/${sportId}`);
   } catch (error) {
     console.error("Error al eliminar el deporte:", error);

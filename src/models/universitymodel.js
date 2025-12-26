@@ -22,7 +22,7 @@ export default class Team {
             if (sports && sports.name) {
                 return sports.name;
             }
-            return 'Deporte Desconocido'; // Manejo de error si el objeto está incompleto
+            return 'Deporte Desconocido';
         });
         return sportsNames.join(', ');
     }
@@ -36,7 +36,7 @@ export default class Team {
                 return competitions.name;
             }
             console.log(competitions);
-            return 'Competicion Desconocida'; // Manejo de error si el objeto está incompleto
+            return 'Competicion Desconocida'; 
         });
         return competitionsNames.join(', ');
     }
@@ -50,7 +50,7 @@ export default class Team {
                           console.log(teams);
               return teams.name;
             }
-            return 'Equipo Desconocido'; // Manejo de error si el objeto está incompleto
+            return 'Equipo Desconocido'; 
         });
         return teamNames.join(', ');
     }
@@ -63,7 +63,7 @@ export default class Team {
             if (player && player.name) {
                 return player.name;
             }
-            return 'Jugador Desconocido'; // Manejo de error si el objeto está incompleto
+            return 'Jugador Desconocido';
         });
         return playerNames.join(', ');
     }

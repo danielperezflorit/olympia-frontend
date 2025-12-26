@@ -19,12 +19,10 @@ export default function CompetitionList({
           <Text style={styles.label}>Equipos: {item.getTeams()}</Text>
           <Text style={styles.label}>Deporte: {item.getSport()}</Text> 
           
-          {/* Botón Editar */}
           <TouchableOpacity style={styles.updateButton} onPress={() => onUpdateCompetition(item)} >
             <Text style={styles.updateButtonText}>Editar</Text>
           </TouchableOpacity>
 
-          {/* Botón Eliminar */}
           <TouchableOpacity style={styles.deleteButton} onPress={() => onDeleteCompetition(item._id)} >
           <Text style={styles.deleteButtonText}>Eliminar</Text>
           </TouchableOpacity>

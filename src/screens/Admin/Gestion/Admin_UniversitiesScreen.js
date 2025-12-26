@@ -1,24 +1,23 @@
 import React, { useState } from "react";
 import { View, StyleSheet, Text, TouchableOpacity, Modal, Image } from "react-native";
 import { useFocusEffect } from "@react-navigation/native"; 
-import UniversityForm from "../../components/University/UniversityForm.jsx";
-import UniversityList from "../../components/University/UniversityList.jsx";
-import { fetchUniversities, deleteUniversity } from "../../services/universityService.js";
-import University from "../../models/universitymodel.js";
-import GlobalMenu from "../../components/GlobalMenu.jsx";
+import UniversityForm from "../../../components/University/UniversityForm.jsx";
+import UniversityList from "../../../components/University/UniversityList.jsx";
+import { fetchUniversities, deleteUniversity } from "../../../services/universityService.js";
+import University from "../../../models/universitymodel.js";
+import Admin_GlobalMenu from "../../../components/Admin_GlobalMenu.jsx";
 
 const FixedHeader = () => (
     <View style={headerStyles.headerContainer}>
-        {/* LOGO */}
         <Image 
             style={headerStyles.logo} 
-            source={require('../../../assets/unite!.png')}
+            source={require('../../../../assets/unite!.png')}
         />
         <Text style={headerStyles.title}>Lista de Universidades</Text>
     </View>
 );
 
-export default function UniversitiesScreen({ navigation }) {
+export default function Admin_UniversitiesScreen({ navigation }) {
   const [universities, setUniversities] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [universityToEdit, setUniversityToEdit] = useState(null);
@@ -54,22 +53,18 @@ export default function UniversitiesScreen({ navigation }) {
   };
 
 
-  // Usamos useFocusEffect para recargar universidades cada vez que la pantalla se enfoca
   useFocusEffect(
     React.useCallback(() => {
-      loadUniversities(); // Cargamos universidades
+      loadUniversities();
     }, [])
   );
 
   const handleDeleteUniversity = async (university_id) => {
     try {
-      // Llamamos a la función deleteUni para eliminar al equipo de la base de datos
       await deleteUniversity(university_id);
 
-      // Actualizamos la lista de universidades después de eliminar
       setUniversities((prevUniversities) => prevUniversities.filter((university) => university._id !== university_id));
 
-      // Actualizamos también las universidades por si hay cambios
       loadUniversities();
     } catch (error) {
       console.error("Error al eliminar Universidad:", error);
@@ -83,10 +78,9 @@ export default function UniversitiesScreen({ navigation }) {
 
   const handleModalClose = () => {
     setModalVisible(false);
-    setUniversityToEdit(null); // Limpia el universidad a editar
+    setUniversityToEdit(null); 
   };
   
-  // Función de callback después de agregar/editar
   const handleFormSubmitted = () => {
     handleModalClose();
     loadUniversities(); 
@@ -109,7 +103,7 @@ export default function UniversitiesScreen({ navigation }) {
           </Text> 
           </TouchableOpacity>  
           {isMenuOpen && (
-            <GlobalMenu 
+            <Admin_GlobalMenu 
               navigation={navigation} 
               onClose={() => setIsMenuOpen(false)}
             />
@@ -131,15 +125,13 @@ export default function UniversitiesScreen({ navigation }) {
         <View style={styles.modalWrapper}>
         <View style={styles.modalContainer}>
           
-          {/* ⬅️ CAMBIO CLAVE: Pasar el objeto a editar y el callback de éxito */}
           <UniversityForm
-            universityToEdit={universityToEdit}        // Pasa el objeto del equipo si estamos editando (será null si es 'Agregar')
-            onUniversityAdded={handleFormSubmitted} // Esta función se llama al CREAR o EDITAR
+            universityToEdit={universityToEdit}        
+            onUniversityAdded={handleFormSubmitted}
           />
           
           <TouchableOpacity
             style={styles.closeButton}
-            // Llama a la función que cierra el modal y limpia el estado uniToEdit
             onPress={handleModalClose} 
           >
             <Text style={styles.closeButtonText}>Cerrar</Text>
@@ -164,15 +156,13 @@ const headerStyles = StyleSheet.create({
         borderBottomWidth: 1, 
         borderBottomColor: '#eee',
         zIndex: 10, 
-        // HACEMOS LA CABECERA ABSOLUTA PARA QUE PERMANEZCA FIJA
         position: 'absolute',
         top: 0,
         reight: 0,
     },
-    // ✅ ÍCONO AHORA ES ABSOLUTO Y SEPARADO DEL HEADER CONTAINER
     menuIcon: {
-        position: 'absolute', // Clave para flotar
-        top: 45, // Ajuste para que se vea bien en el header
+        position: 'absolute', 
+        top: 45, 
         right: 10,
         padding: 5,
         borderRadius: 5,
@@ -180,7 +170,7 @@ const headerStyles = StyleSheet.create({
     menuIconText: {
         fontSize: 30,
         fontWeight: 'bold',
-        color: '#0084C9', // Color predeterminado (azul)
+        color: '#0084C9',
     },
     menuIconBackgroundActive: {
         backgroundColor: '#0084C9', 
@@ -192,7 +182,6 @@ const headerStyles = StyleSheet.create({
         width: 300, 
         height: 80, 
         resizeMode: 'contain',
-        // Ajustar la posición para evitar el ícono de hamburguesa
         marginLeft: 55, 
     },
     title: {
@@ -202,8 +191,8 @@ const headerStyles = StyleSheet.create({
       textAlign: "center",
       color: "#0084C9",
       fontWeight: 'bold',
-      left: '50%', // Mueve el punto de inicio del elemento al centro horizontal del contenedor padre
-      transform: 'translateX(-50%)', // Mueve el elemento hacia la izquierda el 50% de SU PROPIO ancho
+      left: '50%', 
+      transform: 'translateX(-50%)',
   },
 });
 

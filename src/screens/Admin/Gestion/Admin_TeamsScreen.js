@@ -1,24 +1,23 @@
 import React, { useState } from "react";
 import { View, StyleSheet, Text, TouchableOpacity, Modal, Image } from "react-native";
 import { useFocusEffect } from "@react-navigation/native"; 
-import TeamForm from "../../components/Team/TeamForm.jsx";
-import TeamList from "../../components/Team/TeamList.jsx";
-import { fetchTeams, deleteTeam } from "../../services/teamService.js";
-import Team from "../../models/teammodel.js";
-import GlobalMenu from "../../components/GlobalMenu.jsx";
+import TeamForm from "../../../components/Team/TeamForm.jsx";
+import TeamList from "../../../components/Team/TeamList.jsx";
+import { fetchTeams, deleteTeam } from "../../../services/teamService.js";
+import Team from "../../../models/teammodel.js";
+import Admin_GlobalMenu from "../../../components/Admin_GlobalMenu.jsx";
 
 const FixedHeader = () => (
     <View style={headerStyles.headerContainer}>
-        {/* LOGO */}
         <Image 
             style={headerStyles.logo} 
-            source={require('../../../assets/unite!.png')}
+            source={require('../../../../assets/unite!.png')}
         />
         <Text style={headerStyles.title}>Lista de Equipos</Text>
     </View>
 );
 
-export default function TeamsScreen({ navigation }) {
+export default function Admin_TeamsScreen({ navigation }) {
   const [teams, setTeams] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [teamToEdit, setTeamToEdit] = useState(null);
@@ -55,22 +54,18 @@ export default function TeamsScreen({ navigation }) {
   };
 
 
-  // Usamos useFocusEffect para recargar equipos cada vez que la pantalla se enfoca
   useFocusEffect(
     React.useCallback(() => {
-      loadTeams(); // Cargamos equipos
+      loadTeams(); 
     }, [])
   );
 
   const handleDeleteTeam = async (team_id) => {
     try {
-      // Llamamos a la función deleteTeam para eliminar al equipo de la base de datos
       await deleteTeam(team_id);
 
-      // Actualizamos la lista de equipos después de eliminar
       setTeams((prevTeams) => prevTeams.filter((team) => team._id !== team_id));
 
-      // Actualizamos también los equipos por si hay cambios
       loadTeams();
     } catch (error) {
       console.error("Error al eliminar equipo:", error);
@@ -84,10 +79,9 @@ export default function TeamsScreen({ navigation }) {
 
   const handleModalClose = () => {
     setModalVisible(false);
-    setTeamToEdit(null); // Limpia el equipo a editar
+    setTeamToEdit(null); 
   };
   
-  // Función de callback después de agregar/editar
   const handleFormSubmitted = () => {
     handleModalClose();
     loadTeams(); 
@@ -110,7 +104,7 @@ export default function TeamsScreen({ navigation }) {
           </Text> 
           </TouchableOpacity>  
           {isMenuOpen && (
-            <GlobalMenu 
+            <Admin_GlobalMenu 
               navigation={navigation} 
               onClose={() => setIsMenuOpen(false)}
             />
@@ -132,15 +126,13 @@ export default function TeamsScreen({ navigation }) {
         <View style={styles.modalWrapper}>
         <View style={styles.modalContainer}>
           
-          {/* ⬅️ CAMBIO CLAVE: Pasar el objeto a editar y el callback de éxito */}
           <TeamForm
-            teamToEdit={teamToEdit}        // Pasa el objeto del equipo si estamos editando (será null si es 'Agregar')
-            onTeamAdded={handleFormSubmitted} // Esta función se llama al CREAR o EDITAR
+            teamToEdit={teamToEdit}        
+            onTeamAdded={handleFormSubmitted} 
           />
           
           <TouchableOpacity
             style={styles.closeButton}
-            // Llama a la función que cierra el modal y limpia el estado teamToEdit
             onPress={handleModalClose} 
           >
             <Text style={styles.closeButtonText}>Cerrar</Text>
@@ -165,15 +157,13 @@ const headerStyles = StyleSheet.create({
         borderBottomWidth: 1, 
         borderBottomColor: '#eee',
         zIndex: 10, 
-        // HACEMOS LA CABECERA ABSOLUTA PARA QUE PERMANEZCA FIJA
         position: 'absolute',
         top: 0,
         reight: 0,
     },
-    // ✅ ÍCONO AHORA ES ABSOLUTO Y SEPARADO DEL HEADER CONTAINER
     menuIcon: {
-        position: 'absolute', // Clave para flotar
-        top: 45, // Ajuste para que se vea bien en el header
+        position: 'absolute', 
+        top: 45, 
         right: 10,
         padding: 5,
         borderRadius: 5,
@@ -181,7 +171,7 @@ const headerStyles = StyleSheet.create({
     menuIconText: {
         fontSize: 30,
         fontWeight: 'bold',
-        color: '#0084C9', // Color predeterminado (azul)
+        color: '#0084C9', 
     },
     menuIconBackgroundActive: {
         backgroundColor: '#0084C9', 
@@ -193,7 +183,6 @@ const headerStyles = StyleSheet.create({
         width: 300, 
         height: 80, 
         resizeMode: 'contain',
-        // Ajustar la posición para evitar el ícono de hamburguesa
         marginLeft: 55, 
     },
     title: {
@@ -203,8 +192,8 @@ const headerStyles = StyleSheet.create({
       textAlign: "center",
       color: "#0084C9",
       fontWeight: 'bold',
-      left: '50%', // Mueve el punto de inicio del elemento al centro horizontal del contenedor padre
-      transform: 'translateX(-50%)', // Mueve el elemento hacia la izquierda el 50% de SU PROPIO ancho
+      left: '50%', 
+      transform: 'translateX(-50%)',
   },
 });
 

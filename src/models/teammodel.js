@@ -19,8 +19,6 @@ export default class Team {
     if (this.university && typeof this.university === 'object' && this.university.name) {
       return this.university.name;
     }
-
-    // Si no está poblada, devuelve un mensaje predeterminado.
     return 'Universidad Desconocida';
   }
 
@@ -28,8 +26,6 @@ export default class Team {
     if (this.competition && typeof this.competition === 'object' && this.competition.name) {
       return this.competition.name;
     }
-
-    // Si no está poblada, devuelve un mensaje predeterminado.
     return 'Competición Desconocida';
   }
 
@@ -39,7 +35,7 @@ export default class Team {
             if (player && player.name) {
                 return player.name;
             }
-            return 'Jugador Desconocido'; // Manejo de error si el objeto está incompleto
+            return 'Jugador Desconocido'; 
         });
         return playerNames.join(', ');
     }

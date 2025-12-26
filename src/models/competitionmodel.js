@@ -15,7 +15,7 @@ export default class Competition {
             if (team && team.name) {
                 return team.name;
             }
-            return 'Equipo Desconocido'; // Manejo de error si el objeto está incompleto
+            return 'Equipo Desconocido';
         });
         return teamNames.join(', ');
     }
@@ -26,7 +26,6 @@ export default class Competition {
       return this.sport.name;
     }
 
-    // Si no está poblada, devuelve un mensaje predeterminado.
     return 'Deporte Desconocido';
   }
 }

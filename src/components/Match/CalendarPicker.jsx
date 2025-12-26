@@ -3,7 +3,6 @@ import { View, StyleSheet, Text, Button, TextInput } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 
 export const CalendarPicker = ({ selectedDate, onDateSelect, onClose }) => {
-    // El formato de marcado debe ser 'YYYY-MM-DD'
     const initialDateString = selectedDate.toISOString().split('T')[0];
     const [dateString, setDateString] = useState(initialDateString);
 
@@ -11,7 +10,6 @@ export const CalendarPicker = ({ selectedDate, onDateSelect, onClose }) => {
     const [minutes, setMinutes] = useState(selectedDate.getMinutes().toString().padStart(2, '0'));
 
     const handleConfirm = () => {
-        // Creamos la fecha a partir del string del calendario (YYYY-MM-DD)
         const [year, month, day] = dateString.split('-').map(Number);
         const finalDate = new Date(year, month - 1, day, parseInt(hours), parseInt(minutes));
         
@@ -35,7 +33,6 @@ return (
                 }}
             />
 
-            {/* --- Selector de Hora Manual --- */}
             <View style={styles.timePickerContainer}>
                 <Text style={styles.timeLabel}>Hora (24h):</Text>
                 <View style={styles.timeInputsRow}>

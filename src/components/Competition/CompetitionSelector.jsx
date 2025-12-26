@@ -23,7 +23,7 @@ const CompetitionSelector = ({ competitions, selectedId, onSelect }) => {
                 data={competitions}
                 renderItem={renderItem}
                 keyExtractor={(item) => item._id}
-                horizontal={true} // Permite el scroll horizontal si hay muchos
+                horizontal={true} 
                 showsHorizontalScrollIndicator={false}
             />
         </View>
@@ -33,7 +33,7 @@ const CompetitionSelector = ({ competitions, selectedId, onSelect }) => {
 const styles = StyleSheet.create({
     container: {
         marginBottom: 20,
-        height: 40, // Altura fija para la barra de navegación
+        height: 40,
     },
     item: {
         paddingHorizontal: 15,

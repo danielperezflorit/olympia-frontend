@@ -1,96 +1,86 @@
-import React, { use, useState } from "react";
+import React, { useState } from "react";
 import { View, StyleSheet, Text, TouchableOpacity, Modal, Image } from "react-native";
 import { useFocusEffect } from "@react-navigation/native"; 
-import UserForm from "../../components/User/UserForm";
-import UserList from "../../components/User/UserList";
-import { fetchUsers, deleteUser } from "../../services/userService.js";
-import User from "../../models/usermodel.js";
-import GlobalMenu from "../../components/GlobalMenu.jsx";
+import CompetitionForm from "../../../components/Competition/CompetitionForm.jsx";
+import CompetitionList from "../../../components/Competition/Admin_CompetitionList.jsx";
+import { fetchCompetitions, deleteCompetition } from "../../../services/competitionService.js";
+import Admin_GlobalMenu from "../../../components/Admin_GlobalMenu.jsx";
+import Competition from "../../../models/competitionmodel.js";
 
 const FixedHeader = () => (
     <View style={headerStyles.headerContainer}>
         <Image 
             style={headerStyles.logo} 
-            source={require('../../../assets/unite!.png')}
+            source={require('../../../../assets/unite!.png')}
         />
-        <Text style={headerStyles.title}>Lista de Usuarios</Text>
+        <Text style={headerStyles.title}>Lista de Competiciones</Text>
     </View>
 );
 
-export default function UsersScreen({ navigation}) {
-  const [users, setUsers] = useState([]);
+export default function Admin_CompetitionsScreen({ navigation }) {
+  const [competitions, setCompetitions] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
-  const [userToEdit, setUserToEdit] = useState(null);
+  const [competitionToEdit, setCompetitionToEdit] = useState(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
-
-  const loadUsers = async () => {
+  const loadCompetitions = async () => {
     try {
-      const [usersData] = await Promise.all([
-        fetchUsers(),
+      const [competitionsData] = await Promise.all([
+        fetchCompetitions(),
       ]);
 
-      const userInstances = usersData.map(
-        (user) =>
-          new User(
-            user._id,
-            user.name,
-            user.mail,
-            user.password,
-            user.university,
-            user.team,
-            user.competitions,
+      const competitionInstances = competitionsData.map(
+        (competition) =>
+          new Competition(
+            competition._id,
+            competition.name,
+            competition.teams,
+            competition.sport
           )
       );
 
-      setUsers(userInstances);
+      setCompetitions(competitionInstances);
     } catch (error) {
-      console.error("Error al cargar usuarios:", error);
+      console.error("Error al cargar competiciones:", error);
     }
   };
 
 
-  // Usamos useFocusEffect para recargar usuarios cada vez que la pantalla se enfoca
   useFocusEffect(
     React.useCallback(() => {
-      loadUsers(); // Cargamos usuarios
+      loadCompetitions(); 
     }, [])
   );
 
-  const handleDeleteUser = async (user_id) => {
+  const handleDeleteCompetition = async (competition_id) => {
     try {
-      // Llamamos a la función deleteUser para eliminar al usuario de las experiencias y la base de datos
-      await deleteUser(user_id);
+      await deleteCompetition(competition_id);
 
-      // Actualizamos la lista de usuarios después de eliminar
-      setUsers((prevUsers) => prevUsers.filter((user) => user._id !== user_id));
+      setCompetitions((prevCompetitions) => prevCompetitions.filter((competition) => competition._id !== competition_id));
 
-      // Actualizamos también los usuarios por si hay cambios
-      loadUsers();
+      loadCompetitions();
     } catch (error) {
-      console.error("Error al eliminar usuario:", error);
+      console.error("Error al eliminar competición:", error);
     }
   };
 
-const handleUpdateUser = async (user_id) => {
-    setUserToEdit(user_id);
+  const handleUpdateCompetition = async (competition_id) => {
+    setCompetitionToEdit(competition_id);
     setModalVisible(true);
   };
 
   const handleModalClose = () => {
     setModalVisible(false);
-    setUserToEdit(null); // Limpia el equipo a editar
+    setCompetitionToEdit(null); 
   };
   
-  // Función de callback después de agregar/editar
   const handleFormSubmitted = () => {
     handleModalClose();
-    loadUsers(); 
+    loadCompetitions(); 
   };
 
   return (
-  
     <View style={styles.container}>
       <FixedHeader />
       <TouchableOpacity 
@@ -107,41 +97,41 @@ const handleUpdateUser = async (user_id) => {
           </Text> 
           </TouchableOpacity>  
           {isMenuOpen && (
-            <GlobalMenu 
+            <Admin_GlobalMenu 
               navigation={navigation} 
               onClose={() => setIsMenuOpen(false)}
             />
           )}
-
-      
-      <UserList
-        users={users}
-        onDeleteUser={handleDeleteUser}
-        onUpdateUser={handleUpdateUser}
+      <CompetitionList
+        competitions={competitions}
+        onDeleteCompetition={handleDeleteCompetition}
+        onUpdateCompetition={handleUpdateCompetition}
       />
-      <TouchableOpacity style={styles.openButton} onPress={() => {setUserToEdit(null); setModalVisible(true);}}>
-        <Text style={styles.buttonText}>Agregar Usuario</Text>
+      <TouchableOpacity style={styles.openButton} onPress={() => {setCompetitionToEdit(null); setModalVisible(true);}} >
+        <Text style={styles.buttonText}>Agregar Competición</Text>
       </TouchableOpacity>
       <Modal
         animationType="slide"
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => setModalVisible(false)}
-      >
+       >
         <View style={styles.modalWrapper}>
-          <View style={styles.modalContainer}>
-            <UserForm
-              userToEdit={userToEdit}
-              onUserAdded= {handleFormSubmitted}
-            />
-            <TouchableOpacity
-              style={styles.closeButton}
-              onPress={handleModalClose}
-            >
-              <Text style={styles.closeButtonText}>Cerrar</Text>
-            </TouchableOpacity>
-          </View>
+        <View style={styles.modalContainer}>
+          
+          <CompetitionForm
+            competitionToEdit={competitionToEdit}        
+            onCompetitionAdded={handleFormSubmitted} 
+          />
+          
+          <TouchableOpacity
+            style={styles.closeButton}
+            onPress={handleModalClose} 
+          >
+            <Text style={styles.closeButtonText}>Cerrar</Text>
+          </TouchableOpacity>
         </View>
+      </View>
       </Modal>
     </View>
   );
@@ -160,15 +150,13 @@ const headerStyles = StyleSheet.create({
         borderBottomWidth: 1, 
         borderBottomColor: '#eee',
         zIndex: 10, 
-        // HACEMOS LA CABECERA ABSOLUTA PARA QUE PERMANEZCA FIJA
         position: 'absolute',
         top: 0,
         reight: 0,
     },
-    // ✅ ÍCONO AHORA ES ABSOLUTO Y SEPARADO DEL HEADER CONTAINER
     menuIcon: {
-        position: 'absolute', // Clave para flotar
-        top: 45, // Ajuste para que se vea bien en el header
+        position: 'absolute', 
+        top: 45,
         right: 10,
         padding: 5,
         borderRadius: 5,
@@ -176,7 +164,7 @@ const headerStyles = StyleSheet.create({
     menuIconText: {
         fontSize: 30,
         fontWeight: 'bold',
-        color: '#0084C9', // Color predeterminado (azul)
+        color: '#0084C9', 
     },
     menuIconBackgroundActive: {
         backgroundColor: '#0084C9', 
@@ -188,7 +176,6 @@ const headerStyles = StyleSheet.create({
         width: 300, 
         height: 80, 
         resizeMode: 'contain',
-        // Ajustar la posición para evitar el ícono de hamburguesa
         marginLeft: 55, 
     },
     title: {
@@ -198,10 +185,12 @@ const headerStyles = StyleSheet.create({
       textAlign: "center",
       color: "#0084C9",
       fontWeight: 'bold',
-      left: '50%', // Mueve el punto de inicio del elemento al centro horizontal del contenedor padre
-      transform: 'translateX(-50%)', // Mueve el elemento hacia la izquierda el 50% de SU PROPIO ancho
+      left: '50%', 
+      transform: 'translateX(-50%)',
   },
 });
+
+
 
 const styles = StyleSheet.create({
   container: {

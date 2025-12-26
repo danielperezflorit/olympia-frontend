@@ -1,28 +1,21 @@
-import React, { useState } from 'react';  
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Modal } from 'react-native';
 import MatchResultForm from './MatchResultForm'; 
 
-const MatchCalendar = ({ matches, onDataUpdated }) => {
-    const [selectedMatch, setSelectedMatch] = useState(null);
+const User_MatchCalendar = ({ matches, onDataUpdated }) => {
     const [isResultModalVisible, setIsResultModalVisible] = useState(false);
 
     if (!matches || matches.length === 0) {
         return <Text style={styles.message}>No hay partidos programados.</Text>;
     }
 
-    const openResultForm = (match) => {
-        setSelectedMatch(match);
-        setIsResultModalVisible(true);
-    };
 
     const renderMatchItem = ({ item }) => {
         const teamLocalName = item.teamLocal?.name || 'Equipo Local';
         const teamVisitorName = item.teamVisitor?.name || 'Equipo Visitante';
-        const matchDate = new Date(item.date);
-        const now = new Date();
-        
+        const matchDate = new Date(item.date);        
         const isPlayed = item.isPlayed || item.scoreLocal != 0 || item.scoreVisitor != 0;
-        const isPast = matchDate < now; 
+
         return (
                 <View style={styles.matchCard}>
                     <Text style={styles.dateText}>
@@ -50,17 +43,6 @@ const MatchCalendar = ({ matches, onDataUpdated }) => {
                         </Text>
                     </View>
                 </View>
-
-                {(isPast || isPlayed) && (
-                    <TouchableOpacity 
-                        style={styles.resultButton} 
-                        onPress={() => openResultForm(item)}
-                    >
-                        <Text style={styles.resultButtonText}>
-                            {isPlayed ? "Editar Resultado" : "Registrar Resultado"}
-                        </Text>
-                    </TouchableOpacity>
-                )}
             </View>
         );
     };
@@ -72,23 +54,6 @@ const MatchCalendar = ({ matches, onDataUpdated }) => {
                 renderItem={renderMatchItem}
                 keyExtractor={(item) => item._id}
             />
-
-            <Modal visible={isResultModalVisible} animationType="slide" transparent={true}>
-                <View style={styles.modalOverlay}>
-                    <View style={styles.modalContent}>
-                        {selectedMatch && (
-                            <MatchResultForm 
-                                match={selectedMatch}
-                                onResultSubmitted={() => {
-                                    setIsResultModalVisible(false);
-                                    onDataUpdated(); 
-                                }}
-                                onClose={() => setIsResultModalVisible(false)}
-                            />
-                        )}
-                    </View>
-                </View>
-            </Modal>
         </View>
     );
 };
@@ -206,4 +171,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default MatchCalendar;
+export default User_MatchCalendar;

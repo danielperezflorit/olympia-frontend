@@ -1,45 +1,34 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, ActivityIndicator, Modal } from 'react-native';
-import GlobalMenu from '../../components/GlobalMenu';
+import User_GlobalMenu from '../../../components/User_GlobalMenu.jsx';
+import { fetchSportIdByName } from '../../../services/sportService';
+import { fetchCompetitionsBySportId } from '../../../services/competitionService';
+import { fetchCompetitionRanking } from '../../../services/teamService';
+import { fetchMatchesByCompetitionId } from '../../../services/matchService';
+import CompetitionSelector from '../../../components/Competition/CompetitionSelector';
+import RankingTable from '../../../components/Competition/RankingTable';
+import User_MatchCalendar from '../../../components/Match/User_MatchCalendar.jsx'; 
 
-// SERVICIOS (Asumimos que están implementados y funcionan)
-import { fetchSportIdByName } from '../../services/sportService';
-import { fetchCompetitionsBySportId } from '../../services/competitionService';
-import { fetchCompetitionRanking } from '../../services/teamService';
-import { fetchMatchesByCompetitionId } from '../../services/matchService';
-
-// COMPONENTES DE UI Y ADMINISTRACIÓN
-import CompetitionSelector from '../../components/Competition/CompetitionSelector';
-import RankingTable from '../../components/Competition/RankingTable';
-import MatchCalendar from '../../components/Match/MatchCalendar'; 
-import MatchForm from '../../components/Match/MatchForm'; // Formulario para crear partido
-
-// --- Componentes de Encabezado ---
 const FixedHeader = () => (
     <View style={headerStyles.headerContainer}>
         <Image 
             style={headerStyles.logo} 
-            source={require('../../../assets/unite!.png')}
+            source={require('../../../../assets/unite!.png')}
         />
         <Text style={headerStyles.title}>FÚTBOL</Text>
     </View>
 );
 
-export default function FutbolScreen({ navigation }) {
-    // --- ESTADOS DE DATOS ---
+export default function User_FutbolScreen({ navigation }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false); 
     const [availableCompetitions, setAvailableCompetitions] = useState([]);
     const [selectedCompetitionId, setSelectedCompetitionId] = useState(null);
     const [rankingData, setRankingData] = useState([]);
     const [matchesData, setMatchesData] = useState([]);
     const [loading, setLoading] = useState(true);
-    
-    // --- ESTADOS DE MODAL ---
-    const [isMatchFormVisible, setIsMatchFormVisible] = useState(false); 
-    
+        
     const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
-    // [FUNCIÓN CLAVE] Recarga el Ranking y los Partidos de la competición actual
     const loadCompetitionData = useCallback(async (competitionId) => {
         if (!competitionId) {
             setRankingData([]);
@@ -50,7 +39,6 @@ export default function FutbolScreen({ navigation }) {
 
         setLoading(true);
         try {
-            // Carga simultánea de datos
             const [ranking, matches] = await Promise.all([
                 fetchCompetitionRanking(competitionId),
                 fetchMatchesByCompetitionId(competitionId),
@@ -67,19 +55,10 @@ export default function FutbolScreen({ navigation }) {
         }
     }, []);
 
-    // [FUNCIÓN CLAVE] Se llama después de Programar o Registrar un Resultado
-    const handleDataUpdate = () => {
-        setIsMatchFormVisible(false); // Cierra el modal de programación (si aplica)
-        // Recarga los datos de la competición seleccionada
-        loadCompetitionData(selectedCompetitionId); 
-    };
-
-    // [EFECTO 1] Carga Inicial: Busca el ID del deporte y sus competiciones
     useEffect(() => {
         async function loadInitialData() {
             setLoading(true);
             try {
-                // Asumimos que el nombre del deporte es "FÚTBOL"
                 const footballId = await fetchSportIdByName("FÚTBOL");
                 
                 if (footballId) {
@@ -103,8 +82,6 @@ export default function FutbolScreen({ navigation }) {
         loadInitialData();
     }, []); 
 
-
-    // [EFECTO 2] Carga de Datos de Competición: Se dispara al cambiar selectedCompetitionId
     useEffect(() => {
         if (selectedCompetitionId) {
             loadCompetitionData(selectedCompetitionId);
@@ -115,7 +92,6 @@ export default function FutbolScreen({ navigation }) {
     return (
         <View style={styles.fullContainer}>
             <FixedHeader />
-            {/* Botón de Menú */}
             <TouchableOpacity 
                 style={[
                     headerStyles.menuIcon, 
@@ -131,18 +107,16 @@ export default function FutbolScreen({ navigation }) {
             </TouchableOpacity>
             
             {isMenuOpen && (
-                <GlobalMenu 
+                <User_GlobalMenu 
                     navigation={navigation} 
                     onClose={() => setIsMenuOpen(false)}
                 />
             )}
             
-            {/* Manejo de Contenido y Carga */}
             {availableCompetitions.length === 0 && !loading ? (
                 <Text style={styles.noDataMessage}>No hay competiciones de Fútbol disponibles.</Text>
             ) : (
                 <ScrollView contentContainerStyle={styles.container}>
-                    {/* A. Selector de Competición */}
                     <Text style={styles.sectionTitle}>Seleccionar Competición</Text>
                     <CompetitionSelector
                         competitions={availableCompetitions}
@@ -150,61 +124,24 @@ export default function FutbolScreen({ navigation }) {
                         onSelect={setSelectedCompetitionId}
                     />
 
-                    {/* B. Clasificación */}
                     <Text style={styles.sectionTitle}>Clasificación</Text>
                     {loading ? <ActivityIndicator size="small" color="#0084C9" /> : <RankingTable ranking={rankingData} />}
                     
-                    {/* C. Calendario de Partidos */}
                     <Text style={styles.sectionTitle}>Jornadas y Partidos</Text>
                     {loading ? <ActivityIndicator size="small" color="#0084C9" /> : (
-                        <MatchCalendar 
+                        <User_MatchCalendar 
                             matches={matchesData} 
-                            onDataUpdated={handleDataUpdate} // Permite a MatchCalendar recargar datos tras registrar resultado
                         />
-                    )}
-
-                    {/* D. BOTÓN DE ADMINISTRACIÓN (Programar Partido) */}
-                    {selectedCompetitionId && (
-                        <View style={styles.adminButtons}>
-                            <TouchableOpacity 
-                                style={styles.adminButton} 
-                                onPress={() => setIsMatchFormVisible(true)} // Abre el modal de MatchForm
-                            >
-                                <Text style={styles.buttonText}>+ Programar Nuevo Partido</Text>
-                            </TouchableOpacity>
-                        </View>
                     )}
                 </ScrollView>
                 
             )}
-            {/* Overlay de Carga */}
             {loading && availableCompetitions.length > 0 && <ActivityIndicator size="large" color="#0084C9" style={styles.loadingIndicatorOverlay} />}
 
-
-            {/* 🔴 MODAL PARA PROGRAMAR PARTIDOS (MatchForm) 🔴 */}
-            <Modal
-                animationType="slide"
-                transparent={true}
-                visible={isMatchFormVisible}
-                onRequestClose={() => setIsMatchFormVisible(false)}
-            >
-                <View style={styles.modalOverlay}>
-                    <View style={styles.modalContent}>
-                        <MatchForm
-                            competitionId={selectedCompetitionId} 
-                            onMatchScheduled={handleDataUpdate} // Recarga y cierra el modal
-                        />
-                        <TouchableOpacity style={styles.closeButton} onPress={() => setIsMatchFormVisible(false)}>
-                            <Text style={styles.closeButtonText}>Cerrar</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            </Modal>
         </View>
     );
 }
 
-// --- Estilos ---
 const headerStyles = StyleSheet.create({
     headerContainer: {
         height: 100, 
@@ -289,7 +226,6 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: '#555',
     },
-    // --- ESTILOS DE ADMINISTRACIÓN ---
     adminButtons: {
         marginTop: 20,
         paddingTop: 10,

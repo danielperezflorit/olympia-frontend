@@ -1,16 +1,12 @@
-// MatchResultForm.jsx
-
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
 import { updateMatchResult } from '../../services/matchService'; 
 
 const MatchResultForm = ({ match, onResultSubmitted, onClose }) => {
-    // Inicializa los scores con los valores actuales (si existen)
     const [scoreLocal, setScoreLocal] = useState(match.scoreLocal ? String(match.scoreLocal) : '0');
     const [scoreVisitor, setScoreVisitor] = useState(match.scoreVisitor ? String(match.scoreVisitor) : '0');
     const [loading, setLoading] = useState(false);
 
-    // Obtener nombres de equipo poblados
     const teamLocalName = match.teamLocal.name || 'Equipo Local';
     const teamVisitorName = match.teamVisitor.name || 'Equipo Visitante';
 
@@ -26,11 +22,10 @@ const MatchResultForm = ({ match, onResultSubmitted, onClose }) => {
         setLoading(true);
 
         try {
-            // Llama al endpoint PUT /match/:id/result
             await updateMatchResult(match._id, finalScoreLocal, finalScoreVisitor);
             
             Alert.alert("Éxito", "Resultado registrado y clasificación actualizada.");
-            onResultSubmitted(); // Cierra el modal y recarga la tabla y calendario
+            onResultSubmitted();
         } catch (e) {
             console.error("Error submitting result:", e);
             Alert.alert("Error", "No se pudo registrar el resultado. Verifique la conexión.");

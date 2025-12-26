@@ -1,15 +1,12 @@
 import React, { useState } from 'react';
 import { View, ScrollView, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import GlobalMenu from '../components/GlobalMenu.jsx';
+import User_GlobalMenu from '../../components/User_GlobalMenu.jsx';
 
-
-// Componente que contiene SOLO el logo y la estructura fija.
 const FixedHeader = () => (
     <View style={headerStyles.headerContainer}>
-        {/* LOGO */}
         <Image 
             style={headerStyles.logo} 
-            source={require('../../assets/unite!.png')}
+            source={require('../../../assets/unite!.png')}
         />
         <Text style={headerStyles.title}>Home</Text>
     </View>
@@ -21,13 +18,13 @@ const ImageContainer = ({ navigation, source, sportName }) => (
         style={styles.imageWrapper}
         onPress={() => {
             if (sportName === 'Futbol') {
-                navigation.navigate('Futbol', { sportName: sportName }); 
+                navigation.navigate('User_Futbol', { sportName: sportName }); 
             } else if (sportName === 'Padel') {
-                navigation.navigate('Padel', { sportName: sportName });
+                navigation.navigate('User_Padel', { sportName: sportName });
             } else if (sportName === 'Basquet') {
-                navigation.navigate('Basquet', { sportName: sportName });
+                navigation.navigate('User_Basquet', { sportName: sportName });
             } else if (sportName === 'Balonmano') {
-                navigation.navigate('Balonmano', { sportName: sportName });
+                navigation.navigate('User_Balonmano', { sportName: sportName });
             }
         }}
     >
@@ -36,7 +33,7 @@ const ImageContainer = ({ navigation, source, sportName }) => (
 );
 
 
-export default function HomeScreen({ navigation }) { 
+export default function User_HomeScreen({ navigation }) { 
     const [isMenuOpen, setIsMenuOpen] = useState(false); 
 
     const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
@@ -59,28 +56,26 @@ export default function HomeScreen({ navigation }) {
             </TouchableOpacity>
             
             {isMenuOpen && (
-                <GlobalMenu 
+                <User_GlobalMenu 
                     navigation={navigation} 
                     onClose={() => setIsMenuOpen(false)}
                 />
             )}
 
-            {/* 4. Contenido Principal con Scroll */}
             <ScrollView contentContainerStyle={styles.scrollContainer} style={styles.screen}>
 
                 <Text style={styles.title}>OLYMPIA</Text>
 
-                <ImageContainer navigation={navigation} source={require('../../assets/sports/futbol.jpg')} sportName="Futbol"/>
-                <ImageContainer navigation={navigation} source={require('../../assets/sports/padel.jpg')} sportName="Padel"/>
-                <ImageContainer navigation={navigation} source={require('../../assets/sports/handball.jpg')} sportName="Balonmano"/>
-                <ImageContainer navigation={navigation} source={require('../../assets/sports/basquet.jpg')} sportName="Basquet"/>
+                <ImageContainer navigation={navigation} source={require('../../../assets/sports/futbol.jpg')} sportName="Futbol"/>
+                <ImageContainer navigation={navigation} source={require('../../../assets/sports/padel.jpg')} sportName="Padel"/>
+                <ImageContainer navigation={navigation} source={require('../../../assets/sports/handball.jpg')} sportName="Balonmano"/>
+                <ImageContainer navigation={navigation} source={require('../../../assets/sports/basquet.jpg')} sportName="Basquet"/>
 
             </ScrollView>
         </View>
     );
 }
 
-// Estilos para la cabecera fija
 const headerStyles = StyleSheet.create({
     headerContainer: {
         height: 100, 
@@ -94,15 +89,13 @@ const headerStyles = StyleSheet.create({
         borderBottomWidth: 1, 
         borderBottomColor: '#eee',
         zIndex: 10, 
-        // HACEMOS LA CABECERA ABSOLUTA PARA QUE PERMANEZCA FIJA
         position: 'absolute',
         top: 0,
         reight: 0,
     },
-    // ✅ ÍCONO AHORA ES ABSOLUTO Y SEPARADO DEL HEADER CONTAINER
     menuIcon: {
-        position: 'absolute', // Clave para flotar
-        top: 45, // Ajuste para que se vea bien en el header
+        position: 'absolute', 
+        top: 45, 
         right: 10,
         padding: 5,
         borderRadius: 5,
@@ -110,7 +103,7 @@ const headerStyles = StyleSheet.create({
     menuIconText: {
         fontSize: 30,
         fontWeight: 'bold',
-        color: '#0084C9', // Color predeterminado (azul)
+        color: '#0084C9', 
     },
     menuIconBackgroundActive: {
         backgroundColor: '#0084C9', 
@@ -122,7 +115,6 @@ const headerStyles = StyleSheet.create({
         width: 300, 
         height: 80, 
         resizeMode: 'contain',
-        // Ajustar la posición para evitar el ícono de hamburguesa
         marginLeft: 55, 
     },
     title: {
@@ -132,8 +124,8 @@ const headerStyles = StyleSheet.create({
       textAlign: "center",
       color: "#0084C9",
       fontWeight: 'bold',
-      left: '50%', // Mueve el punto de inicio del elemento al centro horizontal del contenedor padre
-      transform: 'translateX(-50%)', // Mueve el elemento hacia la izquierda el 50% de SU PROPIO ancho
+      left: '50%', 
+      transform: 'translateX(-50%)', 
   },
 });
 
@@ -147,7 +139,6 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     scrollContainer: {
-        // Añadir padding superior para que el contenido no quede debajo del header fijo (100px)
         paddingTop: 100, 
         paddingBottom: 50, 
         alignItems: 'center', 

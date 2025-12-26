@@ -17,7 +17,6 @@ const MatchForm = ({ competitionId, onMatchScheduled }) => {
         async function loadTeams() {
             setLoading(true)
             try {
-                // Filtra solo los equipos de la competición actual
                 const teamsData = await fetchTeams(); 
                 const filteredTeams = teamsData.filter(t => {
                     const teamCompetitionId = t.competition?._id || t.competition;
@@ -65,14 +64,14 @@ const MatchForm = ({ competitionId, onMatchScheduled }) => {
             teamLocal: teamLocal,
             teamVisitor: teamVisitor,
             date: date.toISOString(),
-            scoreLocal: 0, // Inicia con 0
-            scoreVisitor: 0, // Inicia con 0
-            isPlayed: false // Inicia como no jugado
+            scoreLocal: 0, 
+            scoreVisitor: 0,
+            isPlayed: false
         };
 
         try {
             await addMatch(newMatch);
-            onMatchScheduled(); // Cierra el modal y recarga el calendario
+            onMatchScheduled(); 
         } catch (e) {
             console.error("Error creating match:", e);
             setError("Error al programar el partido. Verifique el servidor.");
@@ -87,14 +86,12 @@ const MatchForm = ({ competitionId, onMatchScheduled }) => {
         
         return (
             <View>
-                {/* 🔴 Muestra el equipo seleccionado actualmente 🔴 */}
                 <TouchableOpacity onPress={() => setter('')} style={styles.selectedDisplay}>
                     <Text style={styles.selectedDisplayText}>
                         {selectedName}
                     </Text>
                 </TouchableOpacity>
                 
-                {/* 🔵 Contenedor de Scroll para seleccionar opciones 🔵 */}
                 <ScrollView style={styles.selectorContainer}>
                     {availableTeams.map(team => (
                         <TouchableOpacity
@@ -134,7 +131,6 @@ const MatchForm = ({ competitionId, onMatchScheduled }) => {
                 onPress={() => setShowDatePicker(true)} 
                 style={styles.datePickerButton}
             >
-                {/* toLocaleString mostrará tanto fecha como hora elegida */}
                 <Text>{date.toLocaleString([], { day:'2-digit', month:'2-digit', year:'numeric', hour: '2-digit', minute: '2-digit' })}</Text>
             </TouchableOpacity>
             
@@ -153,8 +149,8 @@ const MatchForm = ({ competitionId, onMatchScheduled }) => {
                 <View style={styles.calendarOverlay}>
                     <CalendarPicker
                         selectedDate={date}
-                        onDateSelect={setDate} // Llama a setDate directamente
-                        onClose={() => setShowDatePicker(false)} // Cierra el modal
+                        onDateSelect={setDate} 
+                        onClose={() => setShowDatePicker(false)} 
                     />
                 </View>
             </Modal>
@@ -211,7 +207,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     webDateInput: {
-        // Estilos específicos para el input de texto web si es necesario
         borderWidth: 1,
         borderColor: '#ccc',
         padding: 10,

@@ -24,12 +24,10 @@ export default function TeamList({
           <Text style={styles.label}>Derrotas: {item.getLosses()}</Text>
           <Text style={styles.label}>Empates: {item.getDraws()}</Text>
 
-          {/* Botón Editar */}
           <TouchableOpacity style={styles.updateButton} onPress={() => onUpdateTeam(item)} >
             <Text style={styles.updateButtonText}>Editar</Text>
           </TouchableOpacity>
 
-          {/* Botón Eliminar */}
           <TouchableOpacity style={styles.deleteButton} onPress={() => onDeleteTeam(item._id)} >
           <Text style={styles.deleteButtonText}>Eliminar</Text>
           </TouchableOpacity>

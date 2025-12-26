@@ -27,12 +27,9 @@ export default function CompetitionForm({ onCompetitionAdded, competitionToEdit 
 
   useEffect(() => {
     if (competitionToEdit) {
-      // MODO EDICIÓN: Carga los datos del objeto
       setName(competitionToEdit.name);
-      // Asegúrate de que la competición seleccionada es el ID
       setSelectedSport(competitionToEdit.sport || ""); 
     } else {
-      // MODO CREACIÓN (o modal cerrado): Limpia los campos
       setName("");
       setSelectedSport("");
     }
@@ -76,17 +73,14 @@ export default function CompetitionForm({ onCompetitionAdded, competitionToEdit 
         style={styles.input}
       />
 
-      {/* --- SELECCIÓN DE Deporte (ÚNICA) --- */}
       <Text style={styles.label}>Seleccionar Deporte:</Text> 
       <ScrollView style={styles.multiSelectContainer}>
         {availableSports.map(sport => {
-            // 👈 CAMBIO: Comprueba si la ID del deporte coincide con la ID seleccionada
             const isSelected = selectedSport === sport._id;
             
             return (
               <TouchableOpacity 
                 key={sport._id} 
-                // 👈 CAMBIO: Usamos la nueva función handleSelectsport
                 onPress={() => handleSelectSport(sport._id)} 
                 style={[
                     styles.sportItem,
@@ -94,8 +88,6 @@ export default function CompetitionForm({ onCompetitionAdded, competitionToEdit 
                 ]}
               >
                 <Text style={styles.sportItemText}>
-                    {/* Indicador visual de selección */}
-                    {/* 💡 Nota: Puedes usar un círculo (●) para indicar selección única */}
                     {isSelected ? '● ' : '○ '}
                     {sport.name}
                 </Text>
@@ -146,7 +138,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   multiSelectContainer: {
-    maxHeight: 200, // Limita la altura para que sea scrollable
+    maxHeight: 200, 
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 5,
@@ -158,7 +150,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#eee',
   },
   competitionItemSelected: {
-        backgroundColor: '#e6f7ff', // Un color más claro para indicar selección
+        backgroundColor: '#e6f7ff',
     },
     competitionItemText: {
         fontSize: 16,

@@ -1,151 +1,149 @@
-import React from "react";
-import { Image } from "react-native";
+import React, { useState, useMemo, createContext } from "react";
+import { Image, Text } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import UsersScreen from "./src/screens/Gestion/UsersScreen";
-import HomeScreen from "./src/screens/HomeScreen";
-import UniversitiesScreen from "./src/screens/Gestion/UniversitiesScreen";
-import CompetitionsScreen from "./src/screens/Gestion/CompetitionsScreen";
-import TeamsScreen from "./src/screens/Gestion/TeamsScreen";
-import FutbolScreen from "./src/screens/Sports/FutbolScreen";
-import PadelScreen from "./src/screens/Sports/PadelScreen";
-import BasquetScreen from "./src/screens/Sports/BasquetScreen";
-import BalonmanoScreen from "./src/screens/Sports/BalonmanoScreen";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { AuthContext } from './src/context/AuthContext';
+
+import Admin_UsersScreen from "./src/screens/Admin/Gestion/Admin_UsersScreen";
+import Admin_HomeScreen from "./src/screens/Admin/Admin_HomeScreen";
+import Admin_UniversitiesScreen from "./src/screens/Admin/Gestion/Admin_UniversitiesScreen";
+import Admin_CompetitionsScreen from "./src/screens/Admin/Gestion/Admin_CompetitionsScreen";
+import Admin_TeamsScreen from "./src/screens/Admin/Gestion/Admin_TeamsScreen";
+import Admin_FutbolScreen from "./src/screens/Admin/Sports/Admin_FutbolScreen";
+import Admin_PadelScreen from "./src/screens/Admin/Sports/Admin_PadelScreen";
+import Admin_BasquetScreen from "./src/screens/Admin/Sports/Admin_BasquetScreen";
+import Admin_BalonmanoScreen from "./src/screens/Admin/Sports/Admin_BalonmanoScreen";
+
+import LoginScreen from "./src/screens/LoginScreen";
+import RegisterScreen from "./src/screens/RegisterScreen";
+
+import User_HomeScreen from "./src/screens/User/User_HomeScreen";
+import User_FutbolScreen from "./src/screens/User/Sports/User_FutbolScreen";
+import User_PadelScreen from "./src/screens/User/Sports/User_PadelScreen";
+import User_BasquetScreen from "./src/screens/User/Sports/User_BasquetScreen";
+import User_BalonmanoScreen from "./src/screens/User/Sports/User_BalonmanoScreen";
 
 const TeamIcon = require('./assets/icons/team.jpg');
 const UserIcon = require('./assets/icons/user.jpg');
 const HomeIcon = require('./assets/icons/home.jpg');
 
 const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
 
-const linking = {
-  prefixes:'http://localhost:8081', // Añade aquí tu propio dominio si tienes uno
-  config: {
-    screens: {
-      Home: 'Home',           
-      Usuarios: 'Usuarios',
-      Universidades: 'Universidades',
-      Teams: 'Teams',         
-      Competitions: 'Competitions',   
-      Futbol: 'Futbol',       
-      Padel: 'Padel',         
-      Basquet: 'Basquet',     
-      Balonmano: 'Balonmano', 
-    },
-  },
-};
+
+function AuthStack() {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Login" component={LoginScreen} />
+      <Stack.Screen name="Register" component={RegisterScreen} />
+    </Stack.Navigator>
+  );
+}
+
+function AdminTabs() {
+  return (
+    <Tab.Navigator
+      initialRouteName="Admin_Home"
+      screenOptions={{
+        headerShown: false,
+        tabBarActiveTintColor: "#43ff4cff",
+        tabBarInactiveTintColor: "#ffffff",
+        tabBarStyle: { display: 'none' }, 
+      }}
+    >
+      <Tab.Screen 
+        name="Login" 
+        component={LoginScreen}
+        options={{ tabBarIcon: ({ size }) => <Image source={HomeIcon} style={{ width: size, height: size }} /> }}
+      />
+      <Tab.Screen 
+        name="Register" 
+        component={RegisterScreen}
+        options={{ tabBarIcon: ({ size }) => <Image source={HomeIcon} style={{ width: size, height: size }} /> }}
+      />
+      <Tab.Screen 
+        name="Admin_Home" 
+        component={Admin_HomeScreen}
+        options={{ tabBarIcon: ({ size }) => <Image source={HomeIcon} style={{ width: size, height: size }} /> }}
+      />
+      <Tab.Screen 
+        name="Admin_Users" 
+        component={Admin_UsersScreen}
+        options={{ tabBarIcon: ({ size }) => <Image source={UserIcon} style={{ width: size, height: size }} /> }}
+      />
+      <Tab.Screen 
+        name="Admin_Universities" 
+        component={Admin_UniversitiesScreen}
+        options={{ tabBarIcon: ({ size }) => <Image source={UserIcon} style={{ width: size, height: size }} /> }}
+      />
+      <Tab.Screen 
+        name="Admin_Teams" 
+        component={Admin_TeamsScreen}
+        options={{ tabBarIcon: ({ size }) => <Image source={TeamIcon} style={{ width: size, height: size }} /> }}
+      />
+      <Tab.Screen name="Admin_Competitions" component={Admin_CompetitionsScreen} options={{ tabBarButton: () => null }} />
+      <Tab.Screen name="Admin_Futbol" component={Admin_FutbolScreen} options={{ tabBarButton: () => null }} />
+      <Tab.Screen name="Admin_Padel" component={Admin_PadelScreen} options={{ tabBarButton: () => null }} />
+      <Tab.Screen name="Admin_Basquet" component={Admin_BasquetScreen} options={{ tabBarButton: () => null }} />
+      <Tab.Screen name="Admin_Balonmano" component={Admin_BalonmanoScreen} options={{ tabBarButton: () => null }} />
+    </Tab.Navigator>
+  );
+}
+
+function UserTabs() {
+  return (
+    <Tab.Navigator
+      initialRouteName="User_Home"
+      screenOptions={{
+        headerShown: false,
+        tabBarActiveTintColor: "#43ff4cff",
+        tabBarInactiveTintColor: "#ffffff",
+        tabBarStyle: { display: 'none' },
+      }}
+    >
+      <Tab.Screen 
+        name="Login" 
+        component={LoginScreen}
+        options={{ tabBarIcon: ({ size }) => <Image source={HomeIcon} style={{ width: size, height: size }} /> }}
+      />
+      <Tab.Screen 
+        name="Register" 
+        component={RegisterScreen}
+        options={{ tabBarIcon: ({ size }) => <Image source={HomeIcon} style={{ width: size, height: size }} /> }}
+      />
+      <Tab.Screen 
+        name="User_Home" 
+        component={User_HomeScreen}
+        options={{ tabBarIcon: ({ size }) => <Image source={HomeIcon} style={{ width: size, height: size }} /> }}
+      />
+      <Tab.Screen name="User_Futbol" component={User_FutbolScreen} options={{ tabBarButton: () => null }} />
+      <Tab.Screen name="User_Padel" component={User_PadelScreen} options={{ tabBarButton: () => null }} />
+      <Tab.Screen name="User_Basquet" component={User_BasquetScreen} options={{ tabBarButton: () => null }} />
+      <Tab.Screen name="User_Balonmano" component={User_BalonmanoScreen} options={{ tabBarButton: () => null }} />
+    </Tab.Navigator>
+  );
+}
 
 export default function App() {
+  const [userRole, setUserRole] = useState(null); 
+
+  const authContext = useMemo(() => ({
+    signIn: (rol) => { setUserRole(rol); },
+    signOut: () => { setUserRole(null); }, 
+  }), []);
+
   return (
-    <NavigationContainer 
-      linking={linking}
-      fallback={<Text>Cargando...</Text>} 
-    >
-
-      <Tab.Navigator
-        initialRouteName="Home" // Home pantalla inicial
-        screenOptions={({ route }) => ({
-          tabBarActiveTintColor: "#43ff4cff",
-          tabBarInactiveTintColor: "#ffffffff",
-          tabBarStyle: {
-            display: 'none',
-          },
-        })}
-      > 
-
-        <Tab.Screen 
-          name="Usuarios" 
-          component={UsersScreen} 
-          options={{ // ⬅️ Usa la prop options
-            headerShown: false,
-            tabBarIcon: ({size }) => ( // ⬅️ Define la función tabBarIcon
-              <Image 
-                source={UserIcon} // ⬅️ Usa la imagen importada
-                style={{ width: size, height: size, }} // ⬅️ Usa size y color
-              />
-            ),
-          }}
-        />
-        <Tab.Screen 
-          name="Home" 
-          component={HomeScreen}
-          options ={{
-            headerShown: false,
-            tabBarIcon: ({size }) => ( // ⬅️ Define la función tabBarIcon
-              <Image
-                source={HomeIcon} // ⬅️ Usa la imagen importada
-                style={{ width: size, height: size, }} // ⬅️ Usa size y color
-              />
-            ),
-          }}
-          />
-        <Tab.Screen 
-          name="Universidades" 
-          component={UniversitiesScreen} 
-          options={{ // ⬅️ Usa la prop options
-            headerShown: false,
-            tabBarIcon: ({size }) => ( // ⬅️ Define la función tabBarIcon
-              <Image 
-                style={{ width: size, height: size, }} // ⬅️ Usa size y color
-              />
-            ),
-          }}
-        />
-        <Tab.Screen 
-          name="Teams" 
-          component={TeamsScreen}
-          options ={{
-            headerShown: false,
-            tabBarIcon: ({size }) => ( // ⬅️ Define la función tabBarIcon
-              <Image
-                source={TeamIcon} // ⬅️ Usa la imagen importada
-                style={{ width: size, height: size, }} // ⬅️ Usa size y color
-              />
-            ),
-          }}
-          />
-        <Tab.Screen 
-          name="Competitions" 
-          component={CompetitionsScreen}
-          options ={{
-            headerShown: false,
-            tabBarButton: () => null, // Esto oculta el ícono en la barra inferior (Tab Bar)
-          }}
-          />
-          <Tab.Screen 
-          name="Futbol" // El nombre de la ruta que usas en navigation.navigate('Futbol')
-          component={FutbolScreen}
-          options={{
-            headerShown: false, // Probablemente quieras ver un encabezado en esta pantalla
-            tabBarButton: () => null, // Esto oculta el ícono en la barra inferior (Tab Bar)
-          }}
-        />
-        <Tab.Screen 
-          name="Padel" // El nombre de la ruta que usas en navigation.navigate('Futbol')
-          component={PadelScreen}
-          options={{
-            headerShown: false, // Probablemente quieras ver un encabezado en esta pantalla
-            tabBarButton: () => null, // Esto oculta el ícono en la barra inferior (Tab Bar)
-          }}
-        />
-        <Tab.Screen 
-          name="Basquet" // El nombre de la ruta que usas en navigation.navigate('Futbol')
-          component={BasquetScreen}
-          options={{
-            headerShown: false, // Probablemente quieras ver un encabezado en esta pantalla
-            tabBarButton: () => null, // Esto oculta el ícono en la barra inferior (Tab Bar)
-          }}
-        />
-        <Tab.Screen 
-          name="Balonmano" // El nombre de la ruta que usas en navigation.navigate('Futbol')
-          component={BalonmanoScreen}
-          options={{
-            headerShown: false, // Probablemente quieras ver un encabezado en esta pantalla
-            tabBarButton: () => null, // Esto oculta el ícono en la barra inferior (Tab Bar)
-          }}
-        />
-               
-      </Tab.Navigator>
-    </NavigationContainer>
+    <AuthContext.Provider value={authContext}>
+      <NavigationContainer fallback={<Text>Cargando...</Text>}>
+        {userRole === null ? (
+          <AuthStack />
+        ) : userRole === 'Admin' ? (
+          <AdminTabs />
+        ) : (
+          <UserTabs />
+        )}
+      </NavigationContainer>
+    </AuthContext.Provider>
   );
 }

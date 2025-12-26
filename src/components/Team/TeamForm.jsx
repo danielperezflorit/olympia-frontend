@@ -45,13 +45,10 @@ export default function TeamForm({ onTeamAdded, teamToEdit }) {
 
   useEffect(() => {
     if (teamToEdit) {
-      // MODO EDICIÓN: Carga los datos del objeto
       setName(teamToEdit.name);
-      // Asegúrate de que la competición seleccionada es el ID
       setSelectedCompetition(teamToEdit.competition || ""); 
       setSelectedUniversity(teamToEdit.universities || "");
     } else {
-      // MODO CREACIÓN (o modal cerrado): Limpia los campos
       setName("");
       setSelectedCompetition("");
       setSelectedUniversity("");
@@ -100,17 +97,14 @@ export default function TeamForm({ onTeamAdded, teamToEdit }) {
         style={styles.input}
       />
 
-      {/* --- SELECCIÓN DE UNIVERSIDAD (ÚNICA) --- */}
       <Text style={styles.label}>Seleccionar Universidad:</Text> 
       <ScrollView style={styles.multiSelectContainer}>
         {availableUniversities.map(university => {
-            // 👈 CAMBIO: Comprueba si la ID de la universidad coincide con la ID seleccionada
             const isSelected = selectedUniversity === university._id;
             
             return (
               <TouchableOpacity 
                 key={university._id} 
-                // 👈 CAMBIO: Usamos la nueva función handleSelectUniversity
                 onPress={() => handleSelectUniversity(university._id)} 
                 style={[
                     styles.universityItem,
@@ -118,8 +112,6 @@ export default function TeamForm({ onTeamAdded, teamToEdit }) {
                 ]}
               >
                 <Text style={styles.universityItemText}>
-                    {/* Indicador visual de selección */}
-                    {/* 💡 Nota: Puedes usar un círculo (●) para indicar selección única */}
                     {isSelected ? '● ' : '○ '}
                     {university.name}
                 </Text>
@@ -129,17 +121,14 @@ export default function TeamForm({ onTeamAdded, teamToEdit }) {
       </ScrollView>
 
 
-      {/* --- SELECCIÓN DE COMPETICIÓN (ÚNICA) --- */}
       <Text style={styles.label}>Seleccionar Competición:</Text> 
       <ScrollView style={styles.multiSelectContainer}>
         {availableCompetitions.map(competition => {
-            // 👈 CAMBIO: Comprueba si la ID de la competición coincide con la ID seleccionada
             const isSelected = selectedCompetition === competition._id;
             
             return (
               <TouchableOpacity 
                 key={competition._id} 
-                // 👈 CAMBIO: Usamos la nueva función handleSelectCompetition
                 onPress={() => handleSelectCompetition(competition._id)}
                 style={[
                     styles.competitionItem,
@@ -147,7 +136,6 @@ export default function TeamForm({ onTeamAdded, teamToEdit }) {
                 ]}
               >
                 <Text style={styles.competitionItemText}>
-                    {/* Indicador visual de selección */}
                     {isSelected ? '● ' : '○ '}
                     {competition.name}
                 </Text>
@@ -198,7 +186,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   multiSelectContainer: {
-    maxHeight: 200, // Limita la altura para que sea scrollable
+    maxHeight: 200, 
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 5,
@@ -210,7 +198,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#eee',
   },
   competitionItemSelected: {
-        backgroundColor: '#e6f7ff', // Un color más claro para indicar selección
+        backgroundColor: '#e6f7ff',
     },
     competitionItemText: {
         fontSize: 16,

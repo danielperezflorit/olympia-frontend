@@ -1,33 +1,29 @@
 import React, {useState} from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native'; // ScrollView eliminado
-import GlobalMenu from '../../components/GlobalMenu';
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import Admin_GlobalMenu from '../../../components/Admin_GlobalMenu';
 
 const FixedHeader = () => (
     <View style={headerStyles.headerContainer}>
-        {/* LOGO */}
         <Image 
             style={headerStyles.logo} 
-            source={require('../../../assets/unite!.png')}
+            source={require('../../../../assets/unite!.png')}
         />
-        <Text style={headerStyles.title}>PÁDEL</Text>
-
+        <Text style={headerStyles.title}>BASQUET</Text>
     </View>
 );
 
-export default function PadelScreen({ navigation }) {
+export default function Admin_BasquetScreen({ navigation }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false); 
     
     const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
     return (
         <View style={styles.container}>
-            {/* 1. CABECERA FIJA (Solo Logo) */}
             <FixedHeader />
 
-            {/* 2. ✅ BOTÓN HAMBURGUESA FLOTANTE: INDEPENDIENTE, con Z-INDEX superior (1001) */}
             <TouchableOpacity 
                 style={[
                     headerStyles.menuIcon, 
-                    { zIndex: 1001 }, // Z-INDEX más alto que GlobalMenu (999)
+                    { zIndex: 1001 },
                     isMenuOpen && headerStyles.menuIconBackgroundActive 
                 ]} 
                 onPress={toggleMenu}
@@ -38,9 +34,8 @@ export default function PadelScreen({ navigation }) {
                 ]}>☰</Text> 
             </TouchableOpacity>
             
-            {/* 3. RENDERIZAR MENÚ (zIndex: 999) */}
             {isMenuOpen && (
-                <GlobalMenu 
+                <Admin_GlobalMenu 
                     navigation={navigation} 
                     onClose={() => setIsMenuOpen(false)}
                 />
@@ -62,15 +57,13 @@ const headerStyles = StyleSheet.create({
         borderBottomWidth: 1, 
         borderBottomColor: '#eee',
         zIndex: 10, 
-        // HACEMOS LA CABECERA ABSOLUTA PARA QUE PERMANEZCA FIJA
         position: 'absolute',
         top: 0,
         reight: 0,
     },
-    // ✅ ÍCONO AHORA ES ABSOLUTO Y SEPARADO DEL HEADER CONTAINER
     menuIcon: {
-        position: 'absolute', // Clave para flotar
-        top: 45, // Ajuste para que se vea bien en el header
+        position: 'absolute',
+        top: 45, 
         right: 10,
         padding: 5,
         borderRadius: 5,
@@ -78,7 +71,7 @@ const headerStyles = StyleSheet.create({
     menuIconText: {
         fontSize: 30,
         fontWeight: 'bold',
-        color: '#0084C9', // Color predeterminado (azul)
+        color: '#0084C9', 
     },
     menuIconBackgroundActive: {
         backgroundColor: '#0084C9', 
@@ -90,7 +83,6 @@ const headerStyles = StyleSheet.create({
         width: 300, 
         height: 80, 
         resizeMode: 'contain',
-        // Ajustar la posición para evitar el ícono de hamburguesa
         marginLeft: 55, 
     },
     title: {
@@ -100,8 +92,8 @@ const headerStyles = StyleSheet.create({
       textAlign: "center",
       color: "#0084C9",
       fontWeight: 'bold',
-      left: '50%', // Mueve el punto de inicio del elemento al centro horizontal del contenedor padre
-      transform: 'translateX(-50%)', // Mueve el elemento hacia la izquierda el 50% de SU PROPIO ancho
+      left: '50%',
+      transform: 'translateX(-50%)', 
   },
 });
 

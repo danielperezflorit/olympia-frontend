@@ -15,13 +15,13 @@ export default function UserForm({ onUserAdded, userToEdit }) {
   const [selectedUniversity, setSelectedUniversity] = useState("");
   const [availableTeams, setAvailableTeams] = useState([]); 
   const [selectedTeam, setSelectedTeam] = useState(""); 
+  const [type, setType] = useState("user");
   
 
   useEffect(() => {
     async function loadTeams() {
       const teams = await fetchTeams();
       setAvailableTeams(teams);
-      // Establecer un blanco como preseleccionado por defecto
       if (teams.length > 0) {
         setSelectedTeam(""); 
       }
@@ -33,7 +33,6 @@ export default function UserForm({ onUserAdded, userToEdit }) {
     async function loadUniversities() {
       const universities = await fetchUniversities();
       setAvailableUniversities(universities);
-      // Establecer un blanco como preseleccionado por defecto
       if (universities.length > 0) {
         setSelectedUniversity(""); 
       }
@@ -43,19 +42,19 @@ export default function UserForm({ onUserAdded, userToEdit }) {
 
   useEffect(() => {
       if (userToEdit) {
-        // MODO EDICIÓN: Carga los datos del objeto
         setName(userToEdit.name);
         setMail(userToEdit.mail);
         setPassword(userToEdit.password);
         setSelectedUniversity(userToEdit.university || "");
         setSelectedTeam(userToEdit.team || ""); 
+        setType(userToEdit.type || "user");
       } else {
-        // MODO CREACIÓN (o modal cerrado): Limpia los campos
         setName("");
         setMail("");
         setPassword("");
         setSelectedUniversity("");
         setSelectedTeam("");
+        setType("user");
       }
     }, [userToEdit]);
 
@@ -65,7 +64,7 @@ export default function UserForm({ onUserAdded, userToEdit }) {
         return;
     }
     try {
-      const userData = { name, mail, password, university: selectedUniversity, team: selectedTeam };
+      const userData = { name, mail, password, university: selectedUniversity, team: selectedTeam, type };
       if (userToEdit) {
         await updateUser(userToEdit._id, userData); 
       } else {
@@ -79,7 +78,7 @@ export default function UserForm({ onUserAdded, userToEdit }) {
 
   return (
     <View style={styles.form}>
-      <Text style={styles.title}>Agregar Usuario</Text>
+      <Text style={styles.title}>{userToEdit ? "Editar Usuario" : "Agregar Usuario"}</Text>      
       <TextInput
         placeholder="Nombre"
         value={name}
@@ -99,7 +98,7 @@ export default function UserForm({ onUserAdded, userToEdit }) {
         placeholder="Contraseña"
         value={password}
         onChangeText={setPassword}
-        secureTextEntry={true} // Para ocultar la contraseña
+        secureTextEntry={true} 
         style={styles.input}
       />
 
@@ -111,7 +110,6 @@ export default function UserForm({ onUserAdded, userToEdit }) {
           >
             <Picker.Item label="--- Seleccione una universidad ---" value="" />
             {availableUniversities.map(university => (
-              // Usar team._id como valor, y team.name como etiqueta
               <Picker.Item key={university._id}label={university.name} value={university._id} /> 
             ))}
           </Picker>
@@ -125,9 +123,20 @@ export default function UserForm({ onUserAdded, userToEdit }) {
           >
             <Picker.Item label="--- Seleccione un equipo ---" value="" />
             {availableTeams.map(team => (
-              // Usar team._id como valor, y team.name como etiqueta
               <Picker.Item key={team._id}label={team.name} value={team._id} /> 
             ))}
+          </Picker>
+        </View>
+      <Text style={styles.label}>Seleccionar Rol:</Text>
+        <View style={styles.pickerContainer}>
+          <Picker
+            selectedValue={type}
+            onValueChange={(itemValue) => setType(itemValue)}
+          >
+            <Picker.Item label="User" value="user" />
+            <Picker.Item label="Admin" value="admin" />
+            <Picker.Item label="Captain" value="captain" />
+            <Picker.Item label="Referee" value="referee" />
           </Picker>
         </View>
       <Button title="Enviar" onPress={handleSubmit} />

@@ -1,24 +1,24 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useContext } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { CommonActions } from '@react-navigation/native';
+import { AuthContext } from '../context/AuthContext';
+import { logoutUser } from '../services/userService';
 
 const menuRoutes = [
-    { name: 'Home', label: 'Inicio' },
-    { name: 'Usuarios', label: 'Usuarios' },
-    { name: 'Universidades', label: 'Universidades' },
-    { name: 'Teams', label: 'Equipos' },
-    {name: 'Competitions', label: 'Competiciones' },
-    { name: 'Futbol', label: 'Fútbol' },
-    { name: 'Padel', label: 'Pádel' }, 
-    { name: 'Basquet', label: 'Básquet' }, 
-    { name: 'Balonmano', label: 'Balonmano' },
+    { name: 'Register', label: 'Registro' },
+    { name: 'Login', label: 'Login' },
+    { name: 'User_Home', label: 'Inicio' },
+    { name: 'User_Futbol', label: 'Fútbol' },
+    { name: 'User_Padel', label: 'Pádel' }, 
+    { name: 'User_Basquet', label: 'Básquet' }, 
+    { name: 'User_Balonmano', label: 'Balonmano' },
 ];
 
-const GlobalMenu = ({ navigation, onClose }) => {
+const User_GlobalMenu = ({ navigation, onClose }) => {
     
     const handleNavigate = (routeName) => {
         onClose(); 
-        if (['Home', 'Usuarios', 'Universidades', 'Teams', 'Competitions', 'Futbol', 'Padel', 'Basquet', 'Handball'].includes(routeName)) {
+        if (['Register','Login','User_Home', 'User_Futbol', 'User_Padel', 'User_Basquet', 'User_Handball'].includes(routeName)) {
             navigation.dispatch(
                 CommonActions.reset({
                     index: 0,
@@ -26,22 +26,34 @@ const GlobalMenu = ({ navigation, onClose }) => {
                 })
             );
         } else {
-            // Para las otras pantallas (Futbol, Padel, etc.) el navigate simple funciona bien.
             navigation.navigate(routeName); 
+        }
+    };
+    const { signOut } = useContext(AuthContext);
+    const handleLogout = async () => {
+        try {
+            await logoutUser(); 
+            onClose(); 
+            signOut(); 
+        } catch (error) {
+            Alert.alert("Error", "No se pudo cerrar sesión correctamente.");
         }
     };
 
     return (
-        // Contenedor principal que se superpone a todo
         <TouchableOpacity 
             style={styles.overlay} 
-            onPress={onClose} // Cierra el menú al tocar fuera del área del menú
+            onPress={onClose} 
             activeOpacity={1}
         >
-            {/* El menuContainer ya no cierra al tocar, para evitar que el toque pase al overlay */}
             <View style={styles.menuContainer}> 
                 
-                {/* 1. ESPACIO PARA EL BOTÓN (para evitar que se solape visualmente) */}
+                <View style={styles.topActionsContainer}>
+                                    <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
+                                        <Text style={styles.logoutText}>← Cerrar Sesión</Text>
+                                    </TouchableOpacity>
+                                </View>
+                
                 <View style={styles.menuButtonSpace} />
 
                 <Text style={styles.menuTitle}>Menú OLYMPIA</Text>
@@ -64,7 +76,7 @@ const styles = StyleSheet.create({
     overlay: {
         ...StyleSheet.absoluteFillObject,
         backgroundColor: 'rgba(0, 0, 0, 0.5)', 
-        zIndex: 999, // ✅ Z-Index menor que el del botón (1001)
+        zIndex: 999, 
     },
     menuContainer: {
         width: 250, 
@@ -76,8 +88,24 @@ const styles = StyleSheet.create({
         top: 0,
         bottom: 0,
     },
+    topActionsContainer: {
+        marginTop: 50, 
+        marginBottom: 10,
+        alignItems: 'flex-start', 
+    },
+    logoutButton: {
+        paddingVertical: 8,
+        paddingHorizontal: 12,
+        backgroundColor: 'rgba(255, 255, 255, 0.2)', 
+        borderRadius: 5,
+    },
+    logoutText: {
+        color: '#ffdddd', 
+        fontWeight: 'bold',
+        fontSize: 14,
+    },
     menuButtonSpace: {
-        height: 100,
+        height: 20,
     },
     menuTitle: {
         fontSize: 22,
@@ -100,4 +128,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default GlobalMenu;
+export default User_GlobalMenu;

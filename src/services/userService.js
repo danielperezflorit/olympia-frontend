@@ -1,11 +1,11 @@
 import axios from "axios";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 //const API_URL_USER = "http://192.168.0.21:3000/user";
-//const API_URL_USER = "http://192.168.1.38:3000/user";
-const API_URL_USER = "http://10.5.59.106:3000/user";
+const API_URL_USER = "http://192.168.1.41:3000/user";
+//const API_URL_USER = "http://10.5.59.106:3000/user";
 
 
-// Obtener un usuario por su ID
 export const fetchUserById = async (userId) => {
   try {
     const response = await axios.get(`${API_URL_USER}/${userId}`);
@@ -16,7 +16,6 @@ export const fetchUserById = async (userId) => {
   }
 };
 
-// Obtener la lista de todos los usuarios
 export const fetchUsers = async () => {
   try {
     const response = await axios.get(`${API_URL_USER}/all`);
@@ -28,7 +27,6 @@ export const fetchUsers = async () => {
   }
 };
 
-// Agregar un nuevo usuario
 export const addUser = async (newUser) => {
   try {
     await axios.post(API_URL_USER, newUser);
@@ -43,7 +41,6 @@ export const deleteUser = async (userId) => {
     if (!userId) {
       throw new Error("El ID del usuario es indefinido");
     }
-    // Finalmente eliminamos al usuario de la base de datos
     await axios.delete(`${API_URL_USER}/${userId}`);
   } catch (error) {
     console.error("Error al eliminar usuario:", error);
@@ -56,7 +53,6 @@ export const updateUser = async (userId, updatedUser) => {
     if (!userId) {
       throw new Error("El ID del equipo es indefinido");
     }
-    // Finalmente actualizamos al equipo en la base de datos
     await axios.put(`${API_URL_USER}/${userId}`, updatedUser);
   }catch (error) {
     console.error("Error al actualizar equipo:", error);
@@ -64,4 +60,36 @@ export const updateUser = async (userId, updatedUser) => {
   }
 }
 
+export const loginUser = async (credentials) => {
+  try {
+    const response = await axios.post(`${API_URL_USER}/login`, credentials);
+    
+    if (response.data.token) {
+        await AsyncStorage.setItem('userToken', response.data.token);
+        await AsyncStorage.setItem('userInfo', JSON.stringify(response.data.user));
+    }
 
+    return response.data;
+  } catch (error) {
+    console.error("Error en login:", error);
+    throw error;
+  }
+};
+
+export const logoutUser = async () => {
+  try {
+    try {
+        await axios.post(`${API_URL_USER}/logOut`);
+    } catch (backendError) {
+        console.warn("El backend no respondió al logout, pero cerraremos sesión localmente.");
+    }
+
+    await AsyncStorage.removeItem('userToken');
+    await AsyncStorage.removeItem('userInfo');
+
+    console.log("Sesión cerrada localmente");
+  } catch (error) {
+    console.error("Error al cerrar sesión:", error);
+    throw error;
+  }
+};
