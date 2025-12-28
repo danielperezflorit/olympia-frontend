@@ -1,7 +1,7 @@
 import axios from "axios";
 
 //const API_URL_SPORT = "http://192.168.0.21:3000/sport";
-const API_URL_SPORT = "http://192.168.1.41:3000/sport";
+const API_URL_SPORT = "http://192.168.1.36:3000/sport";
 //const API_URL_SPORT = "http://10.5.59.106:3000/sport";
 
 export const fetchSportById = async (sportId) => {

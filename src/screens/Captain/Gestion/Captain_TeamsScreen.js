@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Text, TouchableOpacity, Modal, Image } from "react-native";
+import { View, StyleSheet, Text, TouchableOpacity, Image } from "react-native";
 import { useFocusEffect } from "@react-navigation/native"; 
-import TeamForm from "../../../components/Team/TeamForm.jsx";
-import Admin_TeamList from "../../../components/Team/Admin_TeamList.jsx";
-import { fetchTeams, deleteTeam } from "../../../services/teamService.js";
+import Captain_TeamList from "../../../components/Team/Captain_TeamList.jsx";
+import { fetchTeamsByCaptain } from "../../../services/teamService.js";
 import Team from "../../../models/teammodel.js";
-import Admin_GlobalMenu from "../../../components/Admin_GlobalMenu.jsx";
-import SearchBar from "../../../components/SearchBar.jsx";
+import Captain_GlobalMenu from "../../../components/Captain_GlobalMenu.jsx";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const FixedHeader = () => (
     <View style={headerStyles.headerContainer}>
@@ -18,35 +17,38 @@ const FixedHeader = () => (
     </View>
 );
 
-export default function Admin_TeamsScreen({ navigation }) {
+export default function Captain_TeamsScreen({ navigation }) {
   const [teams, setTeams] = useState([]);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [teamToEdit, setTeamToEdit] = useState(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
-
-
-  const loadTeams = async () => {
+const loadTeams = async () => {
     try {
-      const [teamsData] = await Promise.all([
-        fetchTeams(),
-      ]);
+      const userInfoString = await AsyncStorage.getItem('userInfo');
+      
+      if (!userInfoString) {
+          console.error("No hay usuario logueado");
+          return;
+      }
+
+      const userInfo = JSON.parse(userInfoString);
+      const captainId = userInfo._id; 
+
+      const teamsData = await fetchTeamsByCaptain(captainId);
 
       const teamInstances = teamsData.map(
         (team) =>
           new Team(
             team._id,
             team.name,
-            team.university,
+            team.university, 
             team.competition,
-            team.captain,
-            team.players,
+            team.captain, 
+            team.players,     
             team.matches,
             team.wins,
             team.losses,
-            team.draws,
+            team.draws
           )
       );
 
@@ -55,48 +57,12 @@ export default function Admin_TeamsScreen({ navigation }) {
       console.error("Error al cargar equipos:", error);
     }
   };
-
-
+  
   useFocusEffect(
     React.useCallback(() => {
       loadTeams(); 
     }, [])
   );
-
-  const handleDeleteTeam = async (team_id) => {
-    try {
-      await deleteTeam(team_id);
-
-      setTeams((prevTeams) => prevTeams.filter((team) => team._id !== team_id));
-
-      loadTeams();
-    } catch (error) {
-      console.error("Error al eliminar equipo:", error);
-    }
-  };
-
-  const handleUpdateTeam = async (team_id) => {
-    setTeamToEdit(team_id);
-    setModalVisible(true);
-  };
-
-  const handleModalClose = () => {
-    setModalVisible(false);
-    setTeamToEdit(null); 
-  };
-  
-  const handleFormSubmitted = () => {
-    handleModalClose();
-    loadTeams(); 
-  };
-
-  const filteredTeams = teams.filter((team) => {
-    const query = searchQuery.toLowerCase();
-    return (
-      team.getFullName().toLowerCase().includes(query) ||
-      team.getUniversity().toLowerCase().includes(query)
-    );
-  });
 
   return (
     <View style={styles.container}>
@@ -115,50 +81,15 @@ export default function Admin_TeamsScreen({ navigation }) {
           </Text> 
           </TouchableOpacity>  
           {isMenuOpen && (
-            <Admin_GlobalMenu 
+            <Captain_GlobalMenu 
               navigation={navigation} 
               onClose={() => setIsMenuOpen(false)}
             />
           )}
-      <View style={{ marginBottom: 10 }}>
-        <SearchBar 
-          value={searchQuery}
-          onChangeText={setSearchQuery}
-          placeholder="Buscar por nombre o universidad..."
-        />
-      </View>
-      
-      <Admin_TeamList
-        teams={filteredTeams}
-        onDeleteTeam={handleDeleteTeam}
-        onUpdateTeam={handleUpdateTeam}
+      <Captain_TeamList
+        teams={teams}
       />
-      <TouchableOpacity style={styles.openButton} onPress={() => {setTeamToEdit(null); setModalVisible(true);}} >
-        <Text style={styles.buttonText}>Agregar Equipo</Text>
-      </TouchableOpacity>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => setModalVisible(false)}
-       >
-        <View style={styles.modalWrapper}>
-        <View style={styles.modalContainer}>
-          
-          <TeamForm
-            teamToEdit={teamToEdit}        
-            onTeamAdded={handleFormSubmitted} 
-          />
-          
-          <TouchableOpacity
-            style={styles.closeButton}
-            onPress={handleModalClose} 
-          >
-            <Text style={styles.closeButtonText}>Cerrar</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-      </Modal>
+      
     </View>
   );
 }

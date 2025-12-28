@@ -1,7 +1,7 @@
 import axios from "axios";
 
 //const API_URL_TEAM = "http://192.168.0.21:3000/team"; 
-const API_URL_TEAM = "http://192.168.1.41:3000/team";
+const API_URL_TEAM = "http://192.168.1.36:3000/team";
 //const API_URL_TEAM = "http://10.5.59.106:3000/team";
 
 export const fetchTeamById = async (teamId) => {
@@ -66,6 +66,17 @@ export const fetchCompetitionRanking = async (competitionId) => {
   } catch (error) {
     console.error("Error al obtener la clasificación:", error);
     throw error;
+  }
+};
+
+export const fetchTeamsByCaptain = async (captainId) => {
+  try {
+    const response = await axios.get(`${API_URL_TEAM}/captain/${captainId}`);
+    console.log("Equipos del capitán obtenidos:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error al obtener los equipos del capitán:", error);
+    return []; 
   }
 };
 

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 //const API_URL_COMPETITION = "http://192.168.0.21:3000/competition"; 
-const API_URL_COMPETITION = "http://192.168.1.41:3000/competition";
+const API_URL_COMPETITION = "http://192.168.1.36:3000/competition";
 //const API_URL_COMPETITION = "http://10.5.59.106:3000/competition";
 
 export const fetchCompetitionById = async (competitionId) => {

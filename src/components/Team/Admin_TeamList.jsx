@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, Modal } from "react-native";
 
 
-export default function TeamList({
+export default function Admin_TeamList({
     teams,
     onDeleteTeam,
     onUpdateTeam,
@@ -17,7 +17,8 @@ export default function TeamList({
         <View style={styles.item}>
           <Text style={styles.label}>Nombre: {item.getFullName()}</Text> 
           <Text style={styles.label}>Universidad: {item.getUniversity()}</Text> 
-          <Text style={styles.label}>Competicion: {item.getCompetition()}</Text>
+          <Text style={styles.label}>Competición: {item.getCompetition()}</Text>
+          <Text style={styles.label}>Capitán: {item.getCaptain()}</Text>
           <Text style={styles.label}>Jugadores: {item.getPlayers()}</Text>
           <Text style={styles.label}>Partidos Jugados: {item.getMatches()}</Text> 
           <Text style={styles.label}>Victorias: {item.getWins()}</Text>

@@ -6,6 +6,7 @@ import UserList from "../../../components/User/UserList.jsx";
 import { fetchUsers, deleteUser } from "../../../services/userService.js";
 import User from "../../../models/usermodel.js";
 import Admin_GlobalMenu from "../../../components/Admin_GlobalMenu.jsx";
+import SearchBar from "../../../components/SearchBar.jsx";
 
 const FixedHeader = () => (
     <View style={headerStyles.headerContainer}>
@@ -22,6 +23,7 @@ export default function Admin_UsersScreen({ navigation}) {
   const [modalVisible, setModalVisible] = useState(false);
   const [userToEdit, setUserToEdit] = useState(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
 
@@ -86,6 +88,14 @@ const handleUpdateUser = async (user_id) => {
     loadUsers(); 
   };
 
+  const filteredUsers = users.filter((user) => {
+    const query = searchQuery.toLowerCase();
+    return (
+      user.getFullName().toLowerCase().includes(query) ||
+      user.getEmail().toLowerCase().includes(query)
+    );
+  });
+
   return (
   
     <View style={styles.container}>
@@ -110,12 +120,20 @@ const handleUpdateUser = async (user_id) => {
             />
           )}
 
-      
+      <View style={{ marginBottom: 10 }}>
+        <SearchBar 
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+            placeholder="Buscar por nombre o email..."
+        />
+      </View>
+
       <UserList
-        users={users}
+        users={filteredUsers} 
         onDeleteUser={handleDeleteUser}
         onUpdateUser={handleUpdateUser}
       />
+
       <TouchableOpacity style={styles.openButton} onPress={() => {setUserToEdit(null); setModalVisible(true);}}>
         <Text style={styles.buttonText}>Agregar Usuario</Text>
       </TouchableOpacity>

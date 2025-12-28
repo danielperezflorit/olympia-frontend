@@ -1,14 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { 
-    View, 
-    Text, 
-    TextInput, 
-    TouchableOpacity, 
-    StyleSheet, 
-    Image, 
-    Alert,
-    ActivityIndicator 
-} from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Alert,ActivityIndicator } from 'react-native';
 import { loginUser } from '../services/userService';
 import { AuthContext } from '../context/AuthContext';
 

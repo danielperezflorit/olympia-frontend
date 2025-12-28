@@ -1,9 +1,10 @@
 export default class Team {
-  constructor(_id, name, university, competition, players = [], matches, wins, losses, draws) {
+  constructor(_id, name, university, competition, captain, players = [], matches, wins, losses, draws) {
     this._id = _id;
     this.name = name;
     this.university = university;
     this.competition = competition;
+    this.captain = captain;
     this.players = players;
     this.matches = matches;
     this.wins = wins;
@@ -27,6 +28,13 @@ export default class Team {
       return this.competition.name;
     }
     return 'Competición Desconocida';
+  }
+
+  getCaptain() {
+    if (this.captain && typeof this.captain === 'object' && this.captain.name) {
+      return this.captain.name;
+    }
+    return 'Capitán Desconocido';
   }
 
   getPlayers() {

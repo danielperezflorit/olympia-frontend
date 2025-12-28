@@ -2,7 +2,7 @@ import axios from "axios";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 //const API_URL_USER = "http://192.168.0.21:3000/user";
-const API_URL_USER = "http://192.168.1.41:3000/user";
+const API_URL_USER = "http://192.168.1.36:3000/user";
 //const API_URL_USER = "http://10.5.59.106:3000/user";
 
 
