@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { View, TextInput, Button, Text, StyleSheet } from "react-native";
 import { addUser, updateUser } from "../../services/userService";
 import { fetchUniversities } from "../../services/universityService";
@@ -8,6 +9,7 @@ import { Picker } from "@react-native-picker/picker";
 
 
 export default function UserForm({ onUserAdded, userToEdit }) {
+  const { t } = useTranslation();
   const [name, setName] = useState("");
   const [mail, setMail] = useState("");
   const [password, setPassword] = useState("");
@@ -16,7 +18,6 @@ export default function UserForm({ onUserAdded, userToEdit }) {
   const [availableTeams, setAvailableTeams] = useState([]); 
   const [selectedTeam, setSelectedTeam] = useState(""); 
   const [type, setType] = useState("user");
-  
 
   useEffect(() => {
     async function loadTeams() {
@@ -78,16 +79,16 @@ export default function UserForm({ onUserAdded, userToEdit }) {
 
   return (
     <View style={styles.form}>
-      <Text style={styles.title}>{userToEdit ? "Editar Usuario" : "Agregar Usuario"}</Text>      
+      <Text style={styles.title}>{userToEdit ? t("userform.edit_user") : t("userform.add_user")}</Text>      
       <TextInput
-        placeholder="Nombre"
+        placeholder= {t("userform.name_placeholder")}
         value={name}
         onChangeText={setName}
         style={styles.input}
       />
 
       <TextInput
-        placeholder="Email"
+        placeholder= {t("userform.email_placeholder")}
         value={mail}
         onChangeText={setMail}
         style={styles.input}
@@ -95,39 +96,39 @@ export default function UserForm({ onUserAdded, userToEdit }) {
       />
 
       <TextInput
-        placeholder="Contraseña"
+        placeholder= {t("userform.password_placeholder")}
         value={password}
         onChangeText={setPassword}
         secureTextEntry={true} 
         style={styles.input}
       />
 
-      <Text style={styles.label}>Seleccionar Universidad:</Text>
+      <Text style={styles.label}>{t("userform.select_university")}:</Text>
         <View style={styles.pickerContainer}>
           <Picker
             selectedValue={selectedUniversity}
             onValueChange={(itemValue) => setSelectedUniversity(itemValue)}
           >
-            <Picker.Item label="--- Seleccione una universidad ---" value="" />
+            <Picker.Item label= {t("userform.select_university_placeholder")} value="" />
             {availableUniversities.map(university => (
               <Picker.Item key={university._id}label={university.name} value={university._id} /> 
             ))}
           </Picker>
         </View>
 
-      <Text style={styles.label}>Seleccionar Equipo:</Text>
+      <Text style={styles.label}> {t("userform.select_team")}:</Text>
         <View style={styles.pickerContainer}>
           <Picker
             selectedValue={selectedTeam}
             onValueChange={(itemValue) => setSelectedTeam(itemValue)}
           >
-            <Picker.Item label="--- Seleccione un equipo ---" value="" />
+            <Picker.Item label= {t("userform.select_team_placeholder")} value="" />
             {availableTeams.map(team => (
               <Picker.Item key={team._id}label={team.name} value={team._id} /> 
             ))}
           </Picker>
         </View>
-      <Text style={styles.label}>Seleccionar Rol:</Text>
+      <Text style={styles.label}>{t("userform.select_role")}:</Text>
         <View style={styles.pickerContainer}>
           <Picker
             selectedValue={type}
@@ -139,7 +140,7 @@ export default function UserForm({ onUserAdded, userToEdit }) {
             <Picker.Item label="Referee" value="referee" />
           </Picker>
         </View>
-      <Button title="Enviar" onPress={handleSubmit} />
+      <Button title= {t("userform.send")} onPress={handleSubmit} />
     </View>
   );
 }

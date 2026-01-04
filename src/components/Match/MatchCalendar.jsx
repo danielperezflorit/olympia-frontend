@@ -1,13 +1,16 @@
 import React, { useState } from 'react';  
+import { useTranslation } from 'react-i18next';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Modal } from 'react-native';
 import MatchResultForm from './MatchResultForm'; 
 
 const MatchCalendar = ({ matches, onDataUpdated }) => {
+    const { t } = useTranslation();
+    
     const [selectedMatch, setSelectedMatch] = useState(null);
     const [isResultModalVisible, setIsResultModalVisible] = useState(false);
 
     if (!matches || matches.length === 0) {
-        return <Text style={styles.message}>No hay partidos programados.</Text>;
+        return <Text style={styles.message}>{t('matchcalendar.no_matches')}</Text>;
     }
 
     const openResultForm = (match) => {
@@ -16,8 +19,8 @@ const MatchCalendar = ({ matches, onDataUpdated }) => {
     };
 
     const renderMatchItem = ({ item }) => {
-        const teamLocalName = item.teamLocal?.name || 'Equipo Local';
-        const teamVisitorName = item.teamVisitor?.name || 'Equipo Visitante';
+        const teamLocalName = item.teamLocal?.name || t("matchcalendar.home_team");
+        const teamVisitorName = item.teamVisitor?.name || t("matchcalendar.away_team");
         const matchDate = new Date(item.date);
         const now = new Date();
         
@@ -57,7 +60,7 @@ const MatchCalendar = ({ matches, onDataUpdated }) => {
                         onPress={() => openResultForm(item)}
                     >
                         <Text style={styles.resultButtonText}>
-                            {isPlayed ? "Editar Resultado" : "Registrar Resultado"}
+                            {isPlayed ? t('matchcalendar.edit_result') : t('matchcalendar.add_result')}
                         </Text>
                     </TouchableOpacity>
                 )}

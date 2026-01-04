@@ -1,4 +1,5 @@
 import React, {useState, useEffect, useCallback} from 'react';
+import { useTranslation } from 'react-i18next';
 import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, ActivityIndicator, Modal } from 'react-native';
 import User_GlobalMenu from '../../../components/User_GlobalMenu.jsx';
 import { fetchSportIdByName } from '../../../services/sportService';
@@ -9,17 +10,21 @@ import CompetitionSelector from '../../../components/Competition/CompetitionSele
 import RankingTable from '../../../components/Competition/RankingTable';
 import User_MatchCalendar from '../../../components/Match/User_MatchCalendar.jsx'; 
 
-const FixedHeader = () => (
+const FixedHeader = () => {
+    const { t } = useTranslation();
+    return (
     <View style={headerStyles.headerContainer}>
         <Image 
             style={headerStyles.logo} 
             source={require('../../../../assets/unite!.png')}
         />
-        <Text style={headerStyles.title}>FÚTBOL</Text>
+        <Text style={headerStyles.title}>{t("sport.football")}</Text>
     </View>
-);
+    );
+}
 
 export default function User_FutbolScreen({ navigation }) {
+    const { t } = useTranslation();
     const [isMenuOpen, setIsMenuOpen] = useState(false); 
     const [availableCompetitions, setAvailableCompetitions] = useState([]);
     const [selectedCompetitionId, setSelectedCompetitionId] = useState(null);
@@ -114,20 +119,20 @@ export default function User_FutbolScreen({ navigation }) {
             )}
             
             {availableCompetitions.length === 0 && !loading ? (
-                <Text style={styles.noDataMessage}>No hay competiciones de Fútbol disponibles.</Text>
+                <Text style={styles.noDataMessage}>{t("football.no_data")}</Text>
             ) : (
                 <ScrollView contentContainerStyle={styles.container}>
-                    <Text style={styles.sectionTitle}>Seleccionar Competición</Text>
+                    <Text style={styles.sectionTitle}>{t("football.select_comp")}</Text>
                     <CompetitionSelector
                         competitions={availableCompetitions}
                         selectedId={selectedCompetitionId}
                         onSelect={setSelectedCompetitionId}
                     />
 
-                    <Text style={styles.sectionTitle}>Clasificación</Text>
+                    <Text style={styles.sectionTitle}>{t("football.ranking")}</Text>
                     {loading ? <ActivityIndicator size="small" color="#0084C9" /> : <RankingTable ranking={rankingData} />}
                     
-                    <Text style={styles.sectionTitle}>Jornadas y Partidos</Text>
+                    <Text style={styles.sectionTitle}>{t("football.calendar")}</Text>
                     {loading ? <ActivityIndicator size="small" color="#0084C9" /> : (
                         <User_MatchCalendar 
                             matches={matchesData} 

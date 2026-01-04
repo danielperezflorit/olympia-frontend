@@ -1,23 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { 
-    View, 
-    Text, 
-    TextInput, 
-    TouchableOpacity, 
-    StyleSheet, 
-    Image, 
-    Alert,
-    ActivityIndicator,
-    ScrollView,
-    KeyboardAvoidingView,
-    Platform
-} from 'react-native';
+import { useTranslation } from 'react-i18next';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Alert,ActivityIndicator,ScrollView,KeyboardAvoidingView,Platform } from 'react-native';
 import { Picker } from "@react-native-picker/picker";
 import { addUser } from '../services/userService'; 
 import { fetchUniversities } from '../services/universityService';
 import { fetchTeams } from '../services/teamService';
 
 export default function RegisterScreen({ navigation }) {
+    const { t } = useTranslation();
+
     const [name, setName] = useState('');
     const [mail, setMail] = useState('');
     const [password, setPassword] = useState('');
@@ -107,24 +98,24 @@ export default function RegisterScreen({ navigation }) {
                         style={styles.logo}
                     />
                     <Text style={styles.appTitle}>OLYMPIA</Text>
-                    <Text style={styles.subtitle}>Crea tu cuenta nueva</Text>
+                    <Text style={styles.subtitle}>{t('register.create_new_account')}</Text>
                 </View>
 
                 <View style={styles.formContainer}>
                     
-                    <Text style={styles.label}>Nombre Completo</Text>
+                    <Text style={styles.label}>{t('register.complete_name')}</Text>
                     <TextInput
                         style={styles.input}
-                        placeholder="Ej. Daniel García"
+                        placeholder= {t('register.complete_name_placeholder')}
                         placeholderTextColor="#aaa"
                         value={name}
                         onChangeText={setName}
                     />
 
-                    <Text style={styles.label}>Correo Electrónico</Text>
+                    <Text style={styles.label}>{t('register.mail')}</Text>
                     <TextInput
                         style={styles.input}
-                        placeholder="ejemplo@estudiantat.upc.edu"
+                        placeholder= {t('register.mail_placeholder')}
                         placeholderTextColor="#aaa"
                         keyboardType="email-address"
                         autoCapitalize="none"
@@ -132,47 +123,47 @@ export default function RegisterScreen({ navigation }) {
                         onChangeText={setMail}
                     />
 
-                    <Text style={styles.label}>Contraseña</Text>
+                    <Text style={styles.label}>{t('register.password')}</Text>
                     <TextInput
                         style={styles.input}
-                        placeholder="Mínimo 6 caracteres"
+                        placeholder={t('register.password_placeholder')}
                         placeholderTextColor="#aaa"
                         secureTextEntry
                         value={password}
                         onChangeText={setPassword}
                     />
 
-                    <Text style={styles.label}>Confirmar Contraseña</Text>
+                    <Text style={styles.label}>{t('register.confirm_password')}</Text>
                     <TextInput
                         style={styles.input}
-                        placeholder="Repite tu contraseña"
+                        placeholder= {t('register.confirm_password_placeholder')}
                         placeholderTextColor="#aaa"
                         secureTextEntry
                         value={confirmPassword}
                         onChangeText={setConfirmPassword}
                     />
 
-                    <Text style={styles.label}>Seleccionar Universidad</Text>
+                    <Text style={styles.label}>{t('register.select_university')} </Text>
                     <View style={styles.pickerContainer}>
                         <Picker
                             selectedValue={selectedUniversity}
                             onValueChange={(itemValue) => setSelectedUniversity(itemValue)}
                             style={styles.picker} 
                         >
-                            <Picker.Item label="--- Seleccione una universidad ---" value="" color="#aaa" />
+                            <Picker.Item label={t('register.select_university_placeholder')} value="" color="#aaa" />
                             {availableUniversities.map(uni => (
                                 <Picker.Item key={uni._id} label={uni.name} value={uni._id} />
                             ))}
                         </Picker>
                     </View>
 
-                    <Text style={styles.label}>Seleccionar Equipo</Text>
+                    <Text style={styles.label}>{t('register.select_team')}</Text>
                     <View style={styles.pickerContainer}>
                         <Picker
                             selectedValue={selectedTeam}
                             onValueChange={(itemValue) => setSelectedTeam(itemValue)}
                         >
-                            <Picker.Item label="--- Seleccione un equipo ---" value="" color="#aaa"/>
+                            <Picker.Item label={t('register.select_team_placeholder')} value="" color="#aaa"/>
                             {availableTeams.map(team => (
                                 <Picker.Item key={team._id} label={team.name} value={team._id} />
                             ))}
@@ -187,7 +178,7 @@ export default function RegisterScreen({ navigation }) {
                         {loading ? (
                             <ActivityIndicator color="#fff" />
                         ) : (
-                            <Text style={styles.registerButtonText}>Registrarse</Text>
+                            <Text style={styles.registerButtonText}>{t('register.register')}</Text>
                         )}
                     </TouchableOpacity>
 
@@ -196,7 +187,7 @@ export default function RegisterScreen({ navigation }) {
                         onPress={() => navigation.navigate('Login')}
                     >
                         <Text style={styles.loginText}>
-                            ¿Ya tienes cuenta? <Text style={styles.loginTextBold}>Inicia Sesión</Text>
+                            {t('register.already_have_account')} <Text style={styles.loginTextBold}>{t('register.login')}</Text>
                         </Text>
                     </TouchableOpacity>
                 </View>

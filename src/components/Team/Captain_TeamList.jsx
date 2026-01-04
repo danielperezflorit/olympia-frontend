@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { View, Text, FlatList, StyleSheet } from "react-native";
 
 
@@ -7,26 +8,27 @@ export default function Captain_TeamList({
   }) 
   
   {
-  return (
-    <FlatList
-      data={teams}
-      keyExtractor={(item) => item._id.toString()}
-      renderItem={({ item }) => (
-        <View style={styles.item}>
-          <Text style={styles.label}>Nombre: {item.getFullName()}</Text> 
-          <Text style={styles.label}>Universidad: {item.getUniversity()}</Text> 
-          <Text style={styles.label}>Competición: {item.getCompetition()}</Text>
-          <Text style={styles.label}>Capitán: {item.getCaptain()}</Text>
-          <Text style={styles.label}>Jugadores: {item.getPlayers()}</Text>
-          <Text style={styles.label}>Partidos Jugados: {item.getMatches()}</Text> 
-          <Text style={styles.label}>Victorias: {item.getWins()}</Text>
-          <Text style={styles.label}>Derrotas: {item.getLosses()}</Text>
-          <Text style={styles.label}>Empates: {item.getDraws()}</Text>
-        </View>
-      )}
-    />
-  );
-}
+    const { t } = useTranslation();
+    return (
+      <FlatList
+        data={teams}
+        keyExtractor={(item) => item._id.toString()}
+        renderItem={({ item }) => (
+          <View style={styles.item}>
+            <Text style={styles.label}>{t("captain_teamlist.name")}: {item.getFullName()}</Text> 
+            <Text style={styles.label}>{t("captain_teamlist.university")}: {item.getUniversity()}</Text> 
+            <Text style={styles.label}>{t("captain_teamlist.competition")}: {item.getCompetition()}</Text>
+            <Text style={styles.label}>{t("captain_teamlist.captain")}: {item.getCaptain()}</Text>
+            <Text style={styles.label}>{t("captain_teamlist.players")}: {item.getPlayers()}</Text>
+            <Text style={styles.label}>{t("captain_teamlist.played_matches")}: {item.getMatches()}</Text> 
+            <Text style={styles.label}>{t("captain_teamlist.wins")}: {item.getWins()}</Text>
+            <Text style={styles.label}>{t("captain_teamlist.losses")}: {item.getLosses()}</Text>
+            <Text style={styles.label}>{t("captain_teamlist.draws")}: {item.getDraws()}</Text>
+          </View>
+        )}
+      />
+    );
+  }
 
 const styles = StyleSheet.create({
   list: {

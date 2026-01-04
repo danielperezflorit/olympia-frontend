@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { View, TextInput, Button, Text, StyleSheet } from "react-native";
 import { addTeam, updateTeam } from "../../services/teamService";
 import { fetchCompetitions } from "../../services/competitionService";
@@ -6,6 +7,8 @@ import { fetchUniversities } from "../../services/universityService";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 
 export default function TeamForm({ onTeamAdded, teamToEdit }) {
+  const { t } = useTranslation();
+
   const [name, setName] = useState("");
   const [availableCompetitions, setAvailableCompetitions] = useState([]); 
   const [selectedCompetition, setSelectedCompetition] = useState("");
@@ -89,15 +92,15 @@ export default function TeamForm({ onTeamAdded, teamToEdit }) {
 
   return (
     <View style={styles.form}>
-      <Text style={styles.title}>{teamToEdit ? "Editar Equipo" : "Agregar Equipo"}</Text>
+      <Text style={styles.title}>{teamToEdit ? t("teamform.edit_team") : t("teamform.add_team")}</Text>
       <TextInput
-        placeholder="Nombre"
+        placeholder= {t("teamform.team_name")}
         value={name}
         onChangeText={setName}
         style={styles.input}
       />
 
-      <Text style={styles.label}>Seleccionar Universidad:</Text> 
+      <Text style={styles.label}>{t("teamform.select_university")}:</Text> 
       <ScrollView style={styles.multiSelectContainer}>
         {availableUniversities.map(university => {
             const isSelected = selectedUniversity === university._id;
@@ -121,7 +124,7 @@ export default function TeamForm({ onTeamAdded, teamToEdit }) {
       </ScrollView>
 
 
-      <Text style={styles.label}>Seleccionar Competición:</Text> 
+      <Text style={styles.label}>{t("teamform.select_competition")}:</Text> 
       <ScrollView style={styles.multiSelectContainer}>
         {availableCompetitions.map(competition => {
             const isSelected = selectedCompetition === competition._id;
@@ -145,7 +148,7 @@ export default function TeamForm({ onTeamAdded, teamToEdit }) {
       </ScrollView>
       
       <Button 
-        title={teamToEdit ? "Guardar Cambios" : "Enviar"}
+        title={teamToEdit ? t("teamform.save_changes") : t("teamform.send")}
         onPress={handleSubmit}
         disabled={isSubmitting}
       />

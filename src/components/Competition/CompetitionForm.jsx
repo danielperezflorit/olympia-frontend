@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { View, TextInput, Button, Text, StyleSheet } from "react-native";
 import { addCompetition, updateCompetition } from "../../services/competitionService";
 import { fetchSports } from "../../services/sportService";
-  import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
+import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 
 export default function CompetitionForm({ onCompetitionAdded, competitionToEdit }) {
+  const { t } = useTranslation();
   const [name, setName] = useState("");
   const [selectedSport, setSelectedSport] = useState("");
   const [availableSports, setAvailableSports] = useState([]); 
@@ -65,15 +67,15 @@ export default function CompetitionForm({ onCompetitionAdded, competitionToEdit 
 
   return (
     <View style={styles.form}>
-      <Text style={styles.title}>{competitionToEdit ? "Editar Competición" : "Agregar Competición"}</Text>
+      <Text style={styles.title}>{competitionToEdit ? t("competitionform.edit_competition") : t("competitionform.add_competition")}</Text>
       <TextInput
-        placeholder="Nombre"
+        placeholder={t("competitionform.competition_name_placeholder")}
         value={name}
         onChangeText={setName}
         style={styles.input}
       />
 
-      <Text style={styles.label}>Seleccionar Deporte:</Text> 
+      <Text style={styles.label}>{t("competitionform.select_sport")}:</Text> 
       <ScrollView style={styles.multiSelectContainer}>
         {availableSports.map(sport => {
             const isSelected = selectedSport === sport._id;
@@ -97,7 +99,7 @@ export default function CompetitionForm({ onCompetitionAdded, competitionToEdit 
       </ScrollView>
       
       <Button 
-        title={competitionToEdit ? "Guardar Cambios" : "Enviar"} 
+        title={competitionToEdit ? t("competitionform.save_changes") : t("competitionform.send")} 
         onPress={handleSubmit}
         disabled={isSubmitting} 
       />

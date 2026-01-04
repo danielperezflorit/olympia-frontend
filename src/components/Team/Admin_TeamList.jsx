@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, Modal } from "react-native";
 
 
@@ -6,37 +7,39 @@ export default function Admin_TeamList({
     teams,
     onDeleteTeam,
     onUpdateTeam,
-  }) 
-  
+  })
+
   {
-  return (
-    <FlatList
-      data={teams}
-      keyExtractor={(item) => item._id.toString()}
-      renderItem={({ item }) => (
-        <View style={styles.item}>
-          <Text style={styles.label}>Nombre: {item.getFullName()}</Text> 
-          <Text style={styles.label}>Universidad: {item.getUniversity()}</Text> 
-          <Text style={styles.label}>Competición: {item.getCompetition()}</Text>
-          <Text style={styles.label}>Capitán: {item.getCaptain()}</Text>
-          <Text style={styles.label}>Jugadores: {item.getPlayers()}</Text>
-          <Text style={styles.label}>Partidos Jugados: {item.getMatches()}</Text> 
-          <Text style={styles.label}>Victorias: {item.getWins()}</Text>
-          <Text style={styles.label}>Derrotas: {item.getLosses()}</Text>
-          <Text style={styles.label}>Empates: {item.getDraws()}</Text>
+    const { t } = useTranslation();
 
-          <TouchableOpacity style={styles.updateButton} onPress={() => onUpdateTeam(item)} >
-            <Text style={styles.updateButtonText}>Editar</Text>
-          </TouchableOpacity>
+    return (
+      <FlatList
+        data={teams}
+        keyExtractor={(item) => item._id.toString()}
+        renderItem={({ item }) => (
+          <View style={styles.item}>
+            <Text style={styles.label}>{t("admin_teamlist.name")}: {item.getFullName()}</Text> 
+            <Text style={styles.label}>{t("admin_teamlist.university")}: {item.getUniversity()}</Text> 
+            <Text style={styles.label}>{t("admin_teamlist.competition")}: {item.getCompetition()}</Text>
+            <Text style={styles.label}>{t("admin_teamlist.capitan")}: {item.getCaptain()}</Text>
+            <Text style={styles.label}>{t("admin_teamlist.players")}: {item.getPlayers()}</Text>
+            <Text style={styles.label}>{t("admin_teamlist.played_matches")}: {item.getMatches()}</Text> 
+            <Text style={styles.label}>{t("admin_teamlist.wins")}: {item.getWins()}</Text>
+            <Text style={styles.label}>{t("admin_teamlist.losses")}: {item.getLosses()}</Text>
+            <Text style={styles.label}>{t("admin_teamlist.draws")}: {item.getDraws()}</Text>
 
-          <TouchableOpacity style={styles.deleteButton} onPress={() => onDeleteTeam(item._id)} >
-          <Text style={styles.deleteButtonText}>Eliminar</Text>
-          </TouchableOpacity>
-        </View>
-      )}
-    />
-  );
-}
+            <TouchableOpacity style={styles.updateButton} onPress={() => onUpdateTeam(item)} >
+              <Text style={styles.updateButtonText}>{t("admin_teamlist.edit_team")}r</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.deleteButton} onPress={() => onDeleteTeam(item._id)} >
+            <Text style={styles.deleteButtonText}>{t("admin_teamlist.delete")}</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+      />
+    );
+  }
 
 const styles = StyleSheet.create({
   list: {

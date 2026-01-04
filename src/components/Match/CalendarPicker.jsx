@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { View, StyleSheet, Text, Button, TextInput } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 
 export const CalendarPicker = ({ selectedDate, onDateSelect, onClose }) => {
+    const { t } = useTranslation();
     const initialDateString = selectedDate.toISOString().split('T')[0];
     const [dateString, setDateString] = useState(initialDateString);
 
@@ -17,9 +19,9 @@ export const CalendarPicker = ({ selectedDate, onDateSelect, onClose }) => {
         onClose();
     };
 
-return (
+    return (
         <View style={styles.container}>
-            <Text style={styles.title}>Seleccionar Fecha y Hora</Text>
+            <Text style={styles.title}>{t('calendarpicker.select_date')}</Text>
             <Calendar
                 minDate={new Date().toISOString().split('T')[0]} 
                 markedDates={{
@@ -34,7 +36,7 @@ return (
             />
 
             <View style={styles.timePickerContainer}>
-                <Text style={styles.timeLabel}>Hora (24h):</Text>
+                <Text style={styles.timeLabel}>{t('calendarpicker.select_time')}:</Text>
                 <View style={styles.timeInputsRow}>
                     <TextInput
                         style={styles.timeInput}
@@ -55,8 +57,8 @@ return (
             </View>
 
             <View style={styles.buttonRow}>
-                <Button title="Cancelar" onPress={onClose} color="#FF3B30" />
-                <Button title="Confirmar" onPress={handleConfirm} color="#0084C9" />
+                <Button title={t('calendarpicker.cancel')} onPress={onClose} color="#FF3B30" />
+                <Button title={t('calendarpicker.confirm')} onPress={handleConfirm} color="#0084C9" />
             </View>
         </View>
     );

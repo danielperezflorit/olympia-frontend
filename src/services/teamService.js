@@ -1,8 +1,9 @@
 import axios from "axios";
 
 //const API_URL_TEAM = "http://192.168.0.21:3000/team"; 
-const API_URL_TEAM = "http://192.168.1.36:3000/team";
+//const API_URL_TEAM = "http://192.168.1.43:3000/team";
 //const API_URL_TEAM = "http://10.5.59.106:3000/team";
+const API_URL_TEAM = "http://10.35.187.135:3000/team";
 
 export const fetchTeamById = async (teamId) => {
   try {

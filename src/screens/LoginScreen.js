@@ -1,9 +1,12 @@
 import React, { useState, useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Alert,ActivityIndicator } from 'react-native';
 import { loginUser } from '../services/userService';
 import { AuthContext } from '../context/AuthContext';
 
 export default function LoginScreen({ navigation }) {
+    const { t } = useTranslation();
+
     const [mail, setMail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
@@ -45,10 +48,10 @@ export default function LoginScreen({ navigation }) {
             </View>
 
             <View style={styles.formContainer}>
-                <Text style={styles.label}>Correo Electrónico</Text>
+                <Text style={styles.label}>{t('login.mail')}</Text>
                 <TextInput
                     style={styles.input}
-                    placeholder="ejemplo@estudiantat.upc.edu"
+                    placeholder="example@estudiantat.upc.edu"
                     placeholderTextColor="#aaa"
                     keyboardType="email-address"
                     autoCapitalize="none"
@@ -56,7 +59,7 @@ export default function LoginScreen({ navigation }) {
                     onChangeText={setMail}
                 />
 
-                <Text style={styles.label}>Contraseña</Text>
+                <Text style={styles.label}>{t('login.password')}</Text>
                 <TextInput
                     style={styles.input}
                     placeholder="********"
@@ -74,7 +77,7 @@ export default function LoginScreen({ navigation }) {
                     {loading ? (
                         <ActivityIndicator color="#fff" />
                     ) : (
-                        <Text style={styles.loginButtonText}>Entrar</Text>
+                        <Text style={styles.loginButtonText}>{t('login.login')}</Text>
                     )}
                 </TouchableOpacity>
 
@@ -83,7 +86,7 @@ export default function LoginScreen({ navigation }) {
                     onPress={() => navigation.navigate('Register')} 
                 >
                     <Text style={styles.registerText}>
-                        ¿No tienes cuenta? <Text style={styles.registerTextBold}>Regístrate aquí</Text>
+                        {t('login.have_account')} <Text style={styles.registerTextBold}>{t('login.register')}</Text>
                     </Text>
                 </TouchableOpacity>
             </View>

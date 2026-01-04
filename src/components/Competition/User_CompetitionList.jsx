@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, Modal } from "react-native";
 
 
@@ -7,19 +8,20 @@ export default function CompetitionList({
   }) 
   
   {
-  return (
-    <FlatList
-      data={competitions}
-      keyExtractor={(item) => item._id.toString()}
-      renderItem={({ item }) => (
-        <View style={styles.item}>
-          <Text style={styles.label}>Nombre: {item.getFullName()}</Text> 
-          <Text style={styles.label}>Equipos: {item.getTeams()}</Text>
-          <Text style={styles.label}>Deporte: {item.getSport()}</Text> 
-        </View>
-      )}
-    />
-  );
+    const { t } = useTranslation();
+    return (
+      <FlatList
+        data={competitions}
+        keyExtractor={(item) => item._id.toString()}
+        renderItem={({ item }) => (
+          <View style={styles.item}>
+            <Text style={styles.label}>{t("competitionlist.name")}: {item.getFullName()}</Text> 
+            <Text style={styles.label}>{t("competitionlist.teams")}: {item.getTeams()}</Text>
+            <Text style={styles.label}>{t("competitionlist.sport")}: {item.getSport()}</Text> 
+          </View>
+        )}
+      />
+    );
 }
 
 const styles = StyleSheet.create({

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { View, StyleSheet, Text, TouchableOpacity, Image } from "react-native";
 import { useFocusEffect } from "@react-navigation/native"; 
 import Captain_TeamList from "../../../components/Team/Captain_TeamList.jsx";
@@ -7,22 +8,27 @@ import Team from "../../../models/teammodel.js";
 import Captain_GlobalMenu from "../../../components/Captain_GlobalMenu.jsx";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const FixedHeader = () => (
+
+const FixedHeader = () => {
+  const { t } = useTranslation();
+  return (
     <View style={headerStyles.headerContainer}>
         <Image 
             style={headerStyles.logo} 
             source={require('../../../../assets/unite!.png')}
         />
-        <Text style={headerStyles.title}>Lista de Equipos</Text>
+        <Text style={headerStyles.title}>{t("teamsscreen.teams_list")}</Text>
     </View>
-);
+  );
+}
 
 export default function Captain_TeamsScreen({ navigation }) {
+  const { t } = useTranslation();
   const [teams, setTeams] = useState([]);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
-const loadTeams = async () => {
+  const loadTeams = async () => {
     try {
       const userInfoString = await AsyncStorage.getItem('userInfo');
       

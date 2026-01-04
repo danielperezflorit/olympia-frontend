@@ -1,12 +1,14 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { View, TextInput, StyleSheet } from 'react-native';
 
 export default function SearchBar({ value, onChangeText, placeholder }) {
+  const { t } = useTranslation();
   return (
     <View style={styles.container}>
       <TextInput
         style={styles.input}
-        placeholder={placeholder || "Buscar..."}
+        placeholder={placeholder || t('searchbar.search_placeholder')}
         placeholderTextColor="#666"
         value={value}
         onChangeText={onChangeText}

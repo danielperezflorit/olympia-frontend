@@ -1,4 +1,5 @@
 import React, {useState, useEffect, useCallback} from 'react';
+import { useTranslation } from 'react-i18next';
 import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, ActivityIndicator, Modal } from 'react-native';
 import Admin_GlobalMenu from '../../../components/Admin_GlobalMenu';
 
@@ -12,17 +13,21 @@ import RankingTable from '../../../components/Competition/RankingTable';
 import MatchCalendar from '../../../components/Match/MatchCalendar'; 
 import MatchForm from '../../../components/Match/MatchForm'; 
 
-const FixedHeader = () => (
-    <View style={headerStyles.headerContainer}>
-        <Image 
-            style={headerStyles.logo} 
-            source={require('../../../../assets/unite!.png')}
-        />
-        <Text style={headerStyles.title}>FÚTBOL</Text>
-    </View>
-);
+const FixedHeader = () => {
+    const { t } = useTranslation(); 
+    return (
+        <View style={headerStyles.headerContainer}>
+            <Image 
+                style={headerStyles.logo} 
+                source={require('../../../../assets/unite!.png')}
+            />
+            <Text style={headerStyles.title}>{t('sport.football')}</Text>
+        </View>
+    );
+};
 
 export default function Admin_FutbolScreen({ navigation }) {
+    const { t } = useTranslation()
     const [isMenuOpen, setIsMenuOpen] = useState(false); 
     const [availableCompetitions, setAvailableCompetitions] = useState([]);
     const [selectedCompetitionId, setSelectedCompetitionId] = useState(null);
@@ -125,20 +130,20 @@ export default function Admin_FutbolScreen({ navigation }) {
             )}
             
             {availableCompetitions.length === 0 && !loading ? (
-                <Text style={styles.noDataMessage}>No hay competiciones de Fútbol disponibles.</Text>
+                <Text style={styles.noDataMessage}>{t('football.no_data')}</Text>
             ) : (
                 <ScrollView contentContainerStyle={styles.container}>
-                    <Text style={styles.sectionTitle}>Seleccionar Competición</Text>
+                    <Text style={styles.sectionTitle}>{t('football.select_comp')}</Text>
                     <CompetitionSelector
                         competitions={availableCompetitions}
                         selectedId={selectedCompetitionId}
                         onSelect={setSelectedCompetitionId}
                     />
 
-                    <Text style={styles.sectionTitle}>Clasificación</Text>
+                    <Text style={styles.sectionTitle}>{t('football.ranking')}</Text>
                     {loading ? <ActivityIndicator size="small" color="#0084C9" /> : <RankingTable ranking={rankingData} />}
                     
-                    <Text style={styles.sectionTitle}>Jornadas y Partidos</Text>
+                    <Text style={styles.sectionTitle}>{t('football.calendar')}</Text>
                     {loading ? <ActivityIndicator size="small" color="#0084C9" /> : (
                         <MatchCalendar 
                             matches={matchesData} 
@@ -152,7 +157,7 @@ export default function Admin_FutbolScreen({ navigation }) {
                                 style={styles.adminButton} 
                                 onPress={() => setIsMatchFormVisible(true)} 
                             >
-                                <Text style={styles.buttonText}>+ Programar Nuevo Partido</Text>
+                                <Text style={styles.buttonText}>{t('football.new_match')}</Text>
                             </TouchableOpacity>
                         </View>
                     )}
@@ -175,7 +180,7 @@ export default function Admin_FutbolScreen({ navigation }) {
                             onMatchScheduled={handleDataUpdate}
                         />
                         <TouchableOpacity style={styles.closeButton} onPress={() => setIsMatchFormVisible(false)}>
-                            <Text style={styles.closeButtonText}>Cerrar</Text>
+                            <Text style={styles.closeButtonText}>{t('football.close')}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

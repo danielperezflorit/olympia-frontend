@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { View, StyleSheet, Text, TouchableOpacity, Modal, Image } from "react-native";
 import { useFocusEffect } from "@react-navigation/native"; 
 import UniversityForm from "../../../components/University/UniversityForm.jsx";
@@ -7,17 +8,22 @@ import { fetchUniversities, deleteUniversity } from "../../../services/universit
 import University from "../../../models/universitymodel.js";
 import Admin_GlobalMenu from "../../../components/Admin_GlobalMenu.jsx";
 
-const FixedHeader = () => (
+
+const FixedHeader = () => {
+  const { t } = useTranslation();
+  return(
     <View style={headerStyles.headerContainer}>
         <Image 
             style={headerStyles.logo} 
             source={require('../../../../assets/unite!.png')}
         />
-        <Text style={headerStyles.title}>Lista de Universidades</Text>
+        <Text style={headerStyles.title}> {t("universitiesscreen.universities_list")} </Text>
     </View>
-);
+);}
+  
 
 export default function Admin_UniversitiesScreen({ navigation }) {
+  const { t } = useTranslation();
   const [universities, setUniversities] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [universityToEdit, setUniversityToEdit] = useState(null);
@@ -114,7 +120,7 @@ export default function Admin_UniversitiesScreen({ navigation }) {
         onUpdateUniversity={handleUpdateUniversity}
       />
       <TouchableOpacity style={styles.openButton} onPress={() => {setUniversityToEdit(null); setModalVisible(true);}} >
-        <Text style={styles.buttonText}>Agregar Universidad</Text>
+        <Text style={styles.buttonText}>{t("universitiesscreen.add_university")}</Text>
       </TouchableOpacity>
       <Modal
         animationType="slide"
@@ -134,7 +140,7 @@ export default function Admin_UniversitiesScreen({ navigation }) {
             style={styles.closeButton}
             onPress={handleModalClose} 
           >
-            <Text style={styles.closeButtonText}>Cerrar</Text>
+            <Text style={styles.closeButtonText}>{t("universitiesscreen.close")}</Text>
           </TouchableOpacity>
         </View>
       </View>

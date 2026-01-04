@@ -1,7 +1,10 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next'
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 
 const RankingTable = ({ ranking }) => {
+    const { t } = useTranslation();
+
     if (!ranking || ranking.length === 0) {
         return <Text style={styles.message}>No hay equipos registrados en esta clasificación.</Text>;
     }
@@ -11,12 +14,12 @@ const RankingTable = ({ ranking }) => {
             <View>
                 <View style={[styles.row, styles.header]}>
                     <Text style={[styles.cell, styles.colPos]}>#</Text>
-                    <Text style={[styles.cell, styles.colName]}>EQUIPO</Text>
-                    <Text style={[styles.cell, styles.colStats]}>PJ</Text>
-                    <Text style={[styles.cell, styles.colStats]}>PG</Text>
-                    <Text style={[styles.cell, styles.colStats]}>PE</Text>
-                    <Text style={[styles.cell, styles.colStats]}>PP</Text>
-                    <Text style={[styles.cell, styles.colPoints]}>PT</Text>
+                    <Text style={[styles.cell, styles.colName]}>{t('team')}</Text>
+                    <Text style={[styles.cell, styles.colStats]}>{t('ranking_table.played')}</Text>
+                    <Text style={[styles.cell, styles.colStats]}>{t('ranking_table.won')}</Text>
+                    <Text style={[styles.cell, styles.colStats]}>{t('ranking_table.drawn')}</Text>
+                    <Text style={[styles.cell, styles.colStats]}>{t('ranking_table.lost')}</Text>
+                    <Text style={[styles.cell, styles.colPoints]}>{t('ranking_table.points')}</Text>
                 </View>
 
                 {ranking.map((team, index) => (

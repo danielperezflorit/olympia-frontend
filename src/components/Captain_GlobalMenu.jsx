@@ -1,21 +1,28 @@
 import React, { useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { CommonActions } from '@react-navigation/native';
 import { AuthContext } from '../context/AuthContext';
 import { logoutUser } from '../services/userService';
 
-const menuRoutes = [
-    { name: 'Register', label: 'Registro' },
-    { name: 'Login', label: 'Login' },
-    { name: 'Captain_Home', label: 'Inicio' },
-    { name: 'Captain_Teams', label: 'Equipos' },
-    { name: 'Captain_Futbol', label: 'Fútbol' },
-    { name: 'Captain_Padel', label: 'Pádel' }, 
-    { name: 'Captain_Basquet', label: 'Básquet' }, 
-    { name: 'Captain_Balonmano', label: 'Balonmano' },
-];
-
 const Captain_GlobalMenu = ({ navigation, onClose }) => {
+    const { t, i18n } = useTranslation();
+
+    const menuRoutes = [
+        { name: 'Register', label: t("globalmenu.register")},
+        { name: 'Login', label: t("globalmenu.login") },
+        { name: 'Captain_Home', label: t("globalmenu.home") },
+        { name: 'Captain_Teams', label: t("globalmenu.teams") },
+        { name: 'Captain_Futbol', label: t("globalmenu.football") },
+        { name: 'Captain_Padel', label: t("globalmenu.paddle") }, 
+        { name: 'Captain_Basquet', label: t("globalmenu.basketball") }, 
+        { name: 'Captain_Balonmano', label: t("globalmenu.handball") },
+    ];
+
+    const changeLanguage = (lang) => {
+        i18n.changeLanguage(lang);
+        onClose(); 
+    };
     
     const handleNavigate = (routeName) => {
         onClose(); 
@@ -50,15 +57,37 @@ const Captain_GlobalMenu = ({ navigation, onClose }) => {
         >
             <View style={styles.menuContainer}> 
 
-                <View style={styles.topActionsContainer}>
+                <View style={styles.utilityHeader}>
                     <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
-                        <Text style={styles.logoutText}>← Cerrar Sesión</Text>
+                        <Text style={styles.logoutText}>← {t('globalmenu.logout')}</Text>
                     </TouchableOpacity>
+                        
+                        <View style={styles.langToggleContainer}>
+                            <TouchableOpacity 
+                                style={[styles.langButton, i18n.language === 'es' && styles.langButtonActive]} 
+                                onPress={() => changeLanguage('es')}
+                                activeOpacity={0.8}
+                            >
+                                <Text style={[styles.langText, i18n.language === 'es' && styles.langTextActive]}>
+                                    ES
+                                </Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity 
+                                style={[styles.langButton, i18n.language === 'en' && styles.langButtonActive]} 
+                                onPress={() => changeLanguage('en')}
+                                activeOpacity={0.8}
+                            >
+                                <Text style={[styles.langText, i18n.language === 'en' && styles.langTextActive]}>
+                                    EN
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
                 </View>
                 
                 <View style={styles.menuButtonSpace} />
 
-                <Text style={styles.menuTitle}>Menú OLYMPIA</Text>
+                <Text style={styles.menuTitle}>{t("globalmenu.menu")} OLYMPIA</Text>
 
                 {menuRoutes.map((route) => (
                     <TouchableOpacity
@@ -81,7 +110,7 @@ const styles = StyleSheet.create({
         zIndex: 999,
     },
     menuContainer: {
-        width: 250, 
+        width: 280, 
         height: '100%', 
         backgroundColor: '#0084C9', 
         paddingHorizontal: 20,
@@ -89,22 +118,63 @@ const styles = StyleSheet.create({
         right: 0, 
         top: 0,
         bottom: 0,
+        shadowColor: "#000",
+        shadowOffset: { width: -2, height: 0 },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
     },
-    topActionsContainer: {
-        marginTop: 50, 
-        marginBottom: 10,
-        alignItems: 'flex-start', 
+    utilityHeader: {
+        marginTop: 55, 
+        marginBottom: 25,
+        paddingHorizontal: 10,
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        alignItems: 'flex-start',
     },
     logoutButton: {
-        paddingVertical: 8,
-        paddingHorizontal: 12,
-        backgroundColor: 'rgba(255, 255, 255, 0.2)', 
-        borderRadius: 5,
+        paddingVertical: 6,
+        paddingHorizontal: 10,
+        backgroundColor: 'rgba(0, 0, 0, 0.15)', 
+        borderRadius: 8,
+        flexDirection: 'row',
+        alignItems: 'center',
     },
     logoutText: {
-        color: '#ffdddd', 
+        color: 'rgba(255, 255, 255, 0.9)', 
+        fontWeight: '600',
+        fontSize: 13,
+    },
+    langToggleContainer: {
+        flexDirection: 'row',
+        backgroundColor: 'rgba(0, 0, 0, 0.15)', 
+        borderRadius: 20, 
+        padding: 3,
+        marginTop: 15, 
+    },
+    langButton: {
+        paddingVertical: 5,
+        paddingHorizontal: 12,
+        borderRadius: 18,
+        minWidth: 45, 
+        alignItems: 'center',
+    },
+    langButtonActive: {
+        backgroundColor: 'white', 
+        shadowColor: "#000",
+        shadowOffset: {	width: 0, height: 1 },
+        shadowOpacity: 0.20,
+        shadowRadius: 1.41,
+        elevation: 2,
+    },
+    langText: {
+        color: 'rgba(255, 255, 255, 0.7)', 
         fontWeight: 'bold',
-        fontSize: 14,
+        fontSize: 12,
+    },
+    langTextActive: {
+        color: '#0084C9', 
+        fontWeight: '800', 
     },
     menuButtonSpace: {
         height: 20,

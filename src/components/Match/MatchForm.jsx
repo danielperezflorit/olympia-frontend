@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { View, Text, TextInput, Button, StyleSheet, ScrollView, TouchableOpacity, Modal, ActivityIndicator, Platform } from 'react-native';
 import { fetchTeams } from '../../services/teamService';
 import { addMatch } from '../../services/matchService'; 
 import { CalendarPicker } from '../Match/CalendarPicker';
 
 const MatchForm = ({ competitionId, onMatchScheduled }) => {
+    const { t } = useTranslation();
+    
     const [availableTeams, setAvailableTeams] = useState([]);
     const [teamLocal, setTeamLocal] = useState('');
     const [teamVisitor, setteamVisitor] = useState('');
@@ -82,7 +85,7 @@ const MatchForm = ({ competitionId, onMatchScheduled }) => {
 
     const renderTeamSelector = (setter, currentValue) => {
         const selectedTeam = availableTeams.find(t => t._id === currentValue);
-        const selectedName = selectedTeam ? selectedTeam.name : 'Selecciona un equipo...';
+        const selectedName = selectedTeam ? selectedTeam.name : t('matchform.select_team');
         
         return (
             <View>
@@ -116,16 +119,16 @@ const MatchForm = ({ competitionId, onMatchScheduled }) => {
 
     return (
         <View style={styles.formContainer}>
-            <Text style={styles.title}>Programar Partido</Text>
+            <Text style={styles.title}>{t("matchform.schedule_match")}</Text>
             {error ? <Text style={styles.errorText}>{error}</Text> : null}
             
-            <Text style={styles.label}>Equipo Local (A):</Text>
+            <Text style={styles.label}>{t('matchform.select_team_local')}:</Text>
             {renderTeamSelector(setTeamLocal, teamLocal)}
 
-            <Text style={styles.label}>Equipo Visitante (B):</Text>
+            <Text style={styles.label}>{t('matchform.select_team_visitor')}:</Text>
             {renderTeamSelector(setteamVisitor, teamVisitor)}
 
-            <Text style={styles.label}>Fecha y Hora:</Text>
+            <Text style={styles.label}>{t('matchform.date_time')}</Text>
 
             <TouchableOpacity
                 onPress={() => setShowDatePicker(true)} 
@@ -135,7 +138,7 @@ const MatchForm = ({ competitionId, onMatchScheduled }) => {
             </TouchableOpacity>
             
             <Button
-                title={loading ? "Programando..." : "Programar Partido"}
+                title={loading ? t('matchform.scheduling_match') : t('matchform.schedule_match')}
                 onPress={handleSubmit}
                 disabled={loading || teamLocal === teamVisitor}
             />

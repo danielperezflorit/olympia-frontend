@@ -1,8 +1,11 @@
 import React, {useState} from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native'; 
 import Admin_GlobalMenu from '../../../components/Admin_GlobalMenu';
+import { useTranslation } from 'react-i18next';
 
-const FixedHeader = () => (
+const FixedHeader = () => {
+    const { t } = useTranslation();
+    return (
     <View style={headerStyles.headerContainer}>
         <Image 
             style={headerStyles.logo} 
@@ -11,7 +14,8 @@ const FixedHeader = () => (
         <Text style={headerStyles.title}>PÁDEL</Text>
 
     </View>
-);
+    );
+}
 
 export default function Admin_PadelScreen({ navigation }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false); 

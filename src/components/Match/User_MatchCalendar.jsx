@@ -1,18 +1,17 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Modal } from 'react-native';
-import MatchResultForm from './MatchResultForm'; 
 
-const User_MatchCalendar = ({ matches, onDataUpdated }) => {
-    const [isResultModalVisible, setIsResultModalVisible] = useState(false);
+const User_MatchCalendar = ({ matches }) => {
+    const { t } = useTranslation();
 
     if (!matches || matches.length === 0) {
         return <Text style={styles.message}>No hay partidos programados.</Text>;
     }
 
-
     const renderMatchItem = ({ item }) => {
-        const teamLocalName = item.teamLocal?.name || 'Equipo Local';
-        const teamVisitorName = item.teamVisitor?.name || 'Equipo Visitante';
+        const teamLocalName = item.teamLocal?.name || t("matchcalendar.home_team");
+        const teamVisitorName = item.teamVisitor?.name ||  t("matchcalendar.away_team");
         const matchDate = new Date(item.date);        
         const isPlayed = item.isPlayed || item.scoreLocal != 0 || item.scoreVisitor != 0;
 

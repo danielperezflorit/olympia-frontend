@@ -1,36 +1,37 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, Modal } from "react-native";
-
 
 export default function CompetitionList({
     competitions,
     onDeleteCompetition,
     onUpdateCompetition,
   }) 
-  
-  {
-  return (
-    <FlatList
-      data={competitions}
-      keyExtractor={(item) => item._id.toString()}
-      renderItem={({ item }) => (
-        <View style={styles.item}>
-          <Text style={styles.label}>Nombre: {item.getFullName()}</Text> 
-          <Text style={styles.label}>Equipos: {item.getTeams()}</Text>
-          <Text style={styles.label}>Deporte: {item.getSport()}</Text> 
-          
-          <TouchableOpacity style={styles.updateButton} onPress={() => onUpdateCompetition(item)} >
-            <Text style={styles.updateButtonText}>Editar</Text>
-          </TouchableOpacity>
 
-          <TouchableOpacity style={styles.deleteButton} onPress={() => onDeleteCompetition(item._id)} >
-          <Text style={styles.deleteButtonText}>Eliminar</Text>
-          </TouchableOpacity>
-        </View>
-      )}
-    />
-  );
-}
+  {
+    const { t } = useTranslation();
+    return (
+      <FlatList
+        data={competitions}
+        keyExtractor={(item) => item._id.toString()}
+        renderItem={({ item }) => (
+          <View style={styles.item}>
+            <Text style={styles.label}>{t("competitionlist.name")}: {item.getFullName()}</Text> 
+            <Text style={styles.label}>{t("competitionlist.teams")}: {item.getTeams()}</Text>
+            <Text style={styles.label}>{t("competitionlist.sport")}: {item.getSport()}</Text> 
+            
+            <TouchableOpacity style={styles.updateButton} onPress={() => onUpdateCompetition(item)} >
+              <Text style={styles.updateButtonText}>{t("competitionlist.edit_competition")}</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.deleteButton} onPress={() => onDeleteCompetition(item._id)} >
+            <Text style={styles.deleteButtonText}>{t("competitionlist.delete_competition")}</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+      />
+    );
+  }
 
 const styles = StyleSheet.create({
   list: {

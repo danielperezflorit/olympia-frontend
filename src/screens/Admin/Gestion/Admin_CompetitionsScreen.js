@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { View, StyleSheet, Text, TouchableOpacity, Modal, Image } from "react-native";
 import { useFocusEffect } from "@react-navigation/native"; 
 import CompetitionForm from "../../../components/Competition/CompetitionForm.jsx";
@@ -7,17 +8,22 @@ import { fetchCompetitions, deleteCompetition } from "../../../services/competit
 import Admin_GlobalMenu from "../../../components/Admin_GlobalMenu.jsx";
 import Competition from "../../../models/competitionmodel.js";
 
-const FixedHeader = () => (
-    <View style={headerStyles.headerContainer}>
-        <Image 
-            style={headerStyles.logo} 
-            source={require('../../../../assets/unite!.png')}
-        />
-        <Text style={headerStyles.title}>Lista de Competiciones</Text>
-    </View>
-);
+const FixedHeader = () => {
+  const { t } = useTranslation();
+
+  return (
+  <View style={headerStyles.headerContainer}>
+      <Image 
+          style={headerStyles.logo} 
+          source={require('../../../../assets/unite!.png')}
+      />
+      <Text style={headerStyles.title}>{t('competitionsscreen.competitions_list')}</Text>
+  </View>
+  );
+}
 
 export default function Admin_CompetitionsScreen({ navigation }) {
+  const { t } = useTranslation();
   const [competitions, setCompetitions] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [competitionToEdit, setCompetitionToEdit] = useState(null);
@@ -108,7 +114,7 @@ export default function Admin_CompetitionsScreen({ navigation }) {
         onUpdateCompetition={handleUpdateCompetition}
       />
       <TouchableOpacity style={styles.openButton} onPress={() => {setCompetitionToEdit(null); setModalVisible(true);}} >
-        <Text style={styles.buttonText}>Agregar Competición</Text>
+        <Text style={styles.buttonText}>{t('competitionsscreen.add_competition')}</Text>
       </TouchableOpacity>
       <Modal
         animationType="slide"
@@ -128,7 +134,7 @@ export default function Admin_CompetitionsScreen({ navigation }) {
             style={styles.closeButton}
             onPress={handleModalClose} 
           >
-            <Text style={styles.closeButtonText}>Cerrar</Text>
+            <Text style={styles.closeButtonText}>{t('competitionsscreen.close')}</Text>
           </TouchableOpacity>
         </View>
       </View>

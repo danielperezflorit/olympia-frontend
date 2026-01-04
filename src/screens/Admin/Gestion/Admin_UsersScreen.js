@@ -1,4 +1,5 @@
 import React, { use, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { View, StyleSheet, Text, TouchableOpacity, Modal, Image } from "react-native";
 import { useFocusEffect } from "@react-navigation/native"; 
 import UserForm from "../../../components/User/UserForm.jsx";
@@ -8,17 +9,21 @@ import User from "../../../models/usermodel.js";
 import Admin_GlobalMenu from "../../../components/Admin_GlobalMenu.jsx";
 import SearchBar from "../../../components/SearchBar.jsx";
 
-const FixedHeader = () => (
+const FixedHeader = () => {
+  const { t } = useTranslation();
+  return (
     <View style={headerStyles.headerContainer}>
         <Image 
             style={headerStyles.logo} 
             source={require('../../../../assets/unite!.png')}
         />
-        <Text style={headerStyles.title}>Lista de Usuarios</Text>
+        <Text style={headerStyles.title}>{t("usersscreen.users_list")}</Text>
     </View>
-);
+  );
+}
 
 export default function Admin_UsersScreen({ navigation}) {
+  const { t } = useTranslation();
   const [users, setUsers] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [userToEdit, setUserToEdit] = useState(null);
@@ -124,7 +129,7 @@ const handleUpdateUser = async (user_id) => {
         <SearchBar 
             value={searchQuery}
             onChangeText={setSearchQuery}
-            placeholder="Buscar por nombre o email..."
+            placeholder= {t("usersscreen.searchbar_placeholder")}
         />
       </View>
 
@@ -135,7 +140,7 @@ const handleUpdateUser = async (user_id) => {
       />
 
       <TouchableOpacity style={styles.openButton} onPress={() => {setUserToEdit(null); setModalVisible(true);}}>
-        <Text style={styles.buttonText}>Agregar Usuario</Text>
+        <Text style={styles.buttonText}>{t("usersscreen.add_user")}</Text>
       </TouchableOpacity>
       <Modal
         animationType="slide"
@@ -153,7 +158,7 @@ const handleUpdateUser = async (user_id) => {
               style={styles.closeButton}
               onPress={handleModalClose}
             >
-              <Text style={styles.closeButtonText}>Cerrar</Text>
+              <Text style={styles.closeButtonText}>{t("usersscreen.close")}</Text>
             </TouchableOpacity>
           </View>
         </View>

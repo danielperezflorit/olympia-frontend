@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
 import { updateMatchResult } from '../../services/matchService'; 
 
 const MatchResultForm = ({ match, onResultSubmitted, onClose }) => {
+    const { t } = useTranslation();
     const [scoreLocal, setScoreLocal] = useState(match.scoreLocal ? String(match.scoreLocal) : '0');
     const [scoreVisitor, setScoreVisitor] = useState(match.scoreVisitor ? String(match.scoreVisitor) : '0');
     const [loading, setLoading] = useState(false);
 
-    const teamLocalName = match.teamLocal.name || 'Equipo Local';
-    const teamVisitorName = match.teamVisitor.name || 'Equipo Visitante';
+    const teamLocalName = match.teamLocal.name || t("matchresultform.home_team");
+    const teamVisitorName = match.teamVisitor.name || t("matchresultform.away_team");
 
     const handleSubmit = async () => {
         const finalScoreLocal = parseInt(scoreLocal, 10);
@@ -36,8 +38,8 @@ const MatchResultForm = ({ match, onResultSubmitted, onClose }) => {
 
     return (
         <View style={styles.formContainer}>
-            <Text style={styles.title}>Registrar Resultado</Text>
-            <Text style={styles.subtitle}>Partido: {teamLocalName} vs {teamVisitorName}</Text>
+            <Text style={styles.title}>{t('matchresultform.add_result')}</Text>
+            <Text style={styles.subtitle}>{t('matchresultform.match')}: {teamLocalName} vs {teamVisitorName}</Text>
             
             <View style={styles.inputRow}>
                 <Text style={styles.teamLabel}>{teamLocalName}:</Text>
@@ -46,7 +48,7 @@ const MatchResultForm = ({ match, onResultSubmitted, onClose }) => {
                     onChangeText={setScoreLocal}
                     value={scoreLocal}
                     keyboardType="numeric"
-                    placeholder="Resultado equipo Local"
+                    placeholder= {t("matchresultform.home_team_result")}
                 />
             </View>
 
@@ -57,18 +59,18 @@ const MatchResultForm = ({ match, onResultSubmitted, onClose }) => {
                     onChangeText={setScoreVisitor}
                     value={scoreVisitor}
                     keyboardType="numeric"
-                    placeholder="Resultado equipo Visitante"
+                    placeholder={t("matchresultform.away_team_result")}
                 />
             </View>
 
             <Button
-                title={loading ? "Enviando..." : "Guardar Resultado"}
+                title={loading ? t("matchresultform.sending") : t('matchresultform.save_result')}
                 onPress={handleSubmit}
                 disabled={loading}
             />
             
             <View style={styles.closeButtonContainer}>
-                <Button title="Cerrar" onPress={onClose} color="#FF3B30" />
+                <Button title={t('matchresultform.close')} onPress={onClose} color="#FF3B30" />
             </View>
         </View>
     );

@@ -1,4 +1,6 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
+
 import {
   View,
   Text,
@@ -14,33 +16,35 @@ export default function UserList({
   }) 
   
   {
-  return (
-    <FlatList
-      data={users}
-      keyExtractor={(item) => item._id.toString()}
-      renderItem={({ item }) => (
-        <View style={styles.item}>
-          <Text style={styles.label}>Nombre: {item.getFullName()}</Text> 
-          <Text style={styles.label}>Email: {item.getEmail()}</Text> 
-          <Text style={styles.label}>Universidad: {item.getUniversityName()}</Text>
-          <Text style={styles.label}>Equipo: {item.getTeamName()}</Text> 
-          <Text style={styles.label}>Rol: {item.getRol()}</Text>
+    const { t } = useTranslation();
 
-          <TouchableOpacity style={styles.updateButton} onPress={() => onUpdateUser(item)} >
-            <Text style={styles.updateButtonText}>Editar</Text>
-          </TouchableOpacity>
+    return (
+      <FlatList
+        data={users}
+        keyExtractor={(item) => item._id.toString()}
+        renderItem={({ item }) => (
+          <View style={styles.item}>
+            <Text style={styles.label}>{t("userlist.name")}: {item.getFullName()}</Text> 
+            <Text style={styles.label}>{t("userlist.email")}: {item.getEmail()}</Text> 
+            <Text style={styles.label}>{t("userlist.university")}: {item.getUniversityName()}</Text>
+            <Text style={styles.label}>{t("userlist.team")}: {item.getTeamName()}</Text> 
+            <Text style={styles.label}>{t("userlist.role")}: {item.getRol()}</Text>
 
-          <TouchableOpacity
-            style={styles.deleteButton}
-            onPress={() => onDeleteUser(item._id)}
-          >
-          <Text style={styles.deleteButtonText}>Eliminar</Text>
-          </TouchableOpacity>
-        </View>
-      )}
-    />
-  );
-}
+            <TouchableOpacity style={styles.updateButton} onPress={() => onUpdateUser(item)} >
+              <Text style={styles.updateButtonText}>{t("userlist.edit_user")}</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.deleteButton}
+              onPress={() => onDeleteUser(item._id)}
+            >
+            <Text style={styles.deleteButtonText}>{t("userlist.delete_user")}</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+      />
+    );
+  }
 
 const styles = StyleSheet.create({
   list: {

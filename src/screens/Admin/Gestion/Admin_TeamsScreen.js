@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { View, StyleSheet, Text, TouchableOpacity, Modal, Image } from "react-native";
 import { useFocusEffect } from "@react-navigation/native"; 
 import TeamForm from "../../../components/Team/TeamForm.jsx";
@@ -8,25 +9,28 @@ import Team from "../../../models/teammodel.js";
 import Admin_GlobalMenu from "../../../components/Admin_GlobalMenu.jsx";
 import SearchBar from "../../../components/SearchBar.jsx";
 
-const FixedHeader = () => (
+const FixedHeader = () => {
+  const { t } = useTranslation();
+
+  return (
     <View style={headerStyles.headerContainer}>
         <Image 
             style={headerStyles.logo} 
             source={require('../../../../assets/unite!.png')}
         />
-        <Text style={headerStyles.title}>Lista de Equipos</Text>
+        <Text style={headerStyles.title}>{t("teamsscreen.teams_list")}</Text>
     </View>
-);
+  );
+}
 
 export default function Admin_TeamsScreen({ navigation }) {
+  const { t } = useTranslation();
   const [teams, setTeams] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [teamToEdit, setTeamToEdit] = useState(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
-
-
 
   const loadTeams = async () => {
     try {
@@ -124,7 +128,7 @@ export default function Admin_TeamsScreen({ navigation }) {
         <SearchBar 
           value={searchQuery}
           onChangeText={setSearchQuery}
-          placeholder="Buscar por nombre o universidad..."
+          placeholder= {t("teamsscreen.searchbar_placeholder")}
         />
       </View>
       
@@ -134,7 +138,7 @@ export default function Admin_TeamsScreen({ navigation }) {
         onUpdateTeam={handleUpdateTeam}
       />
       <TouchableOpacity style={styles.openButton} onPress={() => {setTeamToEdit(null); setModalVisible(true);}} >
-        <Text style={styles.buttonText}>Agregar Equipo</Text>
+        <Text style={styles.buttonText}>{t("teamsscreen.add_team")}</Text>
       </TouchableOpacity>
       <Modal
         animationType="slide"
@@ -154,7 +158,7 @@ export default function Admin_TeamsScreen({ navigation }) {
             style={styles.closeButton}
             onPress={handleModalClose} 
           >
-            <Text style={styles.closeButtonText}>Cerrar</Text>
+            <Text style={styles.closeButtonText}>{t("teamsscreen.close")}</Text>
           </TouchableOpacity>
         </View>
       </View>

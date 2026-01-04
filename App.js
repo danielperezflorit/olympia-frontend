@@ -1,4 +1,5 @@
 import React, { useState, useMemo, createContext } from "react";
+import './src/translate/i18n.js';
 import { Image, Text } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";

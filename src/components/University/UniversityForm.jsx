@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { View, TextInput, Button, Text, StyleSheet } from "react-native";
 import { addUniversity, updateUniversity } from "../../services/universityService";
 
 export default function UniversityForm({ onUniversityAdded, universityToEdit }) {
+  const { t } = useTranslation();
+
   const [name, setName] = useState("");
 
   useEffect(() => {
@@ -35,15 +38,15 @@ export default function UniversityForm({ onUniversityAdded, universityToEdit }) 
 
   return (
     <View style={styles.form}>
-      <Text style={styles.title}>{universityToEdit ? "Editar Universidad" : "Agregar Universidad"}</Text>
+      <Text style={styles.title}>{universityToEdit ? t("universityform.edit_university") : t("universityform.add_university")}</Text>
       <TextInput
-        placeholder="Nombre"
+        placeholder={t("universityform.university_name_placeholder")}
         value={name}
         onChangeText={setName}
         style={styles.input}
       />
       
-      <Button title={universityToEdit ? "Guardar Cambios" : "Enviar"} onPress={handleSubmit} />
+      <Button title={universityToEdit ? t("universityform.save_changes") : t("universityform.send")} onPress={handleSubmit} />
     </View>
   );
 }

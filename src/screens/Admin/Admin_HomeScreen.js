@@ -1,17 +1,21 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { View, ScrollView, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import Admin_GlobalMenu from '../../components/Admin_GlobalMenu.jsx';
 
 
-const FixedHeader = () => (
-    <View style={headerStyles.headerContainer}>
-        <Image 
-            style={headerStyles.logo} 
-            source={require('../../../assets/unite!.png')}
-        />
-        <Text style={headerStyles.title}>Home</Text>
-    </View>
-);
+const FixedHeader = () => {
+    const { t } = useTranslation();
+    return(
+        <View style={headerStyles.headerContainer}>
+            <Image 
+                style={headerStyles.logo} 
+                source={require('../../../assets/unite!.png')}
+            />
+            <Text style={headerStyles.title}>{t('home')}</Text>
+        </View>
+    )
+}
 
 
 const ImageContainer = ({ navigation, source, sportName }) => (

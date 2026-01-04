@@ -1,0 +1,257 @@
+{
+    "home": "Home",
+
+    "sport": {
+        "football": "FOOTBALL"
+    },
+
+    "login": {
+        "login": "Login",
+        "register": "Register here",
+        "have_account": "Already have an account? ",
+        "mail": "Email",
+        "password": "Password"
+    },
+
+    "register": {
+        "register": "Register",
+        "create_new_account": "Create your new account",
+        "complete_name": "Full Name",
+        "complete_name_placeholder": "E.g. Daniel Pérez",
+        "mail": "Email",
+        "mail_placeholder": "example@estudiantat.upc.edu",
+        "password": "Password",
+        "password_placeholder": "Minimum 6 characters",
+        "confirm_password": "Confirm Password",
+        "confirm_password_placeholder": "Repeat the password",
+        "select_university": "Select University",
+        "select_university_placeholder": " --- Select University --- ",
+        "select_team": "Select Team",
+        "select_team_placeholder": " --- Select Team --- ",
+        "already_have_account": "Already have an account?",
+        "login": "Login"
+    },
+
+    "football": {
+        "select_comp": "Select Competition",
+        "ranking": "Ranking",
+        "calendar": "Match Calendar",
+        "new_match": "+ Schedule New Match",
+        "no_data": "No Football competitions available.",
+        "close": "Close",
+        "team": "Team",
+        "edit_result": "Edit Result",
+        "add_result": "Add Result",
+        "save_result": "Save Result",
+        "select_date": "Select Date and Time",
+        "match":"Match"
+    },
+
+    "ranking_table": {
+        "position": "Pos",
+        "played": "Pld",
+        "won": "W",
+        "drawn": "D",
+        "lost": "L",
+        "goals_for": "GF",
+        "goals_against": "GA",
+        "goal_difference": "GD",
+        "points": "Pts"
+    },
+
+    "calendarpicker": {
+        "select_date": "Select Date and Time",
+        "select_time": "Select Time",
+        "confirm": "Confirm",
+        "cancel": "Cancel"
+    },
+
+    "matchcalendar": {
+        "no_matches": "No scheduled matches.",
+        "edit_result": "Edit Result",
+        "add_result": "Add Result",
+        "home_team": "Equipo Local",
+        "away_team" : "Equipo Visitante"
+    },
+
+    "matchresultform": {
+        "add_result": "Add Result",
+        "save_result": "Save Result",
+        "close": "Close",
+        "match":"Match",
+        "home_team": "Home Team",
+        "away_team" : "Away Team",
+        "home_team_result": "Home Team Result",
+        "away_team_result": "Away Team Result",
+        "sending": "Sending..."
+    },
+    
+    "matchform": {
+        "select_team": "Select Team...",
+        "select_team_local": "Select Home Team",
+        "select_team_visitor": "Select Away Team",
+        "date_time": "Date and Time",
+        "schedule_match": "Schedule Match",
+        "scheduling_match": "Scheduling..."
+    },
+
+    "competitionsscreen": {
+        "competitions_list": "Competitions List",
+        "add_competition": "Add Competition",
+        "close": "Close"
+    },
+
+    "competitionlist": {
+        "name": "Name",
+        "teams": "Teams",
+        "sport": "Sport",
+        "delete_competition": "Delete Competition",
+        "edit_competition": "Edit Competition",
+        "cancel": "Cancel"
+    },
+
+    "competitionform": {
+        "competition_name": "Competition's name",
+        "competition_name_placeholder": "Competition's name",
+        "edit_competition": "Edit Competition",
+        "add_competition": "Add Competition",
+        "select_sport": "Select Sport",
+        "select_sport_placeholder": "--- Select a sport ---",
+        "save_changes": "Save Changes",
+        "send" : "Send"
+    },
+    
+    "teamsscreen": {
+        "teams_list": "Teams List",
+        "add_team": "Add Team",
+        "close": "Close",
+        "searchbar_placeholder": "Search team by name or university..."
+    },
+
+    "admin_teamlist": {
+        "name": "Name",
+        "university": "University",
+        "competition": "Competition",
+        "captain": "Captain",
+        "players": "Players",
+        "played_matches": "Played Matches",
+        "wins": "Wins",
+        "losses": "Losses",
+        "draws": "Draws",
+        "delete_team": "Delete Team",
+        "edit_team": "Edit Team",
+        "cancel": "Cancel"
+    },
+
+    "captain_teamlist": {
+        "name": "Name",
+        "university": "University",
+        "competition": "Competition",
+        "captain": "Captain",
+        "players": "Players",
+        "played_matches": "Played Matches",
+        "wins": "Wins",
+        "losses": "Losses",
+        "draws": "Draws"
+    },
+
+    "teamform": {
+        "team_name": "Team Name",
+        "edit_team": "Edit Team",
+        "add_team": "Add Team",
+        "select_university": "Select University",
+        "select_university_placeholder": "--- Select University ---",
+        "select_competition": "Select Competition",
+        "select_competition_placeholder": "--- Select Competition ---",
+        "captain_email": "Captain Email",
+        "captain_email_placeholder": "example@estudiantat.upc.edu",
+        "save_changes": "Save Changes",
+        "send": "Send"
+    },
+
+    "universityform": {
+        "university_name_placeholder": "University Name",
+        "edit_university": "Edit University",
+        "add_university": "Add University",
+        "save_changes": "Save Changes",
+        "send": "Send"
+    },
+
+    "universitylist": {
+        "name": "Name",
+        "sports": "Sports",
+        "competitions": "Competitions",
+        "teams": "Teams",
+        "players": "Players",
+        "played_matches": "Played Matches",
+        "wins": "Wins",
+        "losses": "Losses",
+        "draws": "Draws",
+        "delete_university": "Delete",
+        "edit_university": "Edit",
+        "cancel": "Cancel"
+    },
+
+    "userform": {
+        "name": "Name",
+        "name_placeholder": "Complete Name" ,
+        "email": "Email",
+        "email_placeholder": "example@estudiantat.upc.edu",
+        "password": "Password",
+        "password_placeholder": "Minimum 6 characters",
+        "select_university": "Select University",
+        "select_university_placeholder": "--- Select a University ---",
+        "select_team": "Select Team",
+        "select_team_placeholder": " --- Select a Team --- ",
+        "select_role": "Select Role",
+        "cancel": "Cancel",
+        "edit_user": "Edit User",
+        "add_user": "Add User",
+        "send": "Send"
+    },
+
+    "userlist": {
+        "name": "Name",
+        "email": "Email",
+        "university": "University",
+        "team": "Team",
+        "role": "Role",
+        "edit_user": "Edit User",
+        "delete_user": "Delete User",
+        "cancel": "Cancel"
+    },
+
+    "globalmenu": {
+        "menu": "Menu",
+        "logout": "Logout",
+        "register": "Register",
+        "login": "Login",
+        "home": "Home",
+        "users": "Users",
+        "universities": "Universities",
+        "teams": "Teams",
+        "competitions": "Competitions",
+        "football": "Football",
+        "paddle": "Paddle",
+        "basketball": "Basketball",
+        "handball": "Handball"
+    },
+
+    "searchbar": {
+        "search_placeholder": "Search..."
+    },
+
+    "universitiesscreen" : {
+        "universities_list": "List of Universities",
+        "add_university": "Add University",
+        "close": "Close"
+    },
+
+    "usersscreen" : {
+        "users_list": "User List",
+        "add_user": "Add User",
+        "close": "Close",
+        "searchbar_placeholder": "Search for user by name or email..."
+    }
+}
+
