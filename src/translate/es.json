@@ -71,7 +71,8 @@
         "edit_result": "Editar Resultado",
         "add_result": "Añadir Resultado",
         "home_team": "Equipo Local",
-        "away_team" : "Equipo Visitante"
+        "away_team" : "Equipo Visitante",
+        "history_title": "Historial de actualizaciones"
     },
 
     "matchresultform": {

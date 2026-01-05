@@ -9,8 +9,6 @@ const Admin_GlobalMenu = ({ navigation, onClose }) => {
     const { t, i18n } = useTranslation();
 
     const menuRoutes = [
-        { name: 'Register', label: t("globalmenu.register")},
-        { name: 'Login', label: t("globalmenu.login")},
         { name: 'Admin_Home', label: t("globalmenu.home")},
         { name: 'Admin_Users', label: t("globalmenu.users")},
         { name: 'Admin_Universities', label: t("globalmenu.universities")},
@@ -30,7 +28,7 @@ const Admin_GlobalMenu = ({ navigation, onClose }) => {
     
     const handleNavigate = (routeName) => {
         onClose(); 
-        if (['Registro','Login','Admin_Home', 'Admin_Users', 'Admin_Universities', 'Admin_Teams', 'Admin_Competitions', 'Admin_Futbol', 'Admin_Padel', 'Admin_Basquet', 'Admin_Handball'].includes(routeName)) {
+        if (['Admin_Home', 'Admin_Users', 'Admin_Universities', 'Admin_Teams', 'Admin_Competitions', 'Admin_Futbol', 'Admin_Padel', 'Admin_Basquet', 'Admin_Handball'].includes(routeName)) {
             navigation.dispatch(
                 CommonActions.reset({
                     index: 0,

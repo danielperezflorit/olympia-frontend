@@ -9,8 +9,6 @@ const User_GlobalMenu = ({ navigation, onClose }) => {
     const { t, i18n } = useTranslation();
 
     const menuRoutes = [
-        { name: 'Register', label: t("globalmenu.register") },
-        { name: 'Login', label: t("globalmenu.login") },
         { name: 'User_Home', label: t("globalmenu.home") },
         { name: 'User_Futbol', label: t("globalmenu.football") },
         { name: 'User_Padel', label: t("globalmenu.paddle") }, 
@@ -25,7 +23,7 @@ const User_GlobalMenu = ({ navigation, onClose }) => {
         
     const handleNavigate = (routeName) => {
         onClose(); 
-        if (['Register','Login','User_Home', 'User_Futbol', 'User_Padel', 'User_Basquet', 'User_Handball'].includes(routeName)) {
+        if (['User_Home', 'User_Futbol', 'User_Padel', 'User_Basquet', 'User_Handball'].includes(routeName)) {
             navigation.dispatch(
                 CommonActions.reset({
                     index: 0,

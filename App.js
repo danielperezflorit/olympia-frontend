@@ -6,6 +6,9 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { AuthContext } from './src/context/AuthContext';
 
+import LoginScreen from "./src/screens/LoginScreen";
+import RegisterScreen from "./src/screens/RegisterScreen";
+
 import Admin_UsersScreen from "./src/screens/Admin/Gestion/Admin_UsersScreen";
 import Admin_HomeScreen from "./src/screens/Admin/Admin_HomeScreen";
 import Admin_UniversitiesScreen from "./src/screens/Admin/Gestion/Admin_UniversitiesScreen";
@@ -16,8 +19,8 @@ import Admin_PadelScreen from "./src/screens/Admin/Sports/Admin_PadelScreen";
 import Admin_BasquetScreen from "./src/screens/Admin/Sports/Admin_BasquetScreen";
 import Admin_BalonmanoScreen from "./src/screens/Admin/Sports/Admin_BalonmanoScreen";
 
-import LoginScreen from "./src/screens/LoginScreen";
-import RegisterScreen from "./src/screens/RegisterScreen";
+import Logout_HomeScreen from "./src/screens/Logout/Logout_HomeScreen.js";
+import Logout_FutbolScreen from "./src/screens/Logout/Sports/Logout_FutbolScreen.js";
 
 import User_HomeScreen from "./src/screens/User/User_HomeScreen";
 import User_FutbolScreen from "./src/screens/User/Sports/User_FutbolScreen";
@@ -66,16 +69,6 @@ function AdminTabs() {
         tabBarStyle: { display: 'none' }, 
       }}
     >
-      <Tab.Screen 
-        name="Login" 
-        component={LoginScreen}
-        options={{ tabBarIcon: ({ size }) => <Image source={HomeIcon} style={{ width: size, height: size }} /> }}
-      />
-      <Tab.Screen 
-        name="Register" 
-        component={RegisterScreen}
-        options={{ tabBarIcon: ({ size }) => <Image source={HomeIcon} style={{ width: size, height: size }} /> }}
-      />
       <Tab.Screen 
         name="Admin_Home" 
         component={Admin_HomeScreen}
@@ -132,6 +125,47 @@ function UserTabs() {
       }}
     >
       <Tab.Screen 
+        name="User_Home" 
+        component={User_HomeScreen}
+        options={{ tabBarIcon: ({ size }) => <Image source={HomeIcon} style={{ width: size, height: size }} /> }}
+      />
+      <Tab.Screen 
+        name="User_Futbol" 
+        component={User_FutbolScreen} 
+        options={{ tabBarButton: () => null }} />
+      <Tab.Screen 
+        name="User_Padel" 
+        component={User_PadelScreen} 
+        options={{ tabBarButton: () => null }} />
+      <Tab.Screen 
+        name="User_Basquet" 
+        component={User_BasquetScreen} 
+        options={{ tabBarButton: () => null }} />
+      <Tab.Screen 
+        name="User_Balonmano" 
+        component={User_BalonmanoScreen} 
+        options={{ tabBarButton: () => null }} />
+    </Tab.Navigator>
+  );
+}
+
+function LogoutTabs() {
+  return (
+    <Tab.Navigator
+      initialRouteName="Logout_Home"
+      screenOptions={{
+        headerShown: false,
+        tabBarActiveTintColor: "#43ff4cff",
+        tabBarInactiveTintColor: "#ffffff",
+        tabBarStyle: { display: 'none' },
+      }}
+    >
+      <Tab.Screen 
+        name="Logout_Home" 
+        component={Logout_HomeScreen}
+        options={{ tabBarIcon: ({ size }) => <Image source={HomeIcon} style={{ width: size, height: size }} /> }}
+      />
+      <Tab.Screen 
         name="Login" 
         component={LoginScreen}
         options={{ tabBarIcon: ({ size }) => <Image source={HomeIcon} style={{ width: size, height: size }} /> }}
@@ -142,13 +176,8 @@ function UserTabs() {
         options={{ tabBarIcon: ({ size }) => <Image source={HomeIcon} style={{ width: size, height: size }} /> }}
       />
       <Tab.Screen 
-        name="User_Home" 
-        component={User_HomeScreen}
-        options={{ tabBarIcon: ({ size }) => <Image source={HomeIcon} style={{ width: size, height: size }} /> }}
-      />
-      <Tab.Screen 
-        name="User_Futbol" 
-        component={User_FutbolScreen} 
+        name="Logout_Futbol" 
+        component={Logout_FutbolScreen} 
         options={{ tabBarButton: () => null }} />
       <Tab.Screen 
         name="User_Padel" 
@@ -177,16 +206,6 @@ function RefereeTabs() {
         tabBarStyle: { display: 'none' },
       }}
     >
-      <Tab.Screen 
-        name="Login" 
-        component={LoginScreen}
-        options={{ tabBarIcon: ({ size }) => <Image source={HomeIcon} style={{ width: size, height: size }} /> }}
-      />
-      <Tab.Screen 
-        name="Register" 
-        component={RegisterScreen}
-        options={{ tabBarIcon: ({ size }) => <Image source={HomeIcon} style={{ width: size, height: size }} /> }}
-      />
       <Tab.Screen 
         name="Referee_Home" 
         component={Referee_HomeScreen}
@@ -223,16 +242,6 @@ function CaptainTabs() {
         tabBarStyle: { display: 'none' }, 
       }}
     >
-      <Tab.Screen 
-        name="Login" 
-        component={LoginScreen}
-        options={{ tabBarIcon: ({ size }) => <Image source={HomeIcon} style={{ width: size, height: size }} /> }}
-      />
-      <Tab.Screen 
-        name="Register" 
-        component={RegisterScreen}
-        options={{ tabBarIcon: ({ size }) => <Image source={HomeIcon} style={{ width: size, height: size }} /> }}
-      />
       <Tab.Screen 
         name="Captain_Home" 
         component={Captain_HomeScreen}
@@ -275,7 +284,7 @@ export default function App() {
     <AuthContext.Provider value={authContext}>
       <NavigationContainer fallback={<Text>Cargando...</Text>}>
         { userRole === null ? (
-          <AuthStack />
+          <LogoutTabs/>
         ) : userRole === 'Admin' ? (
           <AdminTabs />
         ) : userRole == 'user' ? (

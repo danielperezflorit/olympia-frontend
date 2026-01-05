@@ -9,8 +9,6 @@ const Referee_GlobalMenu = ({ navigation, onClose }) => {
     const { t, i18n } = useTranslation();
 
     const menuRoutes = [
-        { name: 'Register', label: t("globalmenu.register") },
-        { name: 'Login', label: t("globalmenu.login") },
         { name: 'Referee_Home', label: t("globalmenu.home") },
         { name: 'Referee_Futbol', label: t("globalmenu.football") },
         { name: 'Referee_Padel', label: t("globalmenu.paddle") }, 
@@ -25,7 +23,7 @@ const Referee_GlobalMenu = ({ navigation, onClose }) => {
     
     const handleNavigate = (routeName) => {
         onClose(); 
-        if (['Register','Login','Referee_Home', 'Referee_Futbol', 'Referee_Padel', 'Referee_Basquet', 'Referee_Handball'].includes(routeName)) {
+        if (['Referee_Home', 'Referee_Futbol', 'Referee_Padel', 'Referee_Basquet', 'Referee_Handball'].includes(routeName)) {
             navigation.dispatch(
                 CommonActions.reset({
                     index: 0,
