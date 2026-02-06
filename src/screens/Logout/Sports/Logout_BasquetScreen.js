@@ -1,18 +1,14 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, ActivityIndicator, Modal, Dimensions, Platform } from 'react-native';
-import Referee_GlobalMenu from '../../../components/Referee_GlobalMenu';
-
-import { fetchSportIdByName } from '../../../services/sportService';
-import { fetchCompetitionsBySportId } from '../../../services/competitionService';
-import { fetchCompetitionRanking } from '../../../services/teamService';
-import { fetchMatchesByCompetitionId } from '../../../services/matchService';
-
-import CompetitionSelector from '../../../components/Competition/CompetitionSelector';
-import RankingTable from '../../../components/Competition/RankingTable';
-import MatchCalendar from '../../../components/Match/MatchCalendar'; 
-import MatchForm from '../../../components/Match/MatchForm'; 
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import Logout_GlobalMenu from '../../../components/Logout_GlobalMenu.jsx';
+import { fetchSportIdByName } from '../../../services/sportService.js';
+import { fetchCompetitionsBySportId } from '../../../services/competitionService.js';
+import { fetchCompetitionRanking } from '../../../services/teamService.js';
+import { fetchMatchesByCompetitionId } from '../../../services/matchService.js';
+import CompetitionSelector from '../../../components/Competition/CompetitionSelector.jsx';
+import RankingTable from '../../../components/Competition/RankingTable.jsx';
+import User_MatchCalendar from '../../../components/Match/User_MatchCalendar.jsx'; 
 
 const { width } = Dimensions.get('window');
 const isMobile = width < 768;
@@ -30,7 +26,7 @@ const FixedHeader = () => {
     );
 }
 
-export default function Referee_FutbolScreen({ navigation }) {
+export default function Logout_BasquetScreen({ navigation }) {
     const { t } = useTranslation();
     const [isMenuOpen, setIsMenuOpen] = useState(false); 
     const [availableCompetitions, setAvailableCompetitions] = useState([]);
@@ -38,10 +34,7 @@ export default function Referee_FutbolScreen({ navigation }) {
     const [rankingData, setRankingData] = useState([]);
     const [matchesData, setMatchesData] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [currentUser, setCurrentUser] = useState(null);
-    
-    const [isMatchFormVisible, setIsMatchFormVisible] = useState(false); 
-    
+        
     const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
     const loadCompetitionData = useCallback(async (competitionId) => {
@@ -70,11 +63,6 @@ export default function Referee_FutbolScreen({ navigation }) {
         }
     }, []);
 
-    const handleDataUpdate = () => {
-        setIsMatchFormVisible(false); 
-        loadCompetitionData(selectedCompetitionId); 
-    };
-
     useEffect(() => {
         async function loadInitialData() {
             setLoading(true);
@@ -91,17 +79,16 @@ export default function Referee_FutbolScreen({ navigation }) {
                         setLoading(false);
                     }
                 } else {
-                    console.warn("Deporte 'BALONCESTO' no encontrado en la base de datos.");
+                    console.warn("Deporte 'FÚTBOL' no encontrado en la base de datos.");
                     setLoading(false);
                 }
             } catch (e) {
-                console.error("Error al cargar datos iniciales de Baloncesto:", e);
+                console.error("Error al cargar datos iniciales de Fútbol:", e);
                 setLoading(false);
             }
         }
         loadInitialData();
     }, []); 
-
 
     useEffect(() => {
         if (selectedCompetitionId) {
@@ -109,19 +96,6 @@ export default function Referee_FutbolScreen({ navigation }) {
         }
     }, [selectedCompetitionId, loadCompetitionData]);
 
-    useEffect(() => {
-        const loadUser = async () => {
-            try {
-                const userData = await AsyncStorage.getItem('userInfo');
-                if (userData) {
-                    setCurrentUser(JSON.parse(userData));
-                }
-            } catch (e) {
-                console.error("Error loading user info", e);
-            }
-        };
-        loadUser();
-    }, []);
 
     return (
         <View style={styles.fullContainer}>
@@ -141,7 +115,7 @@ export default function Referee_FutbolScreen({ navigation }) {
             </TouchableOpacity>
             
             {isMenuOpen && (
-                <Referee_GlobalMenu 
+                <Logout_GlobalMenu 
                     navigation={navigation} 
                     onClose={() => setIsMenuOpen(false)}
                 />
@@ -163,46 +137,15 @@ export default function Referee_FutbolScreen({ navigation }) {
                     
                     <Text style={styles.sectionTitle}>{t("basketball.calendar")}</Text>
                     {loading ? <ActivityIndicator size="small" color="#0084C9" /> : (
-                        <MatchCalendar 
+                        <User_MatchCalendar 
                             matches={matchesData} 
-                            onDataUpdated={handleDataUpdate} 
-                            currentUser={currentUser}
                         />
-                    )}
-
-                    {selectedCompetitionId && (
-                        <View style={styles.adminButtons}>
-                            <TouchableOpacity 
-                                style={styles.adminButton} 
-                                onPress={() => setIsMatchFormVisible(true)} 
-                            >
-                                <Text style={styles.buttonText}>{t('basketball.new_match')}</Text>
-                            </TouchableOpacity>
-                        </View>
                     )}
                 </ScrollView>
                 
             )}
             {loading && availableCompetitions.length > 0 && <ActivityIndicator size="large" color="#0084C9" style={styles.loadingIndicatorOverlay} />}
 
-            <Modal
-                animationType="slide"
-                transparent={true}
-                visible={isMatchFormVisible}
-                onRequestClose={() => setIsMatchFormVisible(false)}
-            >
-                <View style={styles.modalOverlay}>
-                    <View style={styles.modalContent}>
-                        <MatchForm
-                            competitionId={selectedCompetitionId} 
-                            onMatchScheduled={handleDataUpdate}
-                        />
-                        <TouchableOpacity style={styles.closeButton} onPress={() => setIsMatchFormVisible(false)}>
-                            <Text style={styles.closeButtonText}>{t('basketball.close')}</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            </Modal>
         </View>
     );
 }

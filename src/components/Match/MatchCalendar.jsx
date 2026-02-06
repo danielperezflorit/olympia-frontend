@@ -2,49 +2,9 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Modal, ScrollView } from 'react-native';
 import MatchResultForm from './MatchResultForm'; 
+import { HistoryModal } from './HistoryModal';
 
-const HistoryModal = ({ visible, history, onClose, t }) => {
-    return (
-        <Modal visible={visible} animationType="fade" transparent={true} onRequestClose={onClose}>
-            <View style={styles.modalOverlay}>
-                <View style={styles.modalContent}>
-                    <TouchableOpacity style={styles.closeIconBtn} onPress={onClose}>
-                        <Text style={styles.closeIconText}>✕</Text>
-                    </TouchableOpacity>
-
-                    <Text style={styles.historyTitle}>{t('matchcalendar.history_title') || "Historial de Cambios"}</Text>
-                    
-                    {(!history || history.length === 0) ? (
-                        <Text style={styles.noHistoryText}>No hay modificaciones registradas.</Text>
-                    ) : (
-                        <ScrollView style={{ maxHeight: 300 }}>
-                            {history.slice().reverse().map((log, index) => ( // Reverse para ver lo más nuevo arriba
-                                <View key={index} style={styles.historyItem}>
-                                    <View style={styles.historyHeader}>
-                                        <Text style={styles.historyAction}>
-                                            {log.action === 'Update Result' ? 'Resultado Actualizado' : log.action}
-                                        </Text>
-                                        <Text style={styles.historyDate}>
-                                            {new Date(log.date).toLocaleString()}
-                                        </Text>
-                                    </View>
-                                    <View style={styles.historyChangeContainer}>
-                                        <Text style={styles.historyOld}>{log.oldScore}</Text>
-                                        <Text style={styles.arrow}> ➔ </Text>
-                                        <Text style={styles.historyNew}>{log.newScore}</Text>
-                                    </View>
-                                    <Text style={styles.historyUser}>Por: {log.modifiedBy?.name || 'Admin'}</Text> 
-                                </View>
-                            ))}
-                        </ScrollView>
-                    )}
-                </View>
-            </View>
-        </Modal>
-    );
-};
-
-const MatchCalendar = ({ matches, onDataUpdated }) => {
+const MatchCalendar = ({ matches, onDataUpdated, currentUser }) => {
     const { t } = useTranslation();
     
     const [selectedMatch, setSelectedMatch] = useState(null);
@@ -56,6 +16,17 @@ const MatchCalendar = ({ matches, onDataUpdated }) => {
     if (!matches || matches.length === 0) {
         return <Text style={styles.message}>{t('matchcalendar.no_matches')}</Text>;
     }
+
+    const groupedMatches = matches.reduce((acc, match) => {
+        const day = match.matchday || 1; 
+        if (!acc[day]) {
+            acc[day] = [];
+        }
+        acc[day].push(match);
+        return acc;
+    }, {});
+
+    const sortedMatchdays = Object.keys(groupedMatches).sort((a, b) => Number(a) - Number(b));
 
     const openResultForm = (match) => {
         setSelectedMatch(match);
@@ -75,6 +46,29 @@ const MatchCalendar = ({ matches, onDataUpdated }) => {
         
         const isPlayed = item.isPlayed || item.scoreLocal != 0 || item.scoreVisitor != 0;
         const isPast = matchDate < now; 
+
+        let canEdit = false;
+        if (currentUser) {
+            if (currentUser.type === 'admin') {
+                canEdit = true;
+            } 
+            else if (currentUser.type === 'referee') {
+                const assignedRefereeId = item.referee?._id || item.referee;
+                
+                if (assignedRefereeId === currentUser._id) {
+                    canEdit = true;
+                }
+            }
+            else if (currentUser.type === 'captain') {
+                const userTeamId = currentUser.team;
+                const localId = item.teamLocal?._id || item.teamLocal;
+                const visitorId = item.teamVisitor?._id || item.teamVisitor;
+
+                if (userTeamId === localId || userTeamId === visitorId) {
+                    canEdit = true;
+                }
+            }
+        }
 
         const hasHistory = item.modificationHistory && item.modificationHistory.length > 0;
 
@@ -117,7 +111,7 @@ const MatchCalendar = ({ matches, onDataUpdated }) => {
                         </View>
                     </View>
 
-                    {(isPast || isPlayed) && (
+                    {(isPast || isPlayed) && canEdit && ( 
                         <TouchableOpacity 
                             style={styles.resultButton} 
                             onPress={() => openResultForm(item)}
@@ -133,11 +127,22 @@ const MatchCalendar = ({ matches, onDataUpdated }) => {
 
     return (
         <View style={styles.container}>
-            <FlatList
-                data={matches}
-                renderItem={renderMatchItem}
-                keyExtractor={(item) => item._id}
-            />
+           {sortedMatchdays.map((day) => (
+                <View key={day} style={styles.matchdayContainer}>
+                    
+                    <View style={styles.matchdayHeader}>
+                        <Text style={styles.matchdayTitle}>
+                            {t('matchcalendar.matchday') || "Jornada"} {day}
+                        </Text>
+                    </View>
+
+                    {groupedMatches[day].map((match) => (
+                        <View key={match._id}>
+                            {renderMatchItem({ item: match })}
+                        </View>
+                    ))}
+                </View>
+            ))}
 
             <Modal visible={isResultModalVisible} animationType="slide" transparent={true}>
                 <View style={styles.modalOverlay}>
@@ -365,6 +370,22 @@ const styles = StyleSheet.create({
     },
     sideContainer: {
         flex: 1, 
+    },
+    matchdayContainer: {
+        marginBottom: 20,
+    },
+    matchdayHeader: {
+        backgroundColor: '#e0e0e0',
+        paddingVertical: 8,
+        paddingHorizontal: 10,
+        borderRadius: 5,
+        marginBottom: 10,
+        alignItems: 'center'
+    },
+    matchdayTitle: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: '#333',
     },
 });
 

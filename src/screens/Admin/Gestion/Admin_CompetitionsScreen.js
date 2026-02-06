@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { View, StyleSheet, Text, TouchableOpacity, Modal, Image } from "react-native";
+import { View, StyleSheet, Text, TouchableOpacity, Modal, Image, Dimensions, Platform } from "react-native";
 import { useFocusEffect } from "@react-navigation/native"; 
 import CompetitionForm from "../../../components/Competition/CompetitionForm.jsx";
 import CompetitionList from "../../../components/Competition/Admin_CompetitionList.jsx";
 import { fetchCompetitions, deleteCompetition } from "../../../services/competitionService.js";
 import Admin_GlobalMenu from "../../../components/Admin_GlobalMenu.jsx";
 import Competition from "../../../models/competitionmodel.js";
+
+const { width } = Dimensions.get('window');
+const isMobile = width < 768;
 
 const FixedHeader = () => {
   const { t } = useTranslation();
@@ -145,63 +148,63 @@ export default function Admin_CompetitionsScreen({ navigation }) {
 
 const headerStyles = StyleSheet.create({
     headerContainer: {
-        height: 100, 
+        height: isMobile ? 150 : 100, 
         width: '100%',
-        backgroundColor: '#ffffffff', 
+        backgroundColor: '#ffffff', 
         flexDirection: 'row',
         alignItems: 'center', 
-        justifyContent: 'flex-start', 
-        paddingTop: 10,
+        justifyContent: 'center', 
+        paddingTop: isMobile ? 30 : 10,
         paddingHorizontal: 15,
         borderBottomWidth: 1, 
         borderBottomColor: '#eee',
         zIndex: 10, 
-        position: 'absolute',
+        position: 'absolute', 
         top: 0,
-        reight: 0,
+        right: 0,
     },
     menuIcon: {
         position: 'absolute', 
-        top: 45,
+        top: isMobile ? 30 : 45, 
         right: 10,
         padding: 5,
         borderRadius: 5,
     },
     menuIconText: {
-        fontSize: 30,
+        fontSize: isMobile ? 24 : 30, 
+        top:  isMobile ? 30 : 10,
         fontWeight: 'bold',
-        color: '#0084C9', 
+        color: '#0084C9',
     },
     menuIconBackgroundActive: {
         backgroundColor: '#0084C9', 
     },
     menuIconTextActive: {
         color: 'white', 
+        top:  isMobile ? 30 : 10,
     },
     logo: {
-        width: 300, 
-        height: 80, 
+        width: isMobile ? 180 : 300, 
+        height: isMobile ? 60 : 80, 
         resizeMode: 'contain',
-        marginLeft: 55, 
-    },
+        position: 'absolute',
+        left: isMobile ? 0 : 15,
+        top: isMobile ? 30 : 10,
+    },    
     title: {
-      position: 'absolute',
-      fontSize: 50,
-      marginBottom: 10,
-      textAlign: "center",
-      color: "#0084C9",
-      fontWeight: 'bold',
-      left: '50%', 
-      transform: 'translateX(-50%)',
-  },
+        fontSize: isMobile ? 30: 50,
+        color: "#0084C9",
+        fontWeight: 'bold',
+        textAlign: "center",
+        top: isMobile? 20:0,
+    },
 });
-
 
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 120,
+    paddingTop: isMobile? 220: 120,
     paddingHorizontal: 20,
     paddingBottom:10,
     backgroundColor: "#ffffffff",

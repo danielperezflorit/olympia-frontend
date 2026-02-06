@@ -9,6 +9,17 @@ const User_MatchCalendar = ({ matches }) => {
         return <Text style={styles.message}>No hay partidos programados.</Text>;
     }
 
+     const groupedMatches = matches.reduce((acc, match) => {
+        const day = match.matchday || 1; 
+        if (!acc[day]) {
+            acc[day] = [];
+        }
+        acc[day].push(match);
+        return acc;
+    }, {});
+
+    const sortedMatchdays = Object.keys(groupedMatches).sort((a, b) => Number(a) - Number(b));
+
     const renderMatchItem = ({ item }) => {
         const teamLocalName = item.teamLocal?.name || t("matchcalendar.home_team");
         const teamVisitorName = item.teamVisitor?.name ||  t("matchcalendar.away_team");
@@ -48,13 +59,27 @@ const User_MatchCalendar = ({ matches }) => {
 
     return (
         <View style={styles.container}>
-            <FlatList
-                data={matches}
-                renderItem={renderMatchItem}
-                keyExtractor={(item) => item._id}
-            />
+           {sortedMatchdays.map((day) => (
+                <View key={day} style={styles.matchdayContainer}>
+                    
+                    <View style={styles.matchdayHeader}>
+                        <Text style={styles.matchdayTitle}>
+                            {t('matchcalendar.matchday') || "Jornada"} {day}
+                        </Text>
+                    </View>
+
+                    {groupedMatches[day].map((match) => (
+                        <View key={match._id}>
+                            {renderMatchItem({ item: match })}
+                        </View>
+                    ))}
+                </View>
+            ))}
+
+    
         </View>
     );
+    
 };
 
 const styles = StyleSheet.create({
@@ -77,12 +102,86 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         marginBottom: 10,
         width: '100%',
+        position: 'relative'
+    },
+    cardHeader: {
+        flexDirection: 'row',
+        justifyContent: 'center', // Centrado para la fecha
+        alignItems: 'center',
+        marginBottom: 5,
+        position: 'relative',
     },
     dateText: {
         fontSize: 12,
         color: '#777',
         marginBottom: 5,
         textAlign: 'center',
+    },
+    historyIconBtn: {
+        position: 'absolute',
+        right: 0,
+        top: -5,
+        padding: 5,
+        backgroundColor: '#e1f5fe',
+        borderRadius: 15,
+    },
+    historyIconText: {
+        fontSize: 16,
+    },
+    historyTitle: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: '#0084C9',
+        marginBottom: 15,
+        textAlign: 'center',
+    },
+    historyItem: {
+        backgroundColor: '#f0f0f0',
+        padding: 10,
+        borderRadius: 8,
+        marginBottom: 8,
+        borderLeftWidth: 4,
+        borderLeftColor: '#0084C9',
+    },
+    historyHeader: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: 4,
+    },
+    historyAction: {
+        fontSize: 12,
+        fontWeight: 'bold',
+        color: '#333',
+    },
+    historyDate: {
+        fontSize: 10,
+        color: '#666',
+    },
+    historyChangeContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    historyOld: {
+        fontSize: 14,
+        color: '#888',
+        textDecorationLine: 'line-through',
+    },
+    historyNew: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: '#0084C9',
+    },
+    arrow: {
+        fontSize: 16,
+        color: '#333',
+        marginHorizontal: 5,
+    },
+    noHistoryText: {
+        textAlign: 'center',
+        color: '#777',
+        fontStyle: 'italic',
+        marginVertical: 10,
     },
     resultContainer: {
         flexDirection: 'row',
@@ -149,7 +248,21 @@ const styles = StyleSheet.create({
         width: '90%', 
         backgroundColor: 'white', 
         borderRadius: 10, 
-        padding: 10
+        padding: 20,
+        position: 'relative',
+    },
+    closeIconBtn: {
+        position: 'absolute', 
+        top: 10,              
+        right: 10,            
+        zIndex: 1,            
+        padding: 5            
+    },
+    closeIconText: {
+        fontSize: 24,         
+        color: '#FF3B30',     
+        fontWeight: 'bold',
+        lineHeight: 24 
     },
     teamContainer: {
         flex: 1,
@@ -167,6 +280,22 @@ const styles = StyleSheet.create({
     },
     sideContainer: {
         flex: 1, 
+    },
+    matchdayContainer: {
+        marginBottom: 20,
+    },
+    matchdayHeader: {
+        backgroundColor: '#e0e0e0',
+        paddingVertical: 8,
+        paddingHorizontal: 10,
+        borderRadius: 5,
+        marginBottom: 10,
+        alignItems: 'center'
+    },
+    matchdayTitle: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: '#333',
     },
 });
 

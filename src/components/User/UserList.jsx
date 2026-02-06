@@ -1,19 +1,11 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
+import {View,Text,FlatList,TouchableOpacity,StyleSheet, Dimensions, Platform} from "react-native";
 
-import {
-  View,
-  Text,
-  FlatList,
-  TouchableOpacity,
-  StyleSheet,
-} from "react-native";
+const { width } = Dimensions.get('window');
+const isMobile = width < 768;
 
-export default function UserList({
-    users,
-    onDeleteUser,
-    onUpdateUser,
-  }) 
+export default function UserList({ users, onDeleteUser, onUpdateUser, }) 
   
   {
     const { t } = useTranslation();
@@ -54,7 +46,7 @@ const styles = StyleSheet.create({
   },
   item: {
     borderWidth: 1,
-    width: "25%",
+    width: isMobile? "100%" : "25%",
     borderColor: "#0084C9",
     padding: 10,
     marginBottom: 10,
@@ -90,7 +82,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: "center",
   },
-    modalWrapper: {
+  modalWrapper: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",

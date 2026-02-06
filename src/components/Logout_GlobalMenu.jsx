@@ -13,9 +13,9 @@ const Logout_GlobalMenu = ({ navigation, onClose }) => {
         { name: 'Login', label: t("globalmenu.login") },
         { name: 'Logout_Home', label: t("globalmenu.home") },
         { name: 'Logout_Futbol', label: t("globalmenu.football") },
-        { name: 'User_Padel', label: t("globalmenu.paddle") }, 
-        { name: 'User_Basquet', label: t("globalmenu.basketball") }, 
-        { name: 'User_Balonmano', label: t("globalmenu.handball") },
+        { name: 'Logout_Padel', label: t("globalmenu.paddle") }, 
+        { name: 'Logout_Basquet', label: t("globalmenu.basketball") }, 
+        { name: 'Logout_Balonmano', label: t("globalmenu.handball") },
     ];
 
     const changeLanguage = (lang) => {
@@ -25,7 +25,7 @@ const Logout_GlobalMenu = ({ navigation, onClose }) => {
         
     const handleNavigate = (routeName) => {
         onClose(); 
-        if (['Register','Login','Logout_Home', 'Logout_Futbol', 'User_Padel', 'User_Basquet', 'User_Handball'].includes(routeName)) {
+        if (['Register','Login','Logout_Home', 'Logout_Futbol', 'Logout_Padel', 'Logout_Basquet', 'Logout_Handball'].includes(routeName)) {
             navigation.dispatch(
                 CommonActions.reset({
                     index: 0,

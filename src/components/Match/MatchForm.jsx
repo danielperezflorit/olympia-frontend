@@ -4,6 +4,7 @@ import { View, Text, TextInput, Button, StyleSheet, ScrollView, TouchableOpacity
 import { fetchTeams } from '../../services/teamService';
 import { addMatch } from '../../services/matchService'; 
 import { CalendarPicker } from '../Match/CalendarPicker';
+import { fetchUsers } from '../../services/userService';
 
 const MatchForm = ({ competitionId, onMatchScheduled }) => {
     const { t } = useTranslation();
@@ -15,9 +16,12 @@ const MatchForm = ({ competitionId, onMatchScheduled }) => {
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const [referees, setReferees] = useState([]);
+    const [selectedReferee, setSelectedReferee] = useState('');
+    const [matchday, setMatchday] = useState('1');
 
     useEffect(() => {
-        async function loadTeams() {
+        async function loadData() {
             setLoading(true)
             try {
                 const teamsData = await fetchTeams(); 
@@ -37,6 +41,11 @@ const MatchForm = ({ competitionId, onMatchScheduled }) => {
                 if (filteredTeams.length === 0) {
                     setError("No hay equipos disponibles para esta competición.");
                 }
+
+                const allUsers = await fetchUsers();
+                const refereesFound = allUsers.filter(u => u.type === 'referee');
+                setReferees(refereesFound);
+
             } catch (e) {
                 console.error("Error loading teams:", e);
                 setError("Error al cargar la lista de equipos.");
@@ -45,7 +54,7 @@ const MatchForm = ({ competitionId, onMatchScheduled }) => {
             }
         }
         if (competitionId) {
-            loadTeams();
+            loadData();
         }
     }, [competitionId]);
 
@@ -59,13 +68,25 @@ const MatchForm = ({ competitionId, onMatchScheduled }) => {
              return;
         }
 
+        if (!selectedReferee) {
+             setError("Por favor, selecciona un árbitro.");
+             return;
+        }
+
+        if (!matchday || parseInt(matchday) < 1) {
+            setError("Por favor, introduce un número de jornada válido.");
+            return;
+        }
+
         setLoading(true);
         setError('');
 
         const newMatch = {
             competitionId: competitionId,
+            referee: selectedReferee,
             teamLocal: teamLocal,
             teamVisitor: teamVisitor,
+            matchday: parseInt(matchday),
             date: date.toISOString(),
             scoreLocal: 0, 
             scoreVisitor: 0,
@@ -127,6 +148,34 @@ const MatchForm = ({ competitionId, onMatchScheduled }) => {
 
             <Text style={styles.label}>{t('matchform.select_team_visitor')}:</Text>
             {renderTeamSelector(setteamVisitor, teamVisitor)}
+
+            <Text style={styles.label}>{t('matchform.select_referee')}:</Text>
+            <View style={styles.selectorContainer}>
+                <ScrollView nestedScrollEnabled={true}>
+                    {referees.map(ref => (
+                        <TouchableOpacity
+                            key={ref._id}
+                            onPress={() => setSelectedReferee(ref._id)}
+                            style={[
+                                styles.teamItem,
+                                selectedReferee === ref._id && styles.teamItemSelected,
+                            ]}
+                        >
+                            <Text style={styles.teamText}>{ref.name} ({ref.mail})</Text>
+                        </TouchableOpacity>
+                    ))}
+                    {referees.length === 0 && <Text style={{padding:10}}>{t("matchform.no_available_referee")}</Text>}
+                </ScrollView>
+            </View>
+
+            <Text style={styles.label}>{t('matchform.matchday') || "Jornada"}:</Text>
+            <TextInput
+                style={styles.input}
+                value={matchday}
+                onChangeText={setMatchday}
+                keyboardType="numeric"
+                placeholder="Ej: 1"
+            />
 
             <Text style={styles.label}>{t('matchform.date_time')}</Text>
 
@@ -215,7 +264,15 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius: 5,
         marginBottom: 20,
-    }
+    },
+    input: {
+        borderWidth: 1,
+        borderColor: '#ccc',
+        borderRadius: 5,
+        padding: 10,
+        marginBottom: 10,
+        fontSize: 16,
+    },
 });
 
 export default MatchForm;

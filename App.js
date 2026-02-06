@@ -5,6 +5,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { AuthContext } from './src/context/AuthContext';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import LoginScreen from "./src/screens/LoginScreen";
 import RegisterScreen from "./src/screens/RegisterScreen";
@@ -21,6 +22,9 @@ import Admin_BalonmanoScreen from "./src/screens/Admin/Sports/Admin_BalonmanoScr
 
 import Logout_HomeScreen from "./src/screens/Logout/Logout_HomeScreen.js";
 import Logout_FutbolScreen from "./src/screens/Logout/Sports/Logout_FutbolScreen.js";
+import Logout_PadelScreen from "./src/screens/Logout/Sports/Logout_PadelScreen";
+import Logout_BasquetScreen from "./src/screens/Logout/Sports/Logout_BasquetScreen";
+import Logout_BalonmanoScreen from "./src/screens/Logout/Sports/Logout_BalonmanoScreen";
 
 import User_HomeScreen from "./src/screens/User/User_HomeScreen";
 import User_FutbolScreen from "./src/screens/User/Sports/User_FutbolScreen";
@@ -46,70 +50,61 @@ const UserIcon = require('./assets/icons/user.jpg');
 const HomeIcon = require('./assets/icons/home.jpg');
 
 const Tab = createBottomTabNavigator();
-const Stack = createNativeStackNavigator();
-
-
-function AuthStack() {
-  return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Login" component={LoginScreen} />
-      <Stack.Screen name="Register" component={RegisterScreen} />
-    </Stack.Navigator>
-  );
-}
 
 function AdminTabs() {
   return (
-    <Tab.Navigator
-      initialRouteName="Admin_Home"
-      screenOptions={{
-        headerShown: false,
-        tabBarActiveTintColor: "#43ff4cff",
-        tabBarInactiveTintColor: "#ffffff",
-        tabBarStyle: { display: 'none' }, 
-      }}
-    >
-      <Tab.Screen 
-        name="Admin_Home" 
-        component={Admin_HomeScreen}
-        options={{ tabBarIcon: ({ size }) => <Image source={HomeIcon} style={{ width: size, height: size }} /> }}
-      />
-      <Tab.Screen 
-        name="Admin_Users" 
-        component={Admin_UsersScreen}
-        options={{ tabBarIcon: ({ size }) => <Image source={UserIcon} style={{ width: size, height: size }} /> }}
-      />
-      <Tab.Screen 
-        name="Admin_Universities" 
-        component={Admin_UniversitiesScreen}
-        options={{ tabBarIcon: ({ size }) => <Image source={UserIcon} style={{ width: size, height: size }} /> }}
-      />
-      <Tab.Screen 
-        name="Admin_Teams" 
-        component={Admin_TeamsScreen}
-        options={{ tabBarIcon: ({ size }) => <Image source={TeamIcon} style={{ width: size, height: size }} /> }}
-      />
-      <Tab.Screen 
-        name="Admin_Competitions" 
-        component={Admin_CompetitionsScreen} 
-        options={{ tabBarButton: () => null }} />
-      <Tab.Screen 
-        name="Admin_Futbol" 
-        component={Admin_FutbolScreen} 
-        options={{ tabBarButton: () => null }} />
-      <Tab.Screen 
-        name="Admin_Padel" 
-        component={Admin_PadelScreen} 
-        options={{ tabBarButton: () => null }} />
-      <Tab.Screen 
-        name="Admin_Basquet" 
-        component={Admin_BasquetScreen} 
-        options={{ tabBarButton: () => null }} />
-      <Tab.Screen 
-        name="Admin_Balonmano" 
-        component={Admin_BalonmanoScreen} 
-        options={{ tabBarButton: () => null }} />
-    </Tab.Navigator>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <Tab.Navigator
+        initialRouteName="Admin_Home"
+        screenOptions={{
+          headerShown: false,
+          tabBarActiveTintColor: "#43ff4cff",
+          tabBarInactiveTintColor: "#ffffff",
+          tabBarStyle: { display: 'none' }, 
+        }}
+      >
+        <Tab.Screen 
+          name="Admin_Home" 
+          component={Admin_HomeScreen}
+          options={{ tabBarIcon: ({ size }) => <Image source={HomeIcon} style={{ width: size, height: size }} /> }}
+        />
+        <Tab.Screen 
+          name="Admin_Users" 
+          component={Admin_UsersScreen}
+          options={{ tabBarIcon: ({ size }) => <Image source={UserIcon} style={{ width: size, height: size }} /> }}
+        />
+        <Tab.Screen 
+          name="Admin_Universities" 
+          component={Admin_UniversitiesScreen}
+          options={{ tabBarIcon: ({ size }) => <Image source={UserIcon} style={{ width: size, height: size }} /> }}
+        />
+        <Tab.Screen 
+          name="Admin_Teams" 
+          component={Admin_TeamsScreen}
+          options={{ tabBarIcon: ({ size }) => <Image source={TeamIcon} style={{ width: size, height: size }} /> }}
+        />
+        <Tab.Screen 
+          name="Admin_Competitions" 
+          component={Admin_CompetitionsScreen} 
+          options={{ tabBarButton: () => null }} />
+        <Tab.Screen 
+          name="Admin_Futbol" 
+          component={Admin_FutbolScreen} 
+          options={{ tabBarButton: () => null }} />
+        <Tab.Screen 
+          name="Admin_Padel" 
+          component={Admin_PadelScreen} 
+          options={{ tabBarButton: () => null }} />
+        <Tab.Screen 
+          name="Admin_Basquet" 
+          component={Admin_BasquetScreen} 
+          options={{ tabBarButton: () => null }} />
+        <Tab.Screen 
+          name="Admin_Balonmano" 
+          component={Admin_BalonmanoScreen} 
+          options={{ tabBarButton: () => null }} />
+      </Tab.Navigator>
+    </GestureHandlerRootView>
   );
 }
 
@@ -180,16 +175,16 @@ function LogoutTabs() {
         component={Logout_FutbolScreen} 
         options={{ tabBarButton: () => null }} />
       <Tab.Screen 
-        name="User_Padel" 
-        component={User_PadelScreen} 
+        name="Logout_Padel" 
+        component={Logout_PadelScreen} 
         options={{ tabBarButton: () => null }} />
       <Tab.Screen 
-        name="User_Basquet" 
-        component={User_BasquetScreen} 
+        name="Logout_Basquet" 
+        component={Logout_BasquetScreen} 
         options={{ tabBarButton: () => null }} />
       <Tab.Screen 
-        name="User_Balonmano" 
-        component={User_BalonmanoScreen} 
+        name="Logout_Balonmano" 
+        component={Logout_BalonmanoScreen} 
         options={{ tabBarButton: () => null }} />
     </Tab.Navigator>
   );

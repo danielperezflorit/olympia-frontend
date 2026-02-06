@@ -2,7 +2,10 @@
     "home": "Home",
 
     "sport": {
-        "football": "FOOTBALL"
+        "football": "FOOTBALL",
+        "handball": "HANDBALL",
+        "paddle": "PADDLE",
+        "basketball": "BASKETBALL"
     },
 
     "login": {
@@ -47,6 +50,51 @@
         "match":"Match"
     },
 
+    "handball": {
+        "select_comp": "Select Competition",
+        "ranking": "Ranking",
+        "calendar": "Match Calendar",
+        "new_match": "+ Schedule New Match",
+        "no_data": "No Handball competitions available.",
+        "close": "Close",
+        "team": "Team",
+        "edit_result": "Edit Result",
+        "add_result": "Add Result",
+        "save_result": "Save Result",
+        "select_date": "Select Date and Time",
+        "match":"Match"
+    },
+    
+    "basketball": {
+        "select_comp": "Select Competition",
+        "ranking": "Ranking",
+        "calendar": "Match Calendar",
+        "new_match": "+ Schedule New Match",
+        "no_data": "No Basketball competitions available.",
+        "close": "Close",
+        "team": "Team",
+        "edit_result": "Edit Result",
+        "add_result": "Add Result",
+        "save_result": "Save Result",
+        "select_date": "Select Date and Time",
+        "match":"Match"
+    }, 
+
+    "paddle": {
+        "select_comp": "Select Competition",
+        "ranking": "Ranking",
+        "calendar": "Match Calendar",
+        "new_match": "+ Schedule New Match",
+        "no_data": "No Paddle competitions available.",
+        "close": "Close",
+        "team": "Team",
+        "edit_result": "Edit Result",
+        "add_result": "Add Result",
+        "save_result": "Save Result",
+        "select_date": "Select Date and Time",
+        "match":"Match"
+    }, 
+
     "ranking_table": {
         "position": "Pos",
         "played": "Pld",
@@ -72,7 +120,8 @@
         "add_result": "Add Result",
         "home_team": "Equipo Local",
         "away_team" : "Equipo Visitante",
-         "history_title": "Update history"
+        "history_title": "Update history",
+        "matchday": "Matchday"
     },
 
     "matchresultform": {
@@ -93,7 +142,10 @@
         "select_team_visitor": "Select Away Team",
         "date_time": "Date and Time",
         "schedule_match": "Schedule Match",
-        "scheduling_match": "Scheduling..."
+        "scheduling_match": "Scheduling...",
+        "select_referee": "Select referee",
+        "no_available_referee": "There are no refrees available",
+        "matchday": "Matchday"
     },
 
     "competitionsscreen": {
@@ -137,7 +189,7 @@
         "players": "Players",
         "played_matches": "Played Matches",
         "wins": "Wins",
-        "losses": "Losses",
+        "loses": "Loses",
         "draws": "Draws",
         "delete_team": "Delete Team",
         "edit_team": "Edit Team",
@@ -152,7 +204,7 @@
         "players": "Players",
         "played_matches": "Played Matches",
         "wins": "Wins",
-        "losses": "Losses",
+        "loses": "Loses",
         "draws": "Draws"
     },
 
@@ -186,7 +238,7 @@
         "players": "Players",
         "played_matches": "Played Matches",
         "wins": "Wins",
-        "losses": "Losses",
+        "loses": "Loses",
         "draws": "Draws",
         "delete_university": "Delete",
         "edit_university": "Edit",

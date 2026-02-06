@@ -25,7 +25,7 @@ export default function UniversityList({
             <Text style={styles.label}>{t("universitylist.players")}: {item.getPlayers()}</Text>
             <Text style={styles.label}>{t("universitylist.played_matches")}: {item.getMatches()}</Text> 
             <Text style={styles.label}>{t("universitylist.wins")}: {item.getWins()}</Text>
-            <Text style={styles.label}>{t("universitylist.losses")}: {item.getLosses()}</Text>
+            <Text style={styles.label}>{t("universitylist.loses")}: {item.getLoses()}</Text>
             <Text style={styles.label}>{t("universitylist.draws")}: {item.getDraws()}</Text>
 
             <TouchableOpacity style={styles.updateButton} onPress={() => onUpdateUniversity(item)} >
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
   },
   item: {
     borderWidth: 1,
-    width: "25%",
+    width: "100%",
     borderColor: "#0084C9",
     padding: 10,
     marginBottom: 10,
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: "center",
   },
-    modalWrapper: {
+  modalWrapper: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",

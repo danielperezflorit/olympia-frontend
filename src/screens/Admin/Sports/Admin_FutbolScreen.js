@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import { useTranslation } from 'react-i18next';
-import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, ActivityIndicator, Modal } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, ActivityIndicator, Modal,  Dimensions, Platform } from 'react-native';
 import Admin_GlobalMenu from '../../../components/Admin_GlobalMenu';
 
 import { fetchSportIdByName } from '../../../services/sportService';
@@ -12,6 +12,11 @@ import CompetitionSelector from '../../../components/Competition/CompetitionSele
 import RankingTable from '../../../components/Competition/RankingTable';
 import MatchCalendar from '../../../components/Match/MatchCalendar'; 
 import MatchForm from '../../../components/Match/MatchForm'; 
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const { width } = Dimensions.get('window');
+const isMobile = width < 768;
 
 const FixedHeader = () => {
     const { t } = useTranslation(); 
@@ -34,6 +39,7 @@ export default function Admin_FutbolScreen({ navigation }) {
     const [rankingData, setRankingData] = useState([]);
     const [matchesData, setMatchesData] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [currentUser, setCurrentUser] = useState(null);
     
     const [isMatchFormVisible, setIsMatchFormVisible] = useState(false); 
     
@@ -104,6 +110,19 @@ export default function Admin_FutbolScreen({ navigation }) {
         }
     }, [selectedCompetitionId, loadCompetitionData]);
 
+    useEffect(() => {
+        const loadUser = async () => {
+            try {
+                const userData = await AsyncStorage.getItem('userInfo');
+                if (userData) {
+                    setCurrentUser(JSON.parse(userData));
+                }
+            } catch (e) {
+                console.error("Error loading user info", e);
+            }
+        };
+        loadUser();
+    }, []);
 
     return (
         <View style={styles.fullContainer}>
@@ -148,6 +167,7 @@ export default function Admin_FutbolScreen({ navigation }) {
                         <MatchCalendar 
                             matches={matchesData} 
                             onDataUpdated={handleDataUpdate} 
+                            currentUser={currentUser}
                         />
                     )}
 
@@ -191,30 +211,31 @@ export default function Admin_FutbolScreen({ navigation }) {
 
 const headerStyles = StyleSheet.create({
     headerContainer: {
-        height: 100, 
+        height: isMobile ? 150 : 100, 
         width: '100%',
-        backgroundColor: '#ffffffff', 
+        backgroundColor: '#ffffff', 
         flexDirection: 'row',
         alignItems: 'center', 
-        justifyContent: 'flex-start', 
-        paddingTop: 10,
+        justifyContent: 'center', 
+        paddingTop: isMobile ? 30 : 10,
         paddingHorizontal: 15,
         borderBottomWidth: 1, 
         borderBottomColor: '#eee',
         zIndex: 10, 
-        position: 'absolute',
+        position: 'absolute', 
         top: 0,
-        reight: 0,
+        right: 0,
     },
     menuIcon: {
         position: 'absolute', 
-        top: 45, 
+        top: isMobile ? 30 : 45, 
         right: 10,
         padding: 5,
         borderRadius: 5,
     },
     menuIconText: {
-        fontSize: 30,
+        fontSize: isMobile ? 24 : 30, 
+        top:  isMobile ? 30 : 10,
         fontWeight: 'bold',
         color: '#0084C9',
     },
@@ -223,29 +244,29 @@ const headerStyles = StyleSheet.create({
     },
     menuIconTextActive: {
         color: 'white', 
+        top:  isMobile ? 30 : 10,
     },
     logo: {
-        width: 300, 
-        height: 80, 
+        width: isMobile ? 180 : 300, 
+        height: isMobile ? 60 : 80, 
         resizeMode: 'contain',
-        marginLeft: 55, 
-    },
+        position: 'absolute',
+        left: 15,
+        top: isMobile ? 40 : 10,
+    },    
     title: {
-      position: 'absolute',
-      fontSize: 50,
-      marginBottom: 10,
-      textAlign: "center",
-      color: "#0084C9",
-      fontWeight: 'bold',
-      left: '50%', 
-      transform: 'translateX(-50%)', 
-  },
+        fontSize: isMobile ? 40: 50,
+        color: "#0084C9",
+        fontWeight: 'bold',
+        textAlign: "center",
+        top: isMobile? 20:0,
+    },
 });
 
 const styles = StyleSheet.create({
     fullContainer: { flex: 1, backgroundColor: "#ffffffff" },
     container: {
-        paddingTop: 120, 
+        paddingTop: 150, 
         paddingHorizontal: 15,
         paddingBottom: 20,
     },

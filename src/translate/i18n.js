@@ -1,13 +1,11 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
-import * as RNLocalize from "react-native-localize";
-
+import { getLocales } from 'expo-localization';
 import es from "./es.json";
 import en from "./en.json";
 
 // Detectar idioma del dispositivo
-const locales = RNLocalize.getLocales();
-const systemLanguage = locales[0]?.languageCode || "es";
+const deviceLanguage = getLocales()[0]?.languageCode ?? 'es';
 
 i18n
   .use(initReactI18next)
@@ -16,7 +14,7 @@ i18n
       es: { translation: es },
       en: { translation: en },
     },
-    lng: systemLanguage, // Establecer el idioma detectado del sistema
+    lng: deviceLanguage, // Establecer el idioma detectado del sistema
     fallbackLng: "es",
     interpolation: {
       escapeValue: false,

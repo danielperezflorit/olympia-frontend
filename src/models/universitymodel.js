@@ -1,5 +1,5 @@
 export default class Team {
-  constructor(_id, name, sports =[], competitions = [], teams = [], players = [], matches, wins, losses, draws) {
+  constructor(_id, name, sports =[], competitions = [], teams = [], players = [], matches, wins, loses, draws) {
     this._id = _id;
     this.name = name;
     this.sports = sports;
@@ -8,14 +8,13 @@ export default class Team {
     this.players = players;
     this.matches = matches;
     this.wins = wins;
-    this.losses = losses;
+    this.loses = loses;
     this.draws = draws;
   }
 
   getFullName() {
     return this.name;
   }
-
   getSports() {
     if (Array.isArray(this.sports) && this.sports.length > 0) { 
         const sportsNames = this.sports.map(sports => {
@@ -28,7 +27,6 @@ export default class Team {
     }
     return 'Sin deportes';
   }
-
   getCompetitions() {
     if (Array.isArray(this.competitions) && this.competitions.length > 0) { 
         const competitionsNames = this.competitions.map(competitions => {
@@ -42,12 +40,11 @@ export default class Team {
     }
     return 'Sin competiciones';
   }
-
   getTeams() {
     if (Array.isArray(this.teams) && this.teams.length > 0) { 
         const teamNames = this.teams.map(teams => {
             if (teams && teams.name) {
-                          console.log(teams);
+              console.log(teams);
               return teams.name;
             }
             return 'Equipo Desconocido'; 
@@ -56,7 +53,6 @@ export default class Team {
     }
     return 'Sin equipos';
   }
-
   getPlayers() {
     if (Array.isArray(this.players) && this.players.length > 0) { 
         const playerNames = this.players.map(player => {
@@ -69,15 +65,14 @@ export default class Team {
     }
     return 'Sin jugadores';
   }
-  
   getMatches() {
     return this.matches;
   }
   getWins() {
     return this.wins;
   }
-  getLosses() {
-    return this.losses;
+  getLoses() {
+    return this.loses;
   }
   getDraws() {
     return this.draws;

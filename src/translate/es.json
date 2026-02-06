@@ -2,7 +2,10 @@
     "home": "Inicio",
 
     "sport": {
-        "football": "FÚTBOL"
+        "football": "FÚTBOL",
+        "handball": "BALONMANO",
+        "paddle": "PÁDEL",
+        "basketball": "BALONCESTO"
     },
 
     "login": {
@@ -47,6 +50,51 @@
         "match":"Partido"
     },
 
+    "handball": {
+        "select_comp": "Seleccionar Competición",
+        "ranking": "Clasificación",
+        "calendar": "Jornadas",
+        "new_match": "+ Programar Nuevo Partido",
+        "no_data": "No hay competiciones de Balonmano disponibles.",
+        "close": "Cerrar",
+        "team": "Equipo",
+        "edit_result": "Editar Resultado",
+        "add_result": "Añadir Resultado",
+        "save_result": "Guardar Resultado",
+        "select_date": "Seleccionar Fecha y Hora",
+        "match":"Partido"
+    },
+
+    "basketball": {
+        "select_comp": "Seleccionar Competición",
+        "ranking": "Clasificación",
+        "calendar": "Jornadas",
+        "new_match": "+ Programar Nuevo Partido",
+        "no_data": "No hay competiciones de Baloncesto disponibles.",
+        "close": "Cerrar",
+        "team": "Equipo",
+        "edit_result": "Editar Resultado",
+        "add_result": "Añadir Resultado",
+        "save_result": "Guardar Resultado",
+        "select_date": "Seleccionar Fecha y Hora",
+        "match":"Partido"
+    },
+
+    "paddle": {
+        "select_comp": "Seleccionar Competición",
+        "ranking": "Clasificación",
+        "calendar": "Jornadas",
+        "new_match": "+ Programar Nuevo Partido",
+        "no_data": "No hay competiciones de Pádel disponibles.",
+        "close": "Cerrar",
+        "team": "Equipo",
+        "edit_result": "Editar Resultado",
+        "add_result": "Añadir Resultado",
+        "save_result": "Guardar Resultado",
+        "select_date": "Seleccionar Fecha y Hora",
+        "match":"Partido"
+    },
+
     "ranking_table": {
         "position": "Pos",
         "played": "PJ",
@@ -72,7 +120,8 @@
         "add_result": "Añadir Resultado",
         "home_team": "Equipo Local",
         "away_team" : "Equipo Visitante",
-        "history_title": "Historial de actualizaciones"
+        "history_title": "Historial de actualizaciones",
+        "matchday": "Jornada"
     },
 
     "matchresultform": {
@@ -93,7 +142,10 @@
         "select_team_visitor": "Seleccionar Equipo Visitante",
         "date_time": "Fecha y Hora",
         "schedule_match": "Programar Partido",
-        "scheduling_match": "Programando..."
+        "scheduling_match": "Programando...",
+        "select_referee": "Seleccionar arbitro",
+        "no_available_referee": "No hay arbitros disponibles",
+        "matchday": "Jornada"
     },
 
     "competitionsscreen": {
@@ -137,7 +189,7 @@
         "players": "Jugadores",
         "played_matches": "Partidos Jugados",
         "wins": "Victorias",
-        "losses": "Derrotas",
+        "loses": "Derrotas",
         "draws": "Empates",
         "delete_team": "Eliminar Equipo",
         "edit_team": "Editar Equipo",
@@ -152,7 +204,7 @@
         "players": "Jugadores",
         "played_matches": "Partidos Jugados",
         "wins": "Victorias",
-        "losses": "Derrotas",
+        "loses": "Derrotas",
         "draws": "Empates"
     },
 
@@ -186,7 +238,7 @@
         "players": "Jugadores",
         "played_matches": "Partidos Jugados",
         "wins": "Victorias",
-        "losses": "Derrotas",
+        "loses": "Derrotas",
         "draws": "Empates",
         "delete_university": "Eliminar",
         "edit_university": "Editar",

@@ -1,6 +1,9 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { View, Text, FlatList, TouchableOpacity, StyleSheet, Modal } from "react-native";
+import { View, Text, FlatList, TouchableOpacity, StyleSheet, Modal, Dimensions, Platform } from "react-native";
+
+const { width } = Dimensions.get('window');
+const isMobile = width < 768;
 
 export default function CompetitionList({
     competitions,
@@ -41,7 +44,7 @@ const styles = StyleSheet.create({
   },
   item: {
     borderWidth: 1,
-    width: "25%",
+    width: isMobile? "100%" : "25%",
     borderColor: "#0084C9",
     padding: 10,
     marginBottom: 10,

@@ -1,7 +1,9 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { View, Text, FlatList, StyleSheet } from "react-native";
+import { View, Text, FlatList, StyleSheet, Dimensions, Platform } from "react-native";
 
+const { width } = Dimensions.get('window');
+const isMobile = width < 768;
 
 export default function Captain_TeamList({
     teams,
@@ -22,7 +24,7 @@ export default function Captain_TeamList({
             <Text style={styles.label}>{t("captain_teamlist.players")}: {item.getPlayers()}</Text>
             <Text style={styles.label}>{t("captain_teamlist.played_matches")}: {item.getMatches()}</Text> 
             <Text style={styles.label}>{t("captain_teamlist.wins")}: {item.getWins()}</Text>
-            <Text style={styles.label}>{t("captain_teamlist.losses")}: {item.getLosses()}</Text>
+            <Text style={styles.label}>{t("captain_teamlist.loses")}: {item.getLoses()}</Text>
             <Text style={styles.label}>{t("captain_teamlist.draws")}: {item.getDraws()}</Text>
           </View>
         )}
@@ -38,7 +40,7 @@ const styles = StyleSheet.create({
   },
   item: {
     borderWidth: 1,
-    width: "25%",
+    width: isMobile? "100%" : "25%",
     borderColor: "#0084C9",
     padding: 10,
     marginBottom: 10,

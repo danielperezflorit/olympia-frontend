@@ -29,7 +29,7 @@ const RankingTable = ({ ranking }) => {
                         <Text style={[styles.cell, styles.colStats]}>{team.matches || 0}</Text>
                         <Text style={[styles.cell, styles.colStats]}>{team.wins || 0}</Text>
                         <Text style={[styles.cell, styles.colStats]}>{team.draws || 0}</Text>
-                        <Text style={[styles.cell, styles.colStats]}>{team.losses || 0}</Text>
+                        <Text style={[styles.cell, styles.colStats]}>{team.loses || 0}</Text>
                         <Text style={[styles.cell, styles.colPoints, styles.pointsText]}>{team.points || 0}</Text>
                     </View>
                 ))}
@@ -40,7 +40,7 @@ const RankingTable = ({ ranking }) => {
 
 const styles = StyleSheet.create({
     scrollView: {
-        maxHeight: 400, 
+        mmarginBottom: 20, 
     },
     row: {
         flexDirection: 'row',
