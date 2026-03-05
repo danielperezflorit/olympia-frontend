@@ -1,9 +1,9 @@
 import axios from "axios";
 
-const API_URL_UNIVERSITY = "http://192.168.0.14:3000/university";
+//const API_URL_UNIVERSITY = "http://192.168.0.14:3000/university";
 //const API_URL_UNIVERSITY = "http://192.168.1.43:3000/university";
-//const API_URL_UNIVERSITY = "http://10.5.59.106:3000/university";
-//const API_URL_UNIVERSITY = "http://10.35.187.135:3000/university";
+const API_URL_UNIVERSITY = "http://10.62.8.135:3000/university";
+
 
 
 export const fetchUniversityById = async (universityId) => {
